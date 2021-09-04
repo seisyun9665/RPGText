@@ -1,0 +1,23 @@
+default:
+  message:
+    sound: "block.note.bass"
+    volume: 1
+    pitch: 2
+    speed: 1
+  selection:
+    move:
+      sound: "block.note.hat"
+      volume: 1
+      pitch: 1
+    select:
+      sound: "entity.arrow.hit_player"
+      volume: 1
+      pitch: 1
+  freeze:
+    horizontal: true
+    vertical: false
+    jump: true
+    invincible: true
+    leftclick-cancel: true
+    rightclick-cancel: true
+  click-type: left

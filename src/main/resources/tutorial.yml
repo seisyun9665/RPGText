@@ -1,0 +1,102 @@
+users:
+  - /singlesound minecraft:entity.player.levelup 1 0.98
+  - \a\l--- RPGtext Tutorial ---
+  - /singlesound minecraft:block.note.bell
+  - 1:Sound setting
+  - \r/sound <sound name> <volume> <pitch>
+  - \r/sound block.note.flute 1 1.75
+  - /sound block.note.flute 1 1.75
+  - \r/sound block.note.flute 1 1.75
+  - /singlesound minecraft:block.note.bell
+  - 2:Speed setting
+  - \r/speed <speed>
+  - \r/speed 2
+  - /speed 2
+  - \r/speed 2
+  - 3:Jump (in-file effects)
+  - \r/jump Tutorial.yml/users2 (Also possible with /jump users2)
+  - /jump Tutorial.yml/users2
+
+users2:
+  - /singlesound minecraft:block.note.bell
+  - 4:Selection
+  - \r/? <option1> <option2> <option3> ...
+  - \r/? option1 option2 option3
+  - /? option1 option2 option3
+  - /singlesound minecraft:block.note.bell
+  - 5:Branch
+  - \r/?<option name> <text>
+  - \r/?option1 you selected option1, aren't you?
+  - \r/?option2 you selected option2, aren't you?
+  - \r/?option3 you selected option3, aren't you?
+  - /?option1 you selected option1, aren't you?
+  - /?option2 you selected option2, aren't you?
+  - /?option3 you selected option3, aren't you?
+  - /singlesound minecraft:block.note.bell
+  - 6:Command(minecraft)
+  - \r/command <command>
+  - \r/command execute @a ~ ~ ~ /playsound minecraft:block.anvil.destroy master @a ~ ~ ~
+  - /command execute @a ~ ~ ~ /playsound minecraft:block.anvil.destroy master @a ~ ~ ~
+  - /singlesound minecraft:block.note.bell
+  - 7:Score
+  - \r/score <score name> <value>
+  - \r/score test 1
+  - /score test 1
+  - test = \\test\\
+  - \r/add test
+  - /add test
+  - test = \\test\\
+  - \r/score <score name> <random | + | - | * | / | % > <value>
+  - \r/score test random 3 (set 0 ~ 3 to test)
+  - /score test random 3
+  - test = \\test\\
+  - \r/score test + 1
+  - /score test + 1
+  - test = \\test\\
+  - \r/score test * 3
+  - /score test * 3
+  - test = \\test\\
+  - \r/score test % 4
+  - /score test % 4
+  - test = \\test\\
+  - /singlesound minecraft:block.note.bell
+  - 8:Condition
+  - \r/if <score name> <symbol> <value> <next command>
+  - \r/if test = 2 test = 2 !
+  - /if test = 2 test = 2 !
+  - \r/if test < 4 test < 4 !
+  - /if test < 4 test < 4 !
+  - type of comparison symbol:"=",">","<"
+  - /singlesound minecraft:block.note.bell
+  - 9:Item
+  - \r/has <item type> <amount> <item name(No name:"none")> <next command>
+  - \r/score test 0
+  - \r/has DIAMOND 1 none /score test 1
+  - \r/if test = 1 you have a diamond.
+  - \r/if test = 0 you not have a diamond.
+  - /score test 0
+  - /has DIAMOND 1 none /score test 1
+  - /if test = 1 you have a diamond.
+  - /if test = 0 you not have a diamond.
+  - \r/remove <item type> <amount> <item name(No name:"none")>
+  - \r/command give %player% minecraft:emerald
+  - /command give %player% minecraft:emerald
+  - \r/remove EMERALD 1 none
+  - /remove EMERALD 1 none
+  - /singlesound minecraft:block.note.bell
+  - 10:Single sound
+  - \r/singlesound <sound name> (<volume> <pitch>)
+  - \r/singlesound minecraft:entity.player.levelup
+  - /singlesound minecraft:entity.player.levelup
+  - 11:Other symbol
+  - Color code:\ab\ba\cc\dk\es\1l\2a\3s\4h
+  - Player name:%player%(%player\r%)
+  - Score:score "test" is \\test\\(%\r%test%\r%)
+  - 12:Important points
+  - These are the codes that don't work.
+  - \r/if test = 1 /has DIAMOND 1 none something texts.
+  - \r/if test < 3 /if test2 = 1 something texts.
+  - \r/has DIAMOND 1 none /has EMERALD 1 none something texts.
+  - Multiple conditional expressions will not work.
+  - \lUse "/jump"\r to implement multiple conditional expressions.
+  - Thank you for reading!

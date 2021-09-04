@@ -1,0 +1,34 @@
+package seisyun.rpgtext;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.Plugin;
+
+class Characters {
+    private CustomConfig customConfig;
+    private FileConfiguration config;
+    Characters(Plugin plugin){
+        customConfig = new CustomConfig(plugin,"characters.yml");
+        config = customConfig.getConfig();
+    }
+
+    void set(String entityName,String path){
+        config.set(entityName,path);
+        customConfig.saveConfig();
+        customConfig.reloadConfig();
+        config = customConfig.getConfig();
+    }
+
+    void reload(){
+        customConfig.reloadConfig();
+        config = customConfig.getConfig();
+    }
+
+    boolean contain(String entityName){
+        return config.contains(entityName);
+    }
+
+    String get(String entityName){
+        return config.getString(entityName);
+    }
+
+}
