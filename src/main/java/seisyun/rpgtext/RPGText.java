@@ -112,18 +112,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
         // 定期実行メソッド登録（送信済みテキスト判定と待機テキスト判定）
         BukkitScheduler scheduler = getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
-            @Override
-            public void run() {
-                actionTextJudge();
-            }
-        },0,1);
-        scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
-            @Override
-            public void run() {
-                waitingTextJudge();
-            }
-        },0,10);
+        scheduler.scheduleSyncRepeatingTask(this, this::actionTextJudge,0,1);
+        scheduler.scheduleSyncRepeatingTask(this, this::waitingTextJudge,0,10);
     }
 
     /* ----- 起動時設定終わり ----- */
@@ -507,7 +497,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     private void toggleWaitingText(){
         for(Player player : waitingTextMap.keySet()){
             String waitingText = waitingTextMap.get(player);
-            if(waitingText.length() > 5 && waitingText.substring(0,1).equals(" ") && waitingText.substring(waitingText.length() - 5).equals("§r§n ")){ //待機中テキストの形が" <テキスト>_"の時の処理
+            if(waitingText.length() > 5 && waitingText.charAt(0) == ' ' && waitingText.endsWith("§r§n ")){ //待機中テキストの形が" <テキスト>_"の時の処理
                 waitingText = waitingText.substring(1,waitingText.length() - 5);
             }else{
                 waitingText = " " + waitingText + "§r§n ";
