@@ -20,4 +20,5 @@ default:
     invincible: true
     leftclick-cancel: true
     rightclick-cancel: true
+
   click-type: left

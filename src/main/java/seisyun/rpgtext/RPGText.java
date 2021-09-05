@@ -89,35 +89,28 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     /* ----- デフォルト設定変数終わり ----- */
 
 
+
+    /* ----- 起動時設定 ----- */
+
     @Override
     public void onEnable() {
+        // config.yml と scoreboard.yml と characters.yml と tutorial.yml を作成
         saveDefaultConfig();
-        this.customScore = new CustomScore(this);
-        this.characters = new Characters(this);
+        customScore = new CustomScore(this);
+        characters = new Characters(this);
         messageConfig = new CustomConfig(this);
         new CustomConfig(this,"Tutorial.yml",new File(getDataFolder(),"messages"),"tutorial.yml");
-        messageConfigList = getMessageFiles();
-        FileConfiguration config = messageConfig.getConfig();
-        DEFAULT_MESSAGE_SOUND = config.getString("default.message.sound","block.note.bass");
-        DEFAULT_MESSAGE_VOLUME = (float)config.getDouble("default.message.sound", 1);
-        DEFAULT_MESSAGE_PITCH = (float)config.getDouble("default.message.pitch", 1);
-        DEFAULT_MESSAGE_SPEED = config.getInt("default.message.speed", 1);
-        DEFAULT_SELECTION_MOVE_SOUND = config.getString("default.selection.move.sound","block.note.hat");
-        DEFAULT_SELECTION_MOVE_VOLUME = (float)config.getDouble("default.selection.move.volume",1);
-        DEFAULT_SELECTION_MOVE_PITCH = (float)config.getDouble("default.selection.move.pitch",1);
-        DEFAULT_SELECTION_SELECT_SOUND = config.getString("default.selection.select.sound","entity.arrow.hit_player");
-        DEFAULT_SELECTION_SELECT_VOLUME = (float)config.getDouble("default.selection.select.volume",1);
-        DEFAULT_SELECTION_SELECT_PITCH = (float)config.getDouble("default.selection.select.pitch",1);
-        DEFAULT_CLICK_TYPE = config.getString("default.click-type","left");
-        if (!(DEFAULT_CLICK_TYPE.equals("right")) && !(DEFAULT_CLICK_TYPE.equals("left"))){
-            DEFAULT_CLICK_TYPE = "left";
-        }
+
+        // 設定ファイル全読み込み
         reloadAllConfig();
 
-
+        // プレイヤー停止システム読み込み
         freeze = new Freeze(this,messageConfig);
 
+        // イベントリスナ登録
         this.getServer().getPluginManager().registerEvents(this,this);
+
+        // 定期実行メソッド登録（送信済みテキスト判定と待機テキスト判定）
         BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
@@ -131,6 +124,40 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
                 waitingTextJudge();
             }
         },0,10);
+    }
+
+    /* ----- 起動時設定終わり ----- */
+
+
+
+    // 全部の設定ファイルを読み込み直す（config.yml characters.yml scoreboard.yml messagesの中身）
+    private void reloadAllConfig(){
+        // messagesの中身を取得（tutorial.ymlも含む全て）
+        messageConfigList = getMessageFiles();
+        messageConfig.reloadConfig();
+        for(CustomConfig config : messageConfigList){
+            config.reloadConfig();
+        }
+        customScore.reload();
+        characters.reload();
+
+        // デフォルト設定の読み込み（操作音やクリックの種類等）
+        FileConfiguration config = messageConfig.getConfig();
+        DEFAULT_MESSAGE_SOUND =                     config.getString("default.message.sound",           "");
+        DEFAULT_MESSAGE_VOLUME =            (float) config.getDouble("default.message.sound",           1);
+        DEFAULT_MESSAGE_PITCH =             (float) config.getDouble("default.message.pitch",           1);
+        DEFAULT_MESSAGE_SPEED =                     config.getInt   ("default.message.speed",           1);
+        DEFAULT_SELECTION_MOVE_SOUND =              config.getString("default.selection.move.sound",    "");
+        DEFAULT_SELECTION_MOVE_VOLUME =     (float) config.getDouble("default.selection.move.volume",   1);
+        DEFAULT_SELECTION_MOVE_PITCH =      (float) config.getDouble("default.selection.move.pitch",    1);
+        DEFAULT_SELECTION_SELECT_SOUND =            config.getString("default.selection.select.sound",  "");
+        DEFAULT_SELECTION_SELECT_VOLUME =   (float) config.getDouble("default.selection.select.volume", 1);
+        DEFAULT_SELECTION_SELECT_PITCH =    (float) config.getDouble("default.selection.select.pitch",  1);
+        DEFAULT_CLICK_TYPE =                        config.getString("default.click-type",              "left");
+        // rightとleft以外ならleftにする
+        if (!(DEFAULT_CLICK_TYPE.equals("right") || DEFAULT_CLICK_TYPE.equals("left"))){
+            DEFAULT_CLICK_TYPE = "left";
+        }
     }
 
     @Override
@@ -622,32 +649,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
 
-    private void reloadAllConfig(){
-        messageConfigList = getMessageFiles();
-        messageConfig.reloadConfig();
-        for(CustomConfig config : messageConfigList){
-            config.reloadConfig();
-        }
-        customScore.reload();
-        characters.reload();
 
-        //default values
-        FileConfiguration config = messageConfig.getConfig();
-        DEFAULT_MESSAGE_SOUND = config.getString("default.message.sound","");
-        DEFAULT_MESSAGE_VOLUME = (float)config.getDouble("default.message.sound", 1);
-        DEFAULT_MESSAGE_PITCH = (float)config.getDouble("default.message.pitch", 1);
-        DEFAULT_MESSAGE_SPEED = config.getInt("default.message.speed", 1);
-        DEFAULT_SELECTION_MOVE_SOUND = config.getString("default.selection.move.sound","");
-        DEFAULT_SELECTION_MOVE_VOLUME = (float)config.getDouble("default.selection.move.volume",1);
-        DEFAULT_SELECTION_MOVE_PITCH = (float)config.getDouble("default.selection.move.pitch",1);
-        DEFAULT_SELECTION_SELECT_SOUND = config.getString("default.selection.select.sound","");
-        DEFAULT_SELECTION_SELECT_VOLUME = (float)config.getDouble("default.selection.select.volume",1);
-        DEFAULT_SELECTION_SELECT_PITCH = (float)config.getDouble("default.selection.select.pitch",1);
-        DEFAULT_CLICK_TYPE = config.getString("default.click-type","left");
-        if (!(DEFAULT_CLICK_TYPE.equals("right")) && !(DEFAULT_CLICK_TYPE.equals("left"))){
-            DEFAULT_CLICK_TYPE = "left";
-        }
-    }
 
     private CustomConfig getMessageConfig(String configName){
         for(CustomConfig config : messageConfigList){
