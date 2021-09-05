@@ -44,14 +44,14 @@ public class Freeze implements Listener {
     void remove(Player player){
         freezePlayerList.remove(player);
     }
-    void toggle(Player player){
+    public void toggle(Player player){
         if(freezePlayerList.contains(player)){
             freezePlayerList.remove(player);
         }else{
             freezePlayerList.add(player);
         }
     }
-    void clear(){
+    public void clear(){
         freezePlayerList.clear();
     }
     @EventHandler

@@ -121,7 +121,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
 
     // 全部の設定ファイルを読み込み直す（config.yml characters.yml scoreboard.yml messagesの中身）
-    private void reloadAllConfig(){
+    public void reloadAllConfig(){
         // messagesの中身を取得（tutorial.ymlも含む全て）
         messageConfigList = getMessageFiles();
         messageConfig.reloadConfig();
@@ -148,93 +148,12 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if (!(DEFAULT_CLICK_TYPE.equals("right") || DEFAULT_CLICK_TYPE.equals("left"))){
             DEFAULT_CLICK_TYPE = "left";
         }
+
+        // コマンド登録
+        getCommand("rpgtext").setExecutor(new seisyun.rpgtext.command.Command(this, this.freeze, this.characters));
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length > 0 && args[0].equals("help")){
-            sender.sendMessage("--- RPGText commands ---");
-            sender.sendMessage("/rpgtext reload : Reload configs.");
-            sender.sendMessage("/rpgtext <text|config> <player> <text> : Send messages in the style an RPG game.");
-            sender.sendMessage("/rpgtext <text> <player> <sound> <volume> <pitch> <speed> :  Send messages with custom sound.");
-            sender.sendMessage("/rpgtext character <name> <path> : Set the name of the entity that will send a message to the clicked player and set config path used to send messages.");
-            sender.sendMessage("/rpgtext freeze clear : Allows all frozen players to move.");
-            sender.sendMessage("/rpgtext freeze toggle <player> : Switch the player's frozen state.");
-            if(sender instanceof Player){
-                this.getServer().dispatchCommand(this.getServer().getConsoleSender(),"rpgtext config " + sender.getName() + " Tutorial.yml/users");
-            }
-            return true;
-        }
-        if(args.length > 0 && args[0].equals("freeze")){
-            if(args.length > 1){
-                if(args[1].equals("clear")){
-                    freeze.clear();
-                    getServer().broadcastMessage("§7[Server]: All frozen players be able to move.");
-                    return true;
-                }else if(args.length > 2 && args[1].equals("toggle")){
-                    Player player = getServer().getPlayer(args[2]);
-                    if(player != null){
-                        freeze.toggle(player);
-                        player.sendMessage("§7[Server]: You ware frozen by the Admin commands.");
-                        sender.sendMessage("Freezing the " + player.getName() + " was successful.");
-                        return true;
-                    }else{
-                        sender.sendMessage("Not found the player \"" + args[2] + "\"");
-                        return false;
-                    }
-                }
-            }
-        }
-        if(args.length > 0 && args[0].equals("character")){
-            if(args.length != 3){
-                sender.sendMessage("/rpgtext character <name> <path>");
-                return false;
-            }
-            characters.set(args[1],args[2]);
-            sender.sendMessage("New character " + args[1] + " set with path \"" + args[2] + "\"");
-            return true;
-        }
-        if(args.length == 1 && args[0].equals("reload")){
-            reloadAllConfig();
-            sender.sendMessage("config reloaded!");
-            return true;
-        }
-        if(!(args.length == 3 || args.length == 6)){
-            sender.sendMessage(ChatColor.RED + "/rpgtext reload");
-            sender.sendMessage(ChatColor.RED + "/rpgtext <text|config> <player> <text>");
-            sender.sendMessage(ChatColor.RED + "/rpgtext <text> <player> <sound> <volume> <pitch> <speed>");
-            return false;
-        }else{
-            Player player = getServer().getPlayer(args[1]);
-            if(player != null && player.isOnline()){
-                if(args.length == 3) {
-                    if (args[0].equals("config") ){
-                        if(!showMessagesFromConfig(player,args[2])) {
-                            //コンフィグに任意の項目が存在しなかった場合の処理
-                            sender.sendMessage("[RPGSystem]: Message jump error. That item does not exist");
-                            return false;
-                        }
-                    }else if(args[0].equals("text")){
-                        dynamicActionBar(player, replaceSymbol(args[2],player));
-                    }else{
-                        sender.sendMessage(ChatColor.RED + "/rpgtext <player> <text|config> <text>");
-                        return false;
-                    }
-                }else{
-                    if(isFloat(args[3]) && isFloat(args[4]) && isInteger(args[5])) {
-                        dynamicActionBar(player, replaceSymbol(args[0],player), Integer.parseInt(args[5]), args[2], Float.parseFloat(args[4]), Float.parseFloat(args[3]));
-                    }else{
-                        sender.sendMessage(ChatColor.RED + "/rpgtext <player> <text> <sound> <volume> <pitch> <speed>");
-                        return false;
-                    }
-                }
-            }else{
-                sender.sendMessage(ChatColor.RED + args[1] + "does not exist or Offline");
-                return false;
-            }
-        }
-        return true;
-    }
+
 
     //死亡時イベント
     @EventHandler
@@ -329,7 +248,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     }
 
     //アクションバーに動的にテキストを表示する
-    private void dynamicActionBar(Player player,String text){
+    public void dynamicActionBar(Player player, String text){
         RPGTextSender rpgTextSender = new RPGTextSender(player,text);
         if(!rpgTextSender.isFinished()){
             putDynamicAction(player,rpgTextSender);
@@ -352,7 +271,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
     //音と速度を設定
-    private void dynamicActionBar(Player player,String text,int speed,String sound,float pitch,float volume){
+    public void dynamicActionBar(Player player, String text, int speed, String sound, float pitch, float volume){
         RPGTextSender rpgTextSender = new RPGTextSender(player,text);
         rpgTextSender.setSpeed(speed);
         if(!rpgTextSender.isFinished()){
@@ -507,7 +426,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     }
 
     //float型か
-    private boolean isFloat(String string){
+    public boolean isFloat(String string){
         try{
             Float.parseFloat(string);
             return true;
@@ -517,7 +436,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     }
 
     //int判定
-    private boolean isInteger(String string){
+    public boolean isInteger(String string){
         try{
             Integer.parseInt(string);
             return true;
@@ -588,7 +507,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     }
 
     //選択したセクションのメッセージをプレイヤーに送信する。成功したらtrueを、失敗したらfalseを送る
-    private boolean showMessagesFromConfig(Player player,String section){
+    public boolean showMessagesFromConfig(Player player, String section){
         RPGMessages rpgMessages = getRPGMessagesFromConfig(section,player);
         if(rpgMessages == null){
             return false;
@@ -653,7 +572,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         return messageListMap.containsKey(player) && messageListMap.get(player).isNextSelection();
     }
 
-    private String replaceSymbol(String text,Player player){
+    public String replaceSymbol(String text, Player player){
         if(text.contains(RPGMessages.REPLACED_SYMBOL_COLOR_CODE)){
             text = text.replace(RPGMessages.REPLACED_SYMBOL_COLOR_CODE,"§");
         }
