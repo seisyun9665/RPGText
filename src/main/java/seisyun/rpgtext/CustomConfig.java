@@ -48,6 +48,10 @@ public class CustomConfig {
         this.file = fileName;
         makeDirectory(directory);
         configFile = new File(directory, this.file);
+        // ファイルが既に存在している場合は作成しない
+        if(configFile.exists()){
+            return;
+        }
         try{
             Files.copy(plugin.getResource(resource),configFile.toPath());
             plugin.getLogger().info("Created a \"" +  fileName + "\" file.");

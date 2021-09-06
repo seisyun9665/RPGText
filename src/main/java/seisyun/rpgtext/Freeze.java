@@ -18,20 +18,20 @@ import java.util.List;
 
 public class Freeze implements Listener {
     private List<Player> freezePlayerList = new ArrayList<>();
-    private Plugin plugin;
+    private static Plugin plugin;
     private boolean HORIZONTAL_FREEZE;
     private boolean VERTICAL_FREEZE;
     private boolean FREEZE_PLAYER_INVINCIBLE;
     private boolean CANCEL_LEFT_CLICK;
     private boolean CANCEL_RIGHT_CLICK;
-    private CustomConfig customConfig;
-    private FileConfiguration config;
+    private static CustomConfig customConfig;
+    private static FileConfiguration config;
     private static final double STILL = -0.0784000015258789; //停止状態
 
     Freeze(Plugin plugin,CustomConfig customConfig){
-        this.plugin = plugin;
-        this.customConfig = customConfig;
-        this.config = customConfig.getConfig();
+        Freeze.plugin = plugin;
+        Freeze.customConfig = customConfig;
+        Freeze.config = customConfig.getConfig();
         reload();
         plugin.getServer().getPluginManager().registerEvents(this,plugin);
     }

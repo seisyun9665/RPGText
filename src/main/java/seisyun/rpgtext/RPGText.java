@@ -2,6 +2,7 @@ package seisyun.rpgtext;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.GameMode;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,12 +14,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import seisyun.rpgtext.command.Command;
 
 import java.io.File;
 import java.util.*;
@@ -62,26 +63,21 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     /* 文章情報保存関係 */
 
     // これから送信する文字列（ここからプレイヤー情報、文字列を取り出して、文字列を加工してから送信する）
-    private List<RPGTextSender> rpgTextSenderList = new LinkedList<>();
-
+    private Set<RPGTextSender> rpgTextSenderList = new HashSet<>();
     // 表示し終えて待機中（最後まで表示されてプレイヤーのクリック待ち）になった文字列のリスト。
     private Map<Player,String> waitingTextMap = new HashMap<>();
-
     // プレイヤーに送信する予定の文字列のリスト。1行ずつ取り出して送るイメージ。
     private Map<Player,RPGMessages> messageListMap = new HashMap<>();
-
+    // キャラをクリックしたプレイヤーを入れるリスト（２重クリックで１行目の文章を飛ばしてしまうのを防止する）
+    private Set<Player> characterClickList = new HashSet<>();
     // 読み込んだメッセージファイルのリスト
     private List<CustomConfig> messageConfigList;
-
     // config.yml。プラグインの基本情報が保存される。
     private CustomConfig messageConfig;
-
     // scoreboard.yml。設定した変数の情報が保存される。
     private CustomScore customScore;
-
     // characters.yml。どのエンティティをクリックしたら会話が発生するか
     private Characters characters;
-
     // 会話中のプレイヤーを動けなくするためのクラス
     private Freeze freeze;
 
@@ -103,9 +99,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         // 設定ファイル全読み込み
         reloadAllConfig();
 
-        // プレイヤー停止システム読み込み
-        freeze = new Freeze(this,messageConfig);
-
         // イベントリスナ登録
         this.getServer().getPluginManager().registerEvents(this,this);
 
@@ -113,6 +106,10 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(this, this::actionTextJudge,0,1);
         scheduler.scheduleSyncRepeatingTask(this, this::waitingTextJudge,0,10);
+
+        // コマンド登録
+        Command command = new Command(this, this.freeze, this.characters);
+        getCommand("rpgtext").setExecutor(command);
     }
 
     /* ----- 起動時設定終わり ----- */
@@ -129,6 +126,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         customScore.reload();
         characters.reload();
+        // プレイヤー停止システム読み込み
+        freeze = new Freeze(this,messageConfig);
         freeze.reload();
 
         // デフォルト設定の読み込み（操作音やクリックの種類等）
@@ -148,9 +147,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if (!(DEFAULT_CLICK_TYPE.equals("right") || DEFAULT_CLICK_TYPE.equals("left") || DEFAULT_CLICK_TYPE.equals("all"))){
             DEFAULT_CLICK_TYPE = "all";
         }
-
-        // コマンド登録
-        getCommand("rpgtext").setExecutor(new seisyun.rpgtext.command.Command(this, this.freeze, this.characters));
     }
 
 
@@ -186,8 +182,34 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             }
         }
 
+        // メインハンドの時のみ処理
+        if(e.getHand() == EquipmentSlot.OFF_HAND){
+            return;
+        }
+
+        // アドベンチャーモードの時は左クリック判定を onPlayerLeftClickInAdventure に任せるので無効化する
+        if(e.getPlayer().getGameMode() == GameMode.ADVENTURE){
+            if(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK){
+                return;
+            }
+        }
+
         // メッセージ進行処理
         click(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerLeftClickInAdventure(PlayerAnimationEvent e){
+        Player player = e.getPlayer();
+        // アドベンチャーモードだけ判定
+        if(player.getGameMode() != GameMode.ADVENTURE){
+            return;
+        }
+
+        // 腕を振った時
+        if(e.getAnimationType() == PlayerAnimationType.ARM_SWING){
+            click(player);
+        }
     }
 
     /* ブロッククリック検知終わり */
@@ -217,21 +239,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         click(player);
     }
 
-    // エンティティに対して右クリックしたのを検知する
-    @EventHandler
-    public void onRightClick(PlayerInteractEntityEvent e){
-        // 左クリック検知は除外
-        if(DEFAULT_CLICK_TYPE.equals("left")){
-            return;
-        }
-        // オフハンドクリックは除外（メインハンドのみ反応）
-        if(e.getHand() == EquipmentSlot.OFF_HAND){
-            return;
-        }
-
-        // メッセージ進行処理
-        click(e.getPlayer());
-    }
     /* エンティティ検知終わり */
 
 /* ----- クリック検知処理終わり ----- */
@@ -239,6 +246,10 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     /* メッセージ進行処理 */
     private void click(Player player){
+        if(characterClickList.contains(player)){
+            characterClickList.remove(player);
+            return;
+        }
         //選択肢決定
         if(messageListMap.containsKey(player) && messageListMap.get(player).isSelecting()){
             messageListMap.get(player).decisionSelection();
@@ -264,23 +275,28 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
 
+    // キャラクターをクリックした時に会話を発生させる
     @EventHandler
-    public void onTalk(PlayerInteractEntityEvent e){
-        if (DEFAULT_CLICK_TYPE.equals("right")){
-            click(e.getPlayer());
-        }
+    public void onCharacterClick(PlayerInteractEntityEvent e){
         Entity entity = e.getRightClicked();
+        // 既に会話中でない＆キャラ名が設定ファイルに登録されている
         if(!isTalking(e.getPlayer()) && characters.contain(entity.getName())){
             e.setCancelled(true);
             showMessagesFromConfig(e.getPlayer(),characters.get(entity.getName()));
+            // 1文目飛ばすの防止
+            characterClickList.add(e.getPlayer());
         }
     }
 
+
+    /* 選択肢操作 */
+
+    // 選択肢を左に移動する
     @EventHandler
     public void onSelectLeft(PlayerToggleSneakEvent e) {
         if (e.isSneaking()){
             if (messageListMap.containsKey(e.getPlayer()) && messageListMap.get(e.getPlayer()).isSelecting()) {
-                //選択肢左に移動処理
+                //移動
                 messageListMap.get(e.getPlayer()).selectLeft();
                 //表示
                 messageListMap.get(e.getPlayer()).showSelection();
@@ -289,12 +305,12 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             }
         }
     }
-
+    // 右に移動する
     @EventHandler
     public void onSelectRight(PlayerSwapHandItemsEvent e){
         if(messageListMap.containsKey(e.getPlayer()) && messageListMap.get(e.getPlayer()).isSelecting()){
             e.setCancelled(true);
-            //選択肢右移動
+            //移動
             messageListMap.get(e.getPlayer()).selectRight();
             //表示
             messageListMap.get(e.getPlayer()).showSelection();
@@ -302,6 +318,9 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             e.getPlayer().playSound(e.getPlayer().getLocation(),DEFAULT_SELECTION_MOVE_SOUND, SoundCategory.MASTER,DEFAULT_SELECTION_MOVE_VOLUME,DEFAULT_SELECTION_MOVE_PITCH);
         }
     }
+
+    /* 選択肢操作終わり */
+
 
     //アクションバーに動的にテキストを表示する
     public void dynamicActionBar(Player player, String text){

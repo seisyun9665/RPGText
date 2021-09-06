@@ -27,6 +27,7 @@ public class Command implements CommandExecutor {
             sender.sendMessage("/rpgtext <text|config> <player> <text> : Send messages in the style an RPG game.");
             sender.sendMessage("/rpgtext <text> <player> <sound> <volume> <pitch> <speed> :  Send messages with custom sound.");
             sender.sendMessage("/rpgtext character <name> <path> : Set the name of the entity that will send a message to the clicked player and set config path used to send messages.");
+            sender.sendMessage("example: /rpgtext character Bob Tutorial.yml/users");
             sender.sendMessage("/rpgtext freeze clear : Allows all frozen players to move.");
             sender.sendMessage("/rpgtext freeze toggle <player> : Switch the player's frozen state.");
             if(sender instanceof Player){

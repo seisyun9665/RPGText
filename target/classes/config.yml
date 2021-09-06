@@ -1,8 +1,10 @@
+# The format of the sound name is the same as the "/playsound" command in Minecraft.
 default:
   message:
     sound: "block.note.bass"
     volume: 1
     pitch: 2
+    # Default message sending speed.
     speed: 1
   selection:
     move:
@@ -13,11 +15,13 @@ default:
       sound: "entity.arrow.hit_player"
       volume: 1
       pitch: 1
+  # This is the setting to stop the player while sending a message.
   freeze:
-    horizontal: true
-    vertical: false
-    jump: true
-    invincible: true
+    horizontal-freeze: true
+    verticalf-freeze: false
+    freeze-player-invincible: true
     leftclick-cancel: true
     rightclick-cancel: true
-  click-type: left
+# The type of click used to progress through the message. Choose from the following three types.
+# right, left, all
+  click-type: "all"
