@@ -21,7 +21,6 @@ public class Freeze implements Listener {
     private Plugin plugin;
     private boolean HORIZONTAL_FREEZE;
     private boolean VERTICAL_FREEZE;
-    private boolean JUMP_FREEZE;
     private boolean FREEZE_PLAYER_INVINCIBLE;
     private boolean CANCEL_LEFT_CLICK;
     private boolean CANCEL_RIGHT_CLICK;
@@ -111,10 +110,9 @@ public class Freeze implements Listener {
 
     void reload(){
         customConfig.reloadConfig();
-        HORIZONTAL_FREEZE = config.getBoolean("default.freeze.horizontal",true);
-        VERTICAL_FREEZE = config.getBoolean("default.freeze.vertical",false);
-        JUMP_FREEZE = config.getBoolean("default.freeze.jump",true);
-        FREEZE_PLAYER_INVINCIBLE= config.getBoolean("default.freeze.invincible",true);
+        HORIZONTAL_FREEZE = config.getBoolean("default.freeze.horizontal-freeze",true);
+        VERTICAL_FREEZE = config.getBoolean("default.freeze.vertical-freeze",false);
+        FREEZE_PLAYER_INVINCIBLE= config.getBoolean("default.freeze.freeze-player-invincible",true);
         CANCEL_RIGHT_CLICK = config.getBoolean("default.freeze.leftclick-cancel",true);
         CANCEL_LEFT_CLICK= config.getBoolean("default.freeze.rightclick-cancel",true);
     }

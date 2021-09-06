@@ -2,11 +2,8 @@ package seisyun.rpgtext;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
 import org.bukkit.SoundCategory;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -15,6 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
@@ -57,7 +56,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     // メッセージ表示速度
     static int DEFAULT_MESSAGE_SPEED;
-    // 何クリックでメッセージ進むか。（右・左・両方）
+    // 何クリックでメッセージ進むか。（right | left | all）
     private static String DEFAULT_CLICK_TYPE;
 
     /* 文章情報保存関係 */
@@ -130,6 +129,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         customScore.reload();
         characters.reload();
+        freeze.reload();
 
         // デフォルト設定の読み込み（操作音やクリックの種類等）
         FileConfiguration config = messageConfig.getConfig();
@@ -143,10 +143,10 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         DEFAULT_SELECTION_SELECT_SOUND =            config.getString("default.selection.select.sound",  "");
         DEFAULT_SELECTION_SELECT_VOLUME =   (float) config.getDouble("default.selection.select.volume", 1);
         DEFAULT_SELECTION_SELECT_PITCH =    (float) config.getDouble("default.selection.select.pitch",  1);
-        DEFAULT_CLICK_TYPE =                        config.getString("default.click-type",              "left");
-        // rightとleft以外ならleftにする
-        if (!(DEFAULT_CLICK_TYPE.equals("right") || DEFAULT_CLICK_TYPE.equals("left"))){
-            DEFAULT_CLICK_TYPE = "left";
+        DEFAULT_CLICK_TYPE =                        config.getString("default.click-type",              "all");
+        // rightとleftとall以外ならallにする
+        if (!(DEFAULT_CLICK_TYPE.equals("right") || DEFAULT_CLICK_TYPE.equals("left") || DEFAULT_CLICK_TYPE.equals("all"))){
+            DEFAULT_CLICK_TYPE = "all";
         }
 
         // コマンド登録
@@ -155,33 +155,89 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
 
 
-    //死亡時イベント
+    // 死亡時にアクションバーの内容をリセットする
     @EventHandler
     public void onDeath(PlayerDeathEvent e){
-        //メッセージをリセットする
         resetMessage(e.getEntity());
         actionbar(e.getEntity(),"");
-
     }
 
+/* -----クリック検知処理----- */
+
+    /* ブロッククリック検知 */
     @EventHandler
     public void onClick(PlayerInteractEvent e){
         Action action = e.getAction();
-        if(DEFAULT_CLICK_TYPE.equals("left") && action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK){
-            click(e.getPlayer());
+        // クリック以外の処理を除外
+        if(!(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)){
+            return;
         }
-        if(DEFAULT_CLICK_TYPE.equals("right") && action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK && e.getHand() == EquipmentSlot.HAND){
-            click(e.getPlayer());
+
+        // クリックタイプと一致していないなら除外
+        if(DEFAULT_CLICK_TYPE.equals("left")){
+            if(!(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK)){
+                return;
+            }
         }
+        // クリックタイプと一致していないなら除外
+        if(DEFAULT_CLICK_TYPE.equals("right")){
+            if(!(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)){
+                return;
+            }
+        }
+
+        // メッセージ進行処理
+        click(e.getPlayer());
     }
 
+    /* ブロッククリック検知終わり */
+
+
+    /* エンティティ検知 */
+
+    // エンティティに対して左クリックしたのを検知する
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent e){
-        if(DEFAULT_CLICK_TYPE.equals("left") && e.getDamager() instanceof Player){
-            click((Player)e.getDamager());
+        // 右クリック検知は除外
+        if(DEFAULT_CLICK_TYPE.equals("right")){
+            return;
         }
+        // プレイヤー以外は除外
+        if(!(e.getDamager() instanceof Player)){
+            return;
+        }
+        Player player = (Player) e.getDamager();
+
+        // 打撃ダメージ以外なら除外
+        if(!(e.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK)){
+            return;
+        }
+
+        // メッセージ進行処理
+        click(player);
     }
 
+    // エンティティに対して右クリックしたのを検知する
+    @EventHandler
+    public void onRightClick(PlayerInteractEntityEvent e){
+        // 左クリック検知は除外
+        if(DEFAULT_CLICK_TYPE.equals("left")){
+            return;
+        }
+        // オフハンドクリックは除外（メインハンドのみ反応）
+        if(e.getHand() == EquipmentSlot.OFF_HAND){
+            return;
+        }
+
+        // メッセージ進行処理
+        click(e.getPlayer());
+    }
+    /* エンティティ検知終わり */
+
+/* ----- クリック検知処理終わり ----- */
+
+
+    /* メッセージ進行処理 */
     private void click(Player player){
         //選択肢決定
         if(messageListMap.containsKey(player) && messageListMap.get(player).isSelecting()){
