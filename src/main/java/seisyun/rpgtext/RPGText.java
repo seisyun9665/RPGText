@@ -275,6 +275,11 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
 
+    // プレイヤーの次の会話文が/?（選択肢）となっているならtrue
+    private boolean isNextSelection(Player player){
+        return messageListMap.containsKey(player) && messageListMap.get(player).isNextSelection();
+    }
+
     // キャラクターをクリックした時に会話を発生させる
     @EventHandler
     public void onCharacterClick(PlayerInteractEntityEvent e){
@@ -467,7 +472,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         return false;
     }
-
     /* 送信中テキスト終わり */
 
     // テキスト表示中に最後まで飛ばす
@@ -493,6 +497,11 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if(removeRpgTextSender != null){
             rpgTextSenderList.remove(removeRpgTextSender);
         }
+    }
+
+    // そのプレイヤーに送信中・待機中のテキストがあるか
+    private boolean isTalking(Player player){
+        return hasWaitingText(player) || hasTextInProgress(player);
     }
 
     /* 待機中テキスト */
@@ -663,13 +672,20 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         return true;
     }
 
-    // messageディレクトリの中身を全部取得する
+    /* メッセージとコマンド終わり */
+
+
+    /* ファイル */
+
+    // messageディレクトリの中身を全部取得してListにして返す
     private List<CustomConfig> getMessageFiles(){
+        // プラグインからmessagesフォルダを取得して中身を検査
         List<CustomConfig> messageFiles = new ArrayList<>();
         File[] files = getFileFromPlugin("messages").listFiles();
         if(files != null) {
             for (File file : files) {
                 if(isYaml(file)){
+                    // ファイルがyamlならmessageFilesに追加する
                     messageFiles.add(new CustomConfig(this,file));
                 }
             }
@@ -677,16 +693,12 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         return messageFiles;
     }
 
-    /* メッセージとコマンド終わり */
-
-
-    //プラグインのデータファイルから指定した名前のファイルを取得する
+    // プラグインのデータファイルから指定した名前のファイルを取得する
     private File getFileFromPlugin(String fileName){
         return getFile(this.getDataFolder(),fileName);
     }
 
-    //指定した名前のファイルが存在したら返す
-    //存在しない場合null
+    // 指定した名前のファイルが存在したら返す。存在しない場合null
     private File getFile(File dataFile,String fileName){
         File[] Files = dataFile.listFiles();
         if(Files != null) {
@@ -699,6 +711,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         return null;
     }
 
+    // 引数のファイルがyaml形式ならtrue
     private boolean isYaml(File file){
         try{
             YamlConfiguration.loadConfiguration(file);
@@ -708,8 +721,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
 
-
-
+    // messageConfigListの中から引数の名前と一致するコンフィグファイルを返す。無ければnull
     private CustomConfig getMessageConfig(String configName){
         for(CustomConfig config : messageConfigList){
             if(config.getFileName().equals(configName)){
@@ -718,11 +730,12 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         return null;
     }
-    private boolean isNextSelection(Player player){
-        return messageListMap.containsKey(player) && messageListMap.get(player).isNextSelection();
-    }
 
-    public String replaceSymbol(String text, Player player){
+    /* ファイル終わり */
+
+
+    // 一つの文章内の特殊シンボルを置き換える "\\" -> "§"m "%player%"
+    public String replaceSymbolInText(String text, Player player){
         if(text.contains(RPGMessages.REPLACED_SYMBOL_COLOR_CODE)){
             text = text.replace(RPGMessages.REPLACED_SYMBOL_COLOR_CODE,"§");
         }
@@ -732,9 +745,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         return text;
     }
 
-    private boolean isTalking(Player player){
-        return hasWaitingText(player) || hasTextInProgress(player);
-    }
+
 
     private void resetMessage(Player player){
         if(hasWaitingText(player)){
@@ -752,8 +763,5 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         messageListMap.remove(player);
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e){
-        freeze.remove(e.getPlayer());
-    }
+
 }

@@ -85,14 +85,14 @@ public class Command implements CommandExecutor {
                             return false;
                         }
                     }else if(args[0].equals("text")){
-                        plugin.dynamicActionBar(player, plugin.replaceSymbol(args[2],player));
+                        plugin.dynamicActionBar(player, plugin.replaceSymbolInText(args[2],player));
                     }else{
                         sender.sendMessage(ChatColor.RED + "/rpgtext <player> <text|config> <text>");
                         return false;
                     }
                 }else{
                     if(plugin.isFloat(args[3]) && plugin.isFloat(args[4]) && plugin.isInteger(args[5])) {
-                        plugin.dynamicActionBar(player, plugin.replaceSymbol(args[0],player), Integer.parseInt(args[5]), args[2], Float.parseFloat(args[4]), Float.parseFloat(args[3]));
+                        plugin.dynamicActionBar(player, plugin.replaceSymbolInText(args[0],player), Integer.parseInt(args[5]), args[2], Float.parseFloat(args[4]), Float.parseFloat(args[3]));
                     }else{
                         sender.sendMessage(ChatColor.RED + "/rpgtext <player> <text> <sound> <volume> <pitch> <speed>");
                         return false;

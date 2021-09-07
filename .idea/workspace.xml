@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="RPGTextSenderをリファクタリング。RPGTextの数字判定までリファクタリング。">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="RPGMessage関連のコードをリファクタリング。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/Freeze.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/Freeze.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGTextSender.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGTextSender.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -271,7 +267,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631005622560</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="RPGMessage関連のコードをリファクタリング。">
+      <created>1631013851201</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1631013851201</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -342,7 +345,8 @@
     <MESSAGE value="config.ymlに説明を追加。Freeze.javaのメンバ変数Jump削除、config.ymlからも削除。click-typeのコードを修正、right,leftに加えてallを追加。クリック検知処理を追加修正、リファクタリング。" />
     <MESSAGE value="デバッグ修正。Freezeを定義する前にreloadしていたところを修正。会話進行について、エンティティクリックと、アドベンチャーモード時のブロッククリックに対応、クリックイベントをリファクタリング、その他修正" />
     <MESSAGE value="RPGTextSenderをリファクタリング。RPGTextの数字判定までリファクタリング。" />
-    <option name="LAST_COMMIT_MESSAGE" value="RPGTextSenderをリファクタリング。RPGTextの数字判定までリファクタリング。" />
+    <MESSAGE value="RPGMessage関連のコードをリファクタリング。" />
+    <option name="LAST_COMMIT_MESSAGE" value="RPGMessage関連のコードをリファクタリング。" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

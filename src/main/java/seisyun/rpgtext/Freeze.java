@@ -9,6 +9,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
@@ -115,6 +116,12 @@ public class Freeze implements Listener {
         FREEZE_PLAYER_INVINCIBLE= config.getBoolean("default.freeze.freeze-player-invincible",true);
         CANCEL_RIGHT_CLICK = config.getBoolean("default.freeze.leftclick-cancel",true);
         CANCEL_LEFT_CLICK= config.getBoolean("default.freeze.rightclick-cancel",true);
+    }
+
+    // プレイヤーが入ってきたら停止状態になっていた場合は解除する
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e){
+        this.remove(e.getPlayer());
     }
 
 }
