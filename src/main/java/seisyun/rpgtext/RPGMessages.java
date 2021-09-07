@@ -10,23 +10,30 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/* Configから読み込んだ複数のメッセージを管理するクラス
+* それぞれのメッセージに対して、特殊シンボルの変換、コマンド実行、次メッセージの呼び出し等を行う */
+
+/* TODO: コマンド処理部分をリファクタリングもしくはクラス分割してわかりやすくする。sound: サウンド名、speed: 送信速度 など一括で設定できる項目を追加する。更新はdiscordの方で管理する */
+
 class RPGMessages {
-    private List<String> messages;
-    private int sendTextNumber;
-    private String sound = "";
-    private float volume = 1;
-    private float pitch = 1;
-    private int speed = 1;
-    private String section;
-    private Player player;
-    private Selections selections = null;
-    static final String REPLACED_SYMBOL_COLOR_CODE = "\\";
-    static final String REPLACED_SYMBOL_PLAYER_NAME = "%player%";
-    static final String REPLACED_SYMBOL_SCORE = "§§";
+
+    private List<String> messages;                                  // 読み込んだ文章のリスト
+    private int sendTextNumber;                                     // messagesのうち今送信する文章の添字
+    private String sound = RPGText.DEFAULT_MESSAGE_SOUND;           // 送信時に鳴らす音（RPGTextSenderに設定する）
+    private float volume = RPGText.DEFAULT_MESSAGE_VOLUME;
+    private float pitch = RPGText.DEFAULT_MESSAGE_PITCH;
+    private int speed = RPGText.DEFAULT_MESSAGE_SPEED;              // 送信速度
+    private String section;                                         // プレイヤーが選んだ選択肢
+    private Player player;                                          // 送信するプレイヤー
+    private Selections selections = null;                           // 現在表示されている選択肢
+    static final String REPLACED_SYMBOL_COLOR_CODE = "\\";          // カラーコードに変換される特殊シンボル
+    static final String REPLACED_SYMBOL_PLAYER_NAME = "%player%";   // プレイヤー名に変換される特殊シンボル
+    static final String REPLACED_SYMBOL_SCORE = "§§";               // スコアの数字に変換される特殊シンボル
     private final Plugin plugin;
-    private String selection = " ";
-    private boolean jump = false;
+    private String selection = " ";                                 // 直前に選んだ選択肢の名前
+    private boolean jump = false;                                   // コマンドでジャンプが起こったかどうか
     private CustomScore customScore;
+
     RPGMessages(List<String> messages,Player player,Plugin plugin,CustomScore customScore,String section){
         this(messages,player, 0, plugin,customScore,section);
     }
@@ -48,36 +55,50 @@ class RPGMessages {
         return speed;
     }
 
+    // 次に表示するメッセージを取得する。コマンド等も実行する
     String getMessage() {
-        if(messages == null || messages.isEmpty()){
+        // メッセージnullもしくは空なら終わり
+        if(messages == null || messages.isEmpty()) {
             return "";
-        }else{
+        }
+        // すべてのメッセージが送信済みだったら終わり
+        else {
             if(sendTextNumber >= messages.size()){
                 return "";
             }
         }
+
+
+        /* コマンド処理 */
+
         while (isCommand(messages.get(sendTextNumber))){
-            // スコアを数字に置き換える
+            // \\スコア名\\となっているスコアを数字に置き換える
             messages.set(sendTextNumber,replaceScore(messages.get(sendTextNumber)));
-            // 各々のコマンドの処理を行う
+
+            /* /jump */
             if(messages.get(sendTextNumber).startsWith("/jump ") && messages.get(sendTextNumber).length() > 5){
                 //他のメッセージのところに飛ぶ
                 jump = true;
                 // /jump を消去
                 String section = messages.get(sendTextNumber).replace("/jump ","");
-                // users2 とか書かれてた時に今読み込んでるファイルが Tutorial.ymlだったら
-                // Tutorial.yml/users2 にする
+
+                // ジャンプのファイル名を省略していた場合に先頭に追加する
+                // 仮に今読み込んでるファイルが Tutorial.yml だったとして /jump users2 と書かれていたら Tutorial.yml/users2 にする
                 if(!section.contains(".yml/") && this.section.contains(".yml/")){
                     section = this.section.split(".yml")[0] + ".yml/" + section;
                 }
                 return section;
             }
-            //分岐
+            /* /jump終わり */
+
+            /* /? */
             if(messages.get(sendTextNumber).startsWith("/?" + selection + " ")){
                 messages.set(sendTextNumber,messages.get(sendTextNumber).substring(selection.length() + 3));
                 continue;
             }
-            //条件
+            /* /? 終わり */
+
+            // 条件
             if(messages.get(sendTextNumber).startsWith("/if ")){
                 String ret = branch(messages.get(sendTextNumber));
                 // & 記号で条件文繋いでる場合の処理
@@ -116,6 +137,9 @@ class RPGMessages {
             if(this.isFinished()){
                 return "";
             }
+
+            /* コマンド処理終わり */
+
         }
         messages.set(sendTextNumber,replaceScore(messages.get(sendTextNumber)));
         sendTextNumber++;
@@ -145,7 +169,7 @@ class RPGMessages {
         return volume;
     }
 
-    //文章中の先頭が"/"だった場合コマンドとみなす
+    // 文章中の先頭が"/"だった場合コマンドとみなす
     private boolean isCommand(String text){
         return text.length() > 1 && text.startsWith("/");
     }
@@ -209,27 +233,34 @@ class RPGMessages {
                     if(customScore.contain(args.get(1))){
                         score1 = customScore.get(args.get(1),player);
                     }
-                    if (args.get(2).equals("random")){
-                        //random
-                        customScore.set(args.get(1),player,new Random().nextInt(number));
-                    }else if(args.get(2).equals("+")){
-                        // +
-                        customScore.set(args.get(1),player,score1 + number);
-                    }else if(args.get(2).equals("-")){
-                        // -
-                        customScore.set(args.get(1),player,score1 - number);
-                    }else if(args.get(2).equals("*")){
-                        // *
-                        customScore.set(args.get(1),player,score1 * number);
-                    }else if(args.get(2).equals("/")){
-                        // /
-                        customScore.set(args.get(1),player,score1 / number);
-                    }else if(args.get(2).equals("%")){
-                        // %
-                        customScore.set(args.get(1),player,score1 % number);
+                    switch (args.get(2)) {
+                        case "random":
+                            //random
+                            customScore.set(args.get(1), player, new Random().nextInt(number));
+                            break;
+                        case "+":
+                            // +
+                            customScore.set(args.get(1), player, score1 + number);
+                            break;
+                        case "-":
+                            // -
+                            customScore.set(args.get(1), player, score1 - number);
+                            break;
+                        case "*":
+                            // *
+                            customScore.set(args.get(1), player, score1 * number);
+                            break;
+                        case "/":
+                            // /
+                            customScore.set(args.get(1), player, score1 / number);
+                            break;
+                        case "%":
+                            // %
+                            customScore.set(args.get(1), player, score1 % number);
+                            break;
                     }
                 }else if(isInteger(args.get(2))){
-                    customScore.set(args.get(1),player,Integer.valueOf(args.get(2)));
+                    customScore.set(args.get(1),player,Integer.parseInt(args.get(2)));
                 }
             }
         }else if(text.startsWith("/add ")){
@@ -316,7 +347,7 @@ class RPGMessages {
         return false;
     }
 
-    //一文目に選択コマンドした時の例外処理
+    // 一文目に選択コマンドした時の例外処理
     boolean isFirstSelection(){
         return sendTextNumber == 0 && messages.get(sendTextNumber).startsWith("/? ");
     }

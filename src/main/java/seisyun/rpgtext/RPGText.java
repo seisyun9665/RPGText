@@ -571,60 +571,80 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     /* 数字判定終わり */
 
 
-    //プレイヤーが次のメッセージを待機させていたらそれを送る
+    /* メッセージとコマンド */
+
+    // プレイヤーが次のメッセージを待機させていたらそれを送る
     private void showMessages(Player player){
+        // 次のメッセージが無いならプレイヤーの停止状態を解除して終わり
         if(!messageListMap.containsKey(player)){
             freeze.remove(player);
             return;
         }
+
+        // プレイヤーに設定されているメッセージのリストを呼び出す
         RPGMessages rpgMessages = messageListMap.get(player);
+
+        // メッセージの一番最初に/?（選択肢表示のコマンド）があるとmessagesの方で処理できないためこちらで行う
         if(rpgMessages.isFirstSelection()){
             rpgMessages.showSelection();
             rpgMessages.increaseMessageNumber();
             return;
         }
+
+        // 取得したメッセージが""の場合はすべてのメッセージの送信が終わったことになるのでフリーズを解除する
         String message = rpgMessages.getMessage();
         if(message.equals("")){
             freeze.remove(player);
-        }
-        if(message.equalsIgnoreCase("/?")){
-            //選択肢表示中
             return;
         }
-        //設定ジャンプ判定
+
+        if(message.equalsIgnoreCase("/?")){
+            // RPGMessageの方で選択肢を表示しているため何もしない
+            return;
+        }
+
+        // 他のメッセージにジャンプしていたら新たにメッセージを読み込む
         if(rpgMessages.isJumping()){
             getServer().dispatchCommand(getServer().getConsoleSender(),"rpgtext config " + player.getName() + " " + message);
             return;
         }
+
         //音が設定されていたら音を追加
         if(rpgMessages.getSound().equals("")){
             dynamicActionBar(player, message, rpgMessages.getSpeed());
         }else{
             dynamicActionBar(player, message, rpgMessages.getSpeed(),rpgMessages.getSound(),rpgMessages.getPitch(),rpgMessages.getVolume());
         }
+
+        // もしメッセージが最後まで送り終えていればメッセージを削除する
         judgeFinishMessage(player, rpgMessages);
     }
 
-    //もしメッセージが最後まで送り終えていればメッセージを削除する
+    // もしメッセージを最後まで送り終えていればメッセージを削除する
     private void judgeFinishMessage(Player player, RPGMessages rpgMessages){
         if(rpgMessages.isFinished()){
             messageListMap.remove(player);
         }
     }
 
-    //選択されたセクションからRPGメッセージが返ってくる
-    private RPGMessages getRPGMessagesFromConfig(String section,Player player){
+    // tutorial.yml/users2 といった感じのパスからRPGMessagesを取得する
+    private RPGMessages getRPGMessagesFromConfig(Player player, String section){
+        // パス生成
         String[] configPath;
         if(section.contains("/")){
             configPath = section.split("/");
         }else{
             return null;
         }
+
+        // コンフィグ取得
         CustomConfig customConfig = getMessageConfig(configPath[0]);
         if(customConfig == null){
             return null;
         }else{
             FileConfiguration config = customConfig.getConfig();
+
+            // コンフィグの中身をRPGMessagesへ変換
             if(!config.contains(configPath[1]) || !config.isList(configPath[1])){
                 return null;
             }
@@ -632,9 +652,9 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
 
-    //選択したセクションのメッセージをプレイヤーに送信する。成功したらtrueを、失敗したらfalseを送る
+    // tutorial.yml/users2 といった感じのパスからメッセージを取得してプレイヤーに送信する。成功したらtrueを、失敗したらfalseを送る
     public boolean showMessagesFromConfig(Player player, String section){
-        RPGMessages rpgMessages = getRPGMessagesFromConfig(section,player);
+        RPGMessages rpgMessages = getRPGMessagesFromConfig(player, section);
         if(rpgMessages == null){
             return false;
         }
@@ -643,6 +663,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         return true;
     }
 
+    // messageディレクトリの中身を全部取得する
     private List<CustomConfig> getMessageFiles(){
         List<CustomConfig> messageFiles = new ArrayList<>();
         File[] files = getFileFromPlugin("messages").listFiles();
@@ -655,6 +676,9 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         return messageFiles;
     }
+
+    /* メッセージとコマンド終わり */
+
 
     //プラグインのデータファイルから指定した名前のファイルを取得する
     private File getFileFromPlugin(String fileName){

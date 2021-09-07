@@ -1,11 +1,14 @@
 package seisyun.rpgtext;
 import org.bukkit.entity.Player;
 
+/* RPGTextで動的文章表示を行うための文字列管理クラス
+/* ある文章を、左から順番に出現していくように見せかける
+/* 表示する速度、サウンドを管理する
+/* 文章最後までスキップ処理を行う */
+
+/* TODO: スピードを変更できるようにする。speedManagerの仕様を変更。RPGTextの方でも速度設定のための変更を行う */
+
 class RPGTextSender {
-    // RPGTextで動的文章表示を行うための文字列管理クラス
-    // ある文章を、左から順番に出現していくように見せかける
-    // 表示する速度、サウンドを管理する
-    // 文章最後までスキップ処理を行う
     private Player player;                                  // 文章を送るプレイヤー
     private String text;                                    // 送信する文章
     private String sound = RPGText.DEFAULT_MESSAGE_SOUND;   // 送信時の音
