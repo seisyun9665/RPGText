@@ -135,7 +135,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         DEFAULT_MESSAGE_SOUND =                     config.getString("default.message.sound",           "");
         DEFAULT_MESSAGE_VOLUME =            (float) config.getDouble("default.message.sound",           1);
         DEFAULT_MESSAGE_PITCH =             (float) config.getDouble("default.message.pitch",           1);
-        DEFAULT_MESSAGE_SPEED =                     config.getInt   ("default.message.speed",           1);
+        DEFAULT_MESSAGE_SPEED =                     config.getInt   ("default.message.speed",           20);
         DEFAULT_SELECTION_MOVE_SOUND =              config.getString("default.selection.move.sound",    "");
         DEFAULT_SELECTION_MOVE_VOLUME =     (float) config.getDouble("default.selection.move.volume",   1);
         DEFAULT_SELECTION_MOVE_PITCH =      (float) config.getDouble("default.selection.move.pitch",    1);
@@ -395,8 +395,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
 
 
-    /* 文字列整形（左揃え） */ // ※後でこの処理はrpgTextSenderに移動する
-
+    /* 文字列整形（左揃え） */
+    // TODO: 半角スペース埋め方式はズレが生じるので画面外矯正方式に移行する。この処理はrpgTextSenderに移動する
     // 中央揃えとなっているマイクラのアクションバーに、左揃えで表示できるように加工する。指定した場所から最後まで、半角全角区別つけてスペースで埋める。
     private String getLeftAlignedText(String text, int length){
         if(text.length() - 1 < length){
@@ -441,8 +441,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         List<RPGTextSender> removeList = new ArrayList<>();
         
         for (RPGTextSender rpgTextSender :rpgTextSenderList){
-            // speedManagerJudge()で送信するか判定（最高速度が1tick１文字なので、このtickで送信するかしないか判定して速度管理する）
-            if(rpgTextSender.speedManagerJudge()){
+            // judgeSendingBySpeed()で送信するか判定（最高速度が1tick１文字なので、このtickで送信するかしないか判定して速度管理する）
+            if(rpgTextSender.judgeSendingBySpeed()){
 
                 // 1回だけ表示
                 displayInActionbar(rpgTextSender);

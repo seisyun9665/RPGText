@@ -6,14 +6,13 @@ import org.bukkit.entity.Player;
 /* 表示する速度、サウンドを管理する
 /* 文章最後までスキップ処理を行う */
 
-/* TODO: スピードを変更できるようにする。speedManagerの仕様を変更。RPGTextの方でも速度設定のための変更を行う */
-
 class RPGTextSender {
     private Player player;                                  // 文章を送るプレイヤー
     private String text;                                    // 送信する文章
     private String sound = RPGText.DEFAULT_MESSAGE_SOUND;   // 送信時の音
-    private int speedManager = 1;                           // 送信スピードを管理するための変数。speedManagerを+1していって、speedを超えたら新たな文字を表示する
-    private int speed = RPGText.DEFAULT_MESSAGE_SPEED;      // 送信スピード
+    private int sendTime = 0;                               // 送信してから何tick経過したか。
+    private int sendCount = 0;                              // RPGTextの方で実際に表示した回数
+    private int speed = RPGText.DEFAULT_MESSAGE_SPEED;      // 一秒間に送る文字数
     private float pitch = RPGText.DEFAULT_MESSAGE_PITCH;    // 音の高さ
     private float volume = RPGText.DEFAULT_MESSAGE_VOLUME;  // 音の大きさ
     private int length = 0;                                 // 表示する文章の長さ（文字列の先頭から何文字目まで表示するか。配列方式なので0スタート。
@@ -33,24 +32,66 @@ class RPGTextSender {
     // 文章を送信する速度を指定する。1以上。
     void setSpeed(int speed) {
         if(speed < 1){
+            this.speed = RPGText.DEFAULT_MESSAGE_SPEED;
             return;
         }
         this.speed = speed;
     }
-    // speedManagerがspeedを超えたら新たな文字を表示して、speedManagerを1に戻す
-    // これによって送信速度を管理する
-    boolean speedManagerJudge(){
-        speedManager++;
-        if(speedManager > speed){
-            speedManager = 1;
+    // 1秒間にspeed文字を表示する
+    // sendTime++
+    // まず20の倍数ごとに必ず表示する文字数を算出する ex:20以上なら1文字、40以上なら2文字
+    // speedから20ずつ引いて残った数字sendCountPerSecondsを使い、sendCountと比較して1文字送信する文字を増やすか検討する。
+    // sendTTime >= 20/sendCountPerSeconds*sendCount なら１文字増やす
+    // 最終的に0文字ならfalseを返す。1文字以上ならsendCount++してtrueを返す
+    // 20の倍数文字ならすべてのtickで送信するので、最初に例外処理を加える
+    boolean judgeSendingBySpeed(){
+        /* 例外処理 */
+        // 速度がぴったり20の時は1文字ずつ送るだけなので処理しない（文字数とか表示するtickを考える必要がない）
+        if(speed == 20) return true;
+
+        // 送信speedが20より大きい分だけ表示数を増やす
+        int sendCountPerSeconds = speed % 20;
+        int incrementCount = 0; // 最低限、同時に何文字表示するか
+        if(speed >= 20){
+            for(int i = speed; i > 20; i -= 20){
+                incrementCount++;
+            }
+        }
+        if(incrementCount > 1) addDisplayLength(incrementCount - 1);    // このtickで表示するのかまだわからないので1減らしておく
+
+        // speedが20の倍数の時は処理しない（毎回送る文字数が同じなのでsendTimeを気にしなくていい）
+        if(sendCountPerSeconds == 0) {
+            incrementDisplayLength();   // -2した分の調整。incrementCountが1のケースはspeed==20で弾かれるため考えなくていい
             return true;
         }
-        return false;
+
+        // sendCountが0の時は必ず送信
+        if(sendCount == 0){
+            sendCount++;
+            return true;
+        }
+        /* 例外処理終わり */
+
+
+        /* このtickで文字を表示する（増やす）かを判定する */
+
+        // 20 / 20tick内で表示する文字数 = tick毎表示文字数、sendCountをかけて、sendTimeと比較
+        sendTime++;
+        double characterCountPerTick = 20 / (double)sendCountPerSeconds;
+        boolean isSend = sendTime >= characterCountPerTick * sendCount;     // このtickで文字を表示するか
+
+        // speedが20以上なら必ず送信、isSendがtrueなら更にinclementする
+        if(incrementCount >= 1){
+            if(isSend) incrementDisplayLength();
+            return true;
+        }
+        // speedが20未満ならisSendを返す
+        return isSend;
     }
 
     /* 速度終わり */
 
-
+    
     Player getPlayer() {
         return player;
     }
@@ -83,8 +124,18 @@ class RPGTextSender {
 
     // 表示する文字数を1つ増やす
     void incrementDisplayLength(){
+        if(isFinished()) return;
         length++;
         skipColorCodeAndSpace();
+    }
+
+    // 引数の数だけ表示する文字数を増やす
+    void addDisplayLength(int amount){
+        for (int i = 0; i < amount; i++) {
+            if(isFinished()) return;
+            length++;
+            skipColorCodeAndSpace();
+        }
     }
 
     // 最後まで表示し終えていたらtrue
