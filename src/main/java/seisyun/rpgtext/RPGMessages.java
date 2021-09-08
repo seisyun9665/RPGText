@@ -13,8 +13,6 @@ import java.util.Random;
 /* Configから読み込んだ複数のメッセージを管理するクラス
 * それぞれのメッセージに対して、特殊シンボルの変換、コマンド実行、次メッセージの呼び出し等を行う */
 
-/* TODO: コマンド処理部分をリファクタリングもしくはクラス分割してわかりやすくする。sound: サウンド名、speed: 送信速度 など一括で設定できる項目を追加する。更新はdiscordの方で管理する */
-
 class RPGMessages {
 
     private List<String> messages;                                  // 読み込んだ文章のリスト
@@ -23,6 +21,7 @@ class RPGMessages {
     private float volume = RPGText.DEFAULT_MESSAGE_VOLUME;
     private float pitch = RPGText.DEFAULT_MESSAGE_PITCH;
     private int speed = RPGText.DEFAULT_MESSAGE_SPEED;              // 送信速度
+    private String color = RPGText.DEFAULT_MESSAGE_COLOR;              // 文字の色
     private String section;                                         // プレイヤーが選んだ選択肢
     private Player player;                                          // 送信するプレイヤー
     private Selections selections = null;                           // 現在表示されている選択肢
@@ -47,7 +46,7 @@ class RPGMessages {
         this.section = section;
     }
 
-    private void setSpeed(int speed) {
+    void setSpeed(int speed) {
         this.speed = speed;
     }
 
@@ -129,7 +128,10 @@ class RPGMessages {
                 continue;
             }
 
+            // その他のコマンド（sound,speed等）
             determineCommand(messages.get(sendTextNumber));
+
+
             sendTextNumber++;
             if(isSelecting()){
                 return "/?";
@@ -157,14 +159,26 @@ class RPGMessages {
         return jump;
     }
 
+    public void setSound(String sound) {
+        this.sound = sound;
+    }
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
+
+    public void setVolume(float volume) {
+        this.volume = volume;
+    }
+    public void setColor(String color){
+        this.color = color;
+    }
+
     String getSound() {
         return sound;
     }
-
     float getPitch() {
         return pitch;
     }
-
     float getVolume() {
         return volume;
     }
@@ -190,12 +204,23 @@ class RPGMessages {
                     this.pitch = Float.parseFloat(args.get(3));
                 }
             }
-        }else if(text.startsWith("/speed")){
+        }
+
+        else if(text.startsWith("/speed ")){
             //速度を設定
             if(args.size() == 2 && isInteger(args.get(1))){
                 this.speed = Integer.parseInt(args.get(1));
             }
-        }else if(text.startsWith("/? ")){
+        }
+
+        else if(text.startsWith("/color ")){
+            //速度を設定
+            if(args.size() == 2){
+                this.color = args.get(1);
+            }
+        }
+
+        else if(text.startsWith("/? ")){
             //選択肢
             if(args.size() > 1){
                 List<String> selectionList = new ArrayList<>();
@@ -208,13 +233,17 @@ class RPGMessages {
                 selections.showSelections();
                 this.selections = selections;
             }
-        }else if(text.startsWith("/command ")){
+        }
+
+        else if(text.startsWith("/command ")){
             //コマンドを実行
             if(args.size() > 1){
                 String command = text.substring(9);
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(),command);
             }
-        }else if(text.startsWith("/score ")){
+        }
+
+        else if(text.startsWith("/score ")){
             //スコアを設定
             if(args.size() > 2){
                 if(args.size() > 3){
@@ -235,27 +264,21 @@ class RPGMessages {
                     }
                     switch (args.get(2)) {
                         case "random":
-                            //random
                             customScore.set(args.get(1), player, new Random().nextInt(number));
                             break;
                         case "+":
-                            // +
                             customScore.set(args.get(1), player, score1 + number);
                             break;
                         case "-":
-                            // -
                             customScore.set(args.get(1), player, score1 - number);
                             break;
                         case "*":
-                            // *
                             customScore.set(args.get(1), player, score1 * number);
                             break;
                         case "/":
-                            // /
                             customScore.set(args.get(1), player, score1 / number);
                             break;
                         case "%":
-                            // %
                             customScore.set(args.get(1), player, score1 % number);
                             break;
                     }
@@ -263,19 +286,25 @@ class RPGMessages {
                     customScore.set(args.get(1),player,Integer.parseInt(args.get(2)));
                 }
             }
-        }else if(text.startsWith("/add ")){
+        }
+
+        else if(text.startsWith("/add ")){
             //スコアを１増加
             if(args.size() == 2){
                 customScore.set(args.get(1),player,customScore.get(args.get(1),player) + 1);
             }
-        }else if(text.startsWith("/removeItem ")){
+        }
+
+        else if(text.startsWith("/removeItem ")){
             //アイテムを削除
             if(args.size() > 3){
                 if(isInteger(args.get(2))){
                     removeItem(args.get(1),Integer.parseInt(args.get(2)),args.get(3));
                 }
             }
-        }else if(text.startsWith("/singlesound ")){
+        }
+
+        else if(text.startsWith("/singlesound ")){
             //音を鳴らす
             if(args.size() == 2){
                 player.playSound(player.getLocation(),args.get(1),1,1);

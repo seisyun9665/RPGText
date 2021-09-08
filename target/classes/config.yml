@@ -6,6 +6,9 @@ default:
     pitch: 2
     # Number of characters displayed per second
     speed: 20
+    # The default color of the text. This string will be placed at the beginning of the sentence.
+    color: "§r"
+
   selection:
     move:
       sound: "block.note.hat"
@@ -15,13 +18,15 @@ default:
       sound: "entity.arrow.hit_player"
       volume: 1
       pitch: 1
-  # This is the setting to stop the player while sending a message.
+
+  # Stop the player while sending a message.
   freeze:
     horizontal-freeze: true
     verticalf-freeze: false
     freeze-player-invincible: true
     leftclick-cancel: true
     rightclick-cancel: true
+
 # The type of click used to progress through the message. Choose from the following three types.
 # right, left, all
   click-type: "all"

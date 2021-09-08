@@ -57,6 +57,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     // メッセージ表示速度
     static int DEFAULT_MESSAGE_SPEED;
+    // 文字色
+    public static String DEFAULT_MESSAGE_COLOR;
     // 何クリックでメッセージ進むか。（right | left | all）
     private static String DEFAULT_CLICK_TYPE;
 
@@ -145,6 +147,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         DEFAULT_MESSAGE_VOLUME =            (float) config.getDouble("default.message.sound",           1);
         DEFAULT_MESSAGE_PITCH =             (float) config.getDouble("default.message.pitch",           1);
         DEFAULT_MESSAGE_SPEED =                     config.getInt   ("default.message.speed",           20);
+        DEFAULT_MESSAGE_COLOR =                     config.getString("default.message.color",           "");
         DEFAULT_SELECTION_MOVE_SOUND =              config.getString("default.selection.move.sound",    "");
         DEFAULT_SELECTION_MOVE_VOLUME =     (float) config.getDouble("default.selection.move.volume",   1);
         DEFAULT_SELECTION_MOVE_PITCH =      (float) config.getDouble("default.selection.move.pitch",    1);
@@ -663,11 +666,28 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }else{
             FileConfiguration config = customConfig.getConfig();
 
+            // コンフィグから音、送信速度、文字色の設定を取得。無ければデフォルト
+            String sound = DEFAULT_MESSAGE_SOUND, color = DEFAULT_MESSAGE_COLOR;
+            float pitch = DEFAULT_MESSAGE_PITCH, volume = DEFAULT_MESSAGE_VOLUME;
+            int speed = DEFAULT_MESSAGE_SPEED;
+            if(config.contains("sound")) sound = config.getString("sound", DEFAULT_MESSAGE_SOUND);
+            if(config.contains("pitch")) pitch = (float)config.getDouble("pitch", DEFAULT_MESSAGE_PITCH);
+            if(config.contains("volume")) volume = (float)config.getDouble("volume", DEFAULT_MESSAGE_VOLUME);
+
+            if(config.contains("color")) color = config.getString("color", DEFAULT_MESSAGE_COLOR);
+            if(config.contains("speed")) speed = config.getInt("speed", DEFAULT_MESSAGE_SPEED);
+
             // コンフィグの中身をRPGMessagesへ変換
             if(!config.contains(configPath[1]) || !config.isList(configPath[1])){
                 return null;
             }
-            return new RPGMessages(config.getStringList(configPath[1]),player,this,customScore,section);
+            RPGMessages messages = new RPGMessages(config.getStringList(configPath[1]),player,this,customScore,section);
+            messages.setSound(sound);
+            messages.setPitch(pitch);
+            messages.setVolume(volume);
+            messages.setSpeed(speed);
+            messages.setColor(color);
+            return messages;
         }
     }
 
