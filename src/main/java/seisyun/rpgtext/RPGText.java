@@ -256,13 +256,11 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     /* メッセージ進行処理 */
     private void progressMessage(Player player){
         /* 例外処理 */
-
         // 会話開始と同時にテキスト飛ばすのを無効化（会話開始時に右クリック判定が2重に出て最初の文章が飛ばされるバグ対策）
         if(characterClickSet.contains(player)){
             characterClickSet.remove(player);
             return;
         }
-
         /* 例外処理終わり */
 
 
@@ -577,17 +575,10 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     // プレイヤーが次のメッセージを待機させていたらそれを送る
     private void showMessages(Player player){
-        // 次のメッセージが無いならプレイヤーの停止状態を解除してクールタイム設定して終わり
+        // 次のメッセージが無いなら終わり
         if(!messageListMap.containsKey(player)){
-
-            // 次の会話可能までのクールタイム設定（会話したくないのに、間違って右クリックするとすぐに会話再開されてしまうのを防止する）
-            coolTimeBeforeCanTalkSet.add(player);
-            getServer().getScheduler().runTaskLater(this, () -> {
-                // クールタイム経過後にcoolTimeBeforeCanTalkからplayerを削除
-                coolTimeBeforeCanTalkSet.remove(player);
-            }, COOL_TIME_BEFORE_CAN_TALK_TICK);
-
-            freeze.remove(player);
+            // プレイヤーの停止状態を解除してクールタイム設定
+            endTalk(player);
             return;
         }
 
@@ -596,15 +587,16 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
         // メッセージの一番最初に/?（選択肢表示のコマンド）があるとmessagesの方で処理できないためこちらで行う
         if(rpgMessages.isFirstSelection()){
+            // 選択肢表示してメッセージを一つ次に進める
             rpgMessages.showSelection();
             rpgMessages.increaseMessageNumber();
             return;
         }
 
-        // 取得したメッセージが""の場合はすべてのメッセージの送信が終わったことになるのでフリーズを解除する
+        // 取得したメッセージが""の場合はすべてのメッセージの送信終わり
         String message = rpgMessages.getMessage();
         if(message.equals("")){
-            freeze.remove(player);
+            endTalk(player);
             return;
         }
 
@@ -630,10 +622,27 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         judgeFinishMessage(player, rpgMessages);
     }
 
+    // クールタイム設定
+    private void setCoolTime(Player player){
+        // 次の会話可能までのクールタイム設定（会話したくないのに、間違って右クリックするとすぐに会話再開されてしまうのを防止する）
+        coolTimeBeforeCanTalkSet.add(player);
+        getServer().getScheduler().runTaskLater(this, () -> {
+            // クールタイム経過後にcoolTimeBeforeCanTalkからplayerを削除
+            coolTimeBeforeCanTalkSet.remove(player);
+        }, COOL_TIME_BEFORE_CAN_TALK_TICK);
+    }
+
+    // 会話終了の処理（クールタイムとフリーズ解除）
+    private void endTalk(Player player){
+        setCoolTime(player);
+        freeze.remove(player);
+    }
+
     // もしメッセージを最後まで送り終えていればメッセージを削除する
     private void judgeFinishMessage(Player player, RPGMessages rpgMessages){
         if(rpgMessages.isFinished()){
             messageListMap.remove(player);
+            endTalk(player);
         }
     }
 
