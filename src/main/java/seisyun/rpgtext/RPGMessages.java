@@ -197,7 +197,6 @@ class RPGMessages {
     private void determineCommand(String text){
         // 引数 ex: /speed 2 -> {"/speed", "2"}   size() == 2
         List<String> args = new ArrayList<>(Arrays.asList(text.split(" ")));
-        player.sendMessage("" + args.size());
         if(text.startsWith("/sound")){
             //音を設定
 
@@ -248,8 +247,10 @@ class RPGMessages {
             // プレイヤーにタイトルを表示
             if(args.size() == 6){
                 if(isInteger(args.get(3)) && isInteger(args.get(4)) && isInteger(args.get(5))){
-
-                    player.sendTitle(args.get(1), args.get(2), Integer.parseInt(args.get(3)), Integer.parseInt(args.get(4)), Integer.parseInt(args.get(5)));
+                    // 中身が""だったら空白にする
+                    String title = args.get(1).equals("\"\"") ? "" : args.get(1);
+                    String subTitle = args.get(2).equals("\"\"") ? "" : args.get(2);
+                    player.sendTitle(title, subTitle, Integer.parseInt(args.get(3)), Integer.parseInt(args.get(4)), Integer.parseInt(args.get(5)));
                 }
             }
         }
