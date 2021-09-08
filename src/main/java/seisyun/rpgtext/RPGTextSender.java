@@ -17,6 +17,8 @@ class RPGTextSender {
     private float volume = RPGText.DEFAULT_MESSAGE_VOLUME;  // 音の大きさ
     private int length = 0;                                 // 表示する文章の長さ（文字列の先頭から何文字目まで表示するか。配列方式なので0スタート。
                                                             // text.lengthは1スタートなので、比較で使うときは text.length() - 1 とする）
+    // 会話文左揃え用の空白。100マス。
+    private static final String COMPLETION_SPACE = "                                                                                                              ";
 
     // 送信するプレイヤーPlayer、送信したい文章sendText
     RPGTextSender(Player p,String sendText){
@@ -178,4 +180,25 @@ class RPGTextSender {
     }
 
     /* サウンド決定系終わり */
+
+
+    /* 文字列整形（左揃え） */
+
+    // 中央揃えとなっているマイクラのアクションバーに、左揃えで表示できるように加工する。画面外に同じテキストを並べることで、無理やり中央揃えにする
+    public String getLeftAlignedText(){
+        /* 例外処理 */
+        // 既に全て送信済みの場合はそのまま返す（元の文の長さと現在の添字の位置が同じか添字の方が大きい場合は処理できない）
+        if(text.length() - 1 <= length){
+            return text;
+        }
+        /* 例外処理終わり */
+
+        // StringBuilderに空白、本体、空白、右側の順番で追加していく（文の長さを変えないことで左揃えにする）
+        String mainText = text.substring(0,length + 1);
+        String rightText = text.substring(length + 1);
+
+        return COMPLETION_SPACE + mainText + COMPLETION_SPACE + rightText;
+    }
+
+    /* 文字列整形（左揃え）終わり */
 }

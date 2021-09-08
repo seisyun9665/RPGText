@@ -404,7 +404,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // rpgTextSenderから文字を取得してアクションバーに表示する
     private void displayInActionbar(RPGTextSender rpgTextSender){
         // 送信するテキストを生成する（元の文字列と、送信する長さをもとに整形する）
-        String sendText = getLeftAlignedText(rpgTextSender.getText(),rpgTextSender.getLength() + 1);
+        String sendText = rpgTextSender.getLeftAlignedText();
 
         // 表示と音
         actionbar(rpgTextSender.getPlayer(),sendText);
@@ -419,41 +419,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     }
 
     /* アクションバー表示終わり */
-
-
-
-
-    /* 文字列整形（左揃え） */
-    // TODO: 半角スペース埋め方式はズレが生じるので画面外矯正方式に移行する。この処理はrpgTextSenderに移動する
-    // 中央揃えとなっているマイクラのアクションバーに、左揃えで表示できるように加工する。指定した場所から最後まで、半角全角区別つけてスペースで埋める。
-    private String getLeftAlignedText(String text, int length){
-        if(text.length() - 1 < length){
-            return text;
-        }
-        String complementedText = text.substring(0,length);
-        StringBuilder appends = new StringBuilder();
-        for(int i = length;i < text.length();i++){
-            //記号系は埋めない
-            if(i > 0 && text.charAt(i - 1) == '§'){
-                continue;
-            }
-            if(isHalfWidth(text.charAt(i))){
-                //半角の時は半角スペースで穴埋め
-                appends.append(" ");
-            }else if(text.charAt(i) != '§' ){
-                //全角で記号じゃない時は半角スペース二つで穴埋め
-                appends.append("  ");
-            }
-        }
-        complementedText += appends.toString();
-        return complementedText;
-    }
-    //半角判定
-    private boolean isHalfWidth(char chara){
-        return String.valueOf(chara).getBytes().length < 2;
-    }
-
-    /* 文字列整形（左揃え）終わり */
 
 
     /* ----- 文字表示判定 ----- */
