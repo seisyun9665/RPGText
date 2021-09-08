@@ -65,24 +65,28 @@ class RPGTextSender {
             return true;
         }
 
+        /* 例外処理終わり */
+
         // sendCountが0の時は必ず送信
         if(sendCount == 0){
             sendCount++;
             return true;
         }
-        /* 例外処理終わり */
-
 
         /* このtickで文字を表示する（増やす）かを判定する */
 
         // 20 / 20tick内で表示する文字数 = tick毎表示文字数、sendCountをかけて、sendTimeと比較
         sendTime++;
-        double characterCountPerTick = 20 / (double)sendCountPerSeconds;
-        boolean isSend = sendTime >= characterCountPerTick * sendCount;     // このtickで文字を表示するか
+        double tickCountPerCharacter = 20 / (double)sendCountPerSeconds;
+        boolean isSend = sendTime >= tickCountPerCharacter * sendCount;     // このtickで文字を表示（または表示する文字数を+1）するか
+
+        // 送る場合はsendCount++する
+        if(isSend) sendCount++;
 
         // speedが20以上なら必ず送信、isSendがtrueなら更にinclementする
         if(incrementCount >= 1){
             if(isSend) incrementDisplayLength();
+
             return true;
         }
         // speedが20未満ならisSendを返す
