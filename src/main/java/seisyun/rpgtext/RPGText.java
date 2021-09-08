@@ -255,10 +255,16 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     /* メッセージ進行処理 */
     private void progressMessage(Player player){
+        /* 例外処理 */
+
+        // 会話開始と同時にテキスト飛ばすのを無効化（会話開始時に右クリック判定が2重に出て最初の文章が飛ばされるバグ対策）
         if(characterClickSet.contains(player)){
             characterClickSet.remove(player);
             return;
         }
+
+        /* 例外処理終わり */
+
 
         // 選択肢決定
         if(messageListMap.containsKey(player) && messageListMap.get(player).isSelecting()){
@@ -296,14 +302,23 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // キャラクターをクリックした時に会話を発生させる
     @EventHandler
     public void onCharacterClick(PlayerInteractEntityEvent e){
+        /* 例外処理 */
+        // 会話終了後のクールタイムがあるプレイヤーのクリックを無効化する
+        if(coolTimeBeforeCanTalkSet.contains(e.getPlayer())) return;
+        /* 例外処理終わり */
+
+        // 既に会話中なら弾く
+        if(isTalking(e.getPlayer())) return;
+        // キャラ名が設定ファイルに登録されてないなら弾く
         Entity entity = e.getRightClicked();
-        // 既に会話中でない＆キャラ名が設定ファイルに登録されている
-        if(!isTalking(e.getPlayer()) && characters.contain(entity.getName())){
-            e.setCancelled(true);
-            showMessagesFromConfig(e.getPlayer(),characters.get(entity.getName()));
-            // 1文目飛ばすの防止
-            characterClickSet.add(e.getPlayer());
-        }
+        if(!characters.contain(entity.getName())) return;
+
+        // クリックをキャンセルしてメッセージ送信
+        e.setCancelled(true);
+        showMessagesFromConfig(e.getPlayer(),characters.get(entity.getName()));
+
+        // 1文目飛ばすの防止
+        characterClickSet.add(e.getPlayer());
     }
 
 
@@ -597,14 +612,16 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     // プレイヤーが次のメッセージを待機させていたらそれを送る
     private void showMessages(Player player){
-        // 次のメッセージが無いならプレイヤーの停止状態を解除して終わり
+        // 次のメッセージが無いならプレイヤーの停止状態を解除してクールタイム設定して終わり
         if(!messageListMap.containsKey(player)){
+
             // 次の会話可能までのクールタイム設定（会話したくないのに、間違って右クリックするとすぐに会話再開されてしまうのを防止する）
             coolTimeBeforeCanTalkSet.add(player);
             getServer().getScheduler().runTaskLater(this, () -> {
                 // クールタイム経過後にcoolTimeBeforeCanTalkからplayerを削除
                 coolTimeBeforeCanTalkSet.remove(player);
             }, COOL_TIME_BEFORE_CAN_TALK_TICK);
+
             freeze.remove(player);
             return;
         }
