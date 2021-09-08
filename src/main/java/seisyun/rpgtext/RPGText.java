@@ -284,8 +284,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         // 最後まで表示されて待機状態のテキストを消す処理
         else if(hasWaitingText(player)){
-            if(isNextSelection(player)){
-                //選択肢表示
+            if(hasNextSelectionCommand(player)){
+                // 選択肢表示
                 RPGMessages message = messageListMap.get(player);
                 message.increaseMessageNumber();
                 message.showSelection();
@@ -296,7 +296,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     }
 
     // プレイヤーの次の会話文が/?（選択肢）となっているならtrue
-    private boolean isNextSelection(Player player){
+    private boolean hasNextSelectionCommand(Player player){
         return messageListMap.containsKey(player) && messageListMap.get(player).isNextSelection();
     }
 
@@ -603,8 +603,24 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             return;
         }
 
-        if(message.equalsIgnoreCase("/?")){
+        // /?の処理
+        else if(message.equalsIgnoreCase("/?")){
             // RPGMessageの方で選択肢を表示しているため何もしない
+            return;
+        }
+
+        // /wait の処理
+        else if(message.startsWith("/wait ")){
+            // waitコマンドの引数の数字分だけディレイをかける
+
+            /* 例外処理 */
+            String[] args = message.split(" ");
+            if(args.length < 2) showMessages(player);       // 引数がない
+            if(!isInteger(args[1])) showMessages(player);   // 引数が数字じゃない
+
+            // ディレイかけてshowMessagesを実行
+            int tick = Integer.parseInt(args[1]);
+            getServer().getScheduler().runTaskLater(this, () -> showMessages(player), tick);
             return;
         }
 

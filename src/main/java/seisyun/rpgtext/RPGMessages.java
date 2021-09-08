@@ -91,14 +91,14 @@ class RPGMessages {
             /* /jump終わり */
 
             /* /? */
-            if(messages.get(sendTextNumber).startsWith("/?" + selection + " ")){
+            else if(messages.get(sendTextNumber).startsWith("/?" + selection + " ")){
                 messages.set(sendTextNumber,messages.get(sendTextNumber).substring(selection.length() + 3));
                 continue;
             }
             /* /? 終わり */
 
             // 条件
-            if(messages.get(sendTextNumber).startsWith("/if ")){
+            else if(messages.get(sendTextNumber).startsWith("/if ")){
                 String ret = branch(messages.get(sendTextNumber));
                 // & 記号で条件文繋いでる場合の処理
                 while(ret.startsWith("&")){
@@ -114,8 +114,8 @@ class RPGMessages {
                 }
                 continue;
             }
-            //アイテム所持
-            if(messages.get(sendTextNumber).startsWith("/has ")){
+            // アイテム所持
+            else if(messages.get(sendTextNumber).startsWith("/has ")){
                 String nextCommand = judgeHasItem(messages.get(sendTextNumber));
                 if(!nextCommand.equals("")) {
                     messages.set(sendTextNumber, nextCommand);
@@ -126,6 +126,12 @@ class RPGMessages {
                     }
                 }
                 continue;
+            }
+            // ディレイ
+            else if(messages.get(sendTextNumber).startsWith("/wait ")){
+                String message = messages.get(sendTextNumber);
+                sendTextNumber++;
+                return message;
             }
 
             // その他のコマンド（sound,speed等）
@@ -145,7 +151,7 @@ class RPGMessages {
         }
         messages.set(sendTextNumber,replaceScore(messages.get(sendTextNumber)));
         sendTextNumber++;
-        return  messages.get(sendTextNumber - 1);
+        return color + messages.get(sendTextNumber - 1);
     }
 
     boolean isFinished(){
@@ -189,7 +195,9 @@ class RPGMessages {
     }
 
     private void determineCommand(String text){
+        // 引数 ex: /speed 2 -> {"/speed", "2"}   size() == 2
         List<String> args = new ArrayList<>(Arrays.asList(text.split(" ")));
+        player.sendMessage("" + args.size());
         if(text.startsWith("/sound")){
             //音を設定
 
@@ -232,6 +240,17 @@ class RPGMessages {
                 Selections selections = new Selections(player,selectionList);
                 selections.showSelections();
                 this.selections = selections;
+            }
+        }
+
+        else if(text.startsWith("/title ")){
+            // /title "title" "subtitle" fadeIn stay fadeOut
+            // プレイヤーにタイトルを表示
+            if(args.size() == 6){
+                if(isInteger(args.get(3)) && isInteger(args.get(4)) && isInteger(args.get(5))){
+
+                    player.sendTitle(args.get(1), args.get(2), Integer.parseInt(args.get(3)), Integer.parseInt(args.get(4)), Integer.parseInt(args.get(5)));
+                }
             }
         }
 
