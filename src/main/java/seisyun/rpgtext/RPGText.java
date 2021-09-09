@@ -92,7 +92,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // characters.yml。どのエンティティをクリックしたら会話が発生するか
     private Characters characters;
     // 会話中のプレイヤーを動けなくするためのクラス
-    private Freeze freeze;
+    private static Freeze freeze;
 
     /* ----- デフォルト設定変数終わり ----- */
 
@@ -121,7 +121,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         scheduler.scheduleSyncRepeatingTask(this, this::waitingTextJudge,0,10);
 
         // コマンド登録
-        Command command = new Command(this, this.freeze, this.characters);
+        Command command = new Command(this, freeze, this.characters);
         getCommand("rpgtext").setExecutor(command);
     }
 
@@ -807,7 +807,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     /* Freeze設定 */
     // 指定したプレイヤーのフリーズのオンオフを設定する
-    void setFreeze(Player player,boolean enable){ if(enable) freeze.set(player); else freeze.remove(player); }
+    static public void setFreeze(Player player,boolean enable){ if(enable) freeze.set(player); else freeze.remove(player); }
 
     /* Freeze設定終わり */
 

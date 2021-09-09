@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="/jump でmessagesの中のディレクトリを参照できるように改善">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="コマンド&quot;/freeze &lt;true|false&gt;&quot;を実装">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
@@ -351,7 +348,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631106962697</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="/jump でmessagesの中のディレクトリを参照できるように改善">
+      <created>1631166197460</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1631166197461</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -434,7 +438,8 @@
     <MESSAGE value="/wait を実装" />
     <MESSAGE value="/title タイトル サブタイトル fadeIn stay fadeOut を実装" />
     <MESSAGE value="/jump でmessagesの中のディレクトリを参照できるように改善" />
-    <option name="LAST_COMMIT_MESSAGE" value="/jump でmessagesの中のディレクトリを参照できるように改善" />
+    <MESSAGE value="コマンド&quot;/freeze &lt;true|false&gt;&quot;を実装" />
+    <option name="LAST_COMMIT_MESSAGE" value="コマンド&quot;/freeze &lt;true|false&gt;&quot;を実装" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

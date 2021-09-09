@@ -362,14 +362,16 @@ class RPGMessages {
         // "/freeze <true|false>" 例 "/freeze true"
         else if(text.startsWith("/freeze ")){
             // プレイヤーの停止を設定する
-            if(args.size() == 2){
-                player.playSound(player.getLocation(),args.get(1),1,1);
-            }else if(args.size() == 4) {
-                if (isFloat(args.get(2)) && isFloat(args.get(3))) {
-                    player.playSound(player.getLocation(), args.get(1), Float.parseFloat(args.get(2)),Float.parseFloat(args.get(3)));
-                }else{
-                    player.playSound(player.getLocation(),args.get(1),1,1);
-                }
+            /* 例外処理 */
+            if(args.size() != 2) return;
+            /* 例外処理終わり */
+
+            // argをもとにtrue,falseを決める
+            String arg = args.get(1);
+            if(arg.equals("true")){
+                RPGText.setFreeze(player, true);
+            }else if(arg.equals("false")){
+                RPGText.setFreeze(player, false);
             }
         }
     }
