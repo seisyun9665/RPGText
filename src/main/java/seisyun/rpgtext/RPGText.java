@@ -22,6 +22,8 @@ import org.bukkit.scheduler.BukkitScheduler;
 import seisyun.rpgtext.command.Command;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -82,7 +84,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     // 基本メンバ
     // 読み込んだメッセージファイルのリスト
-    private List<CustomConfig> messageConfigList;
+    private File messages_file;
     // config.yml。プラグインの基本情報が保存される。
     private CustomConfig messageConfig;
     // scoreboard.yml。設定した変数の情報が保存される。
@@ -130,11 +132,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // 全部の設定ファイルを読み込み直す（config.yml characters.yml scoreboard.yml messagesの中身）
     public void reloadAllConfig(){
         // messagesの中身を取得（tutorial.ymlも含む全て）
-        messageConfigList = getMessageFiles();
+        messages_file = getMessageFile();
         messageConfig.reloadConfig();
-        for(CustomConfig config : messageConfigList){
-            config.reloadConfig();
-        }
         customScore.reload();
         characters.reload();
         // プレイヤー停止システム読み込み
@@ -306,6 +305,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         /* 例外処理 */
         // 会話終了後のクールタイムがあるプレイヤーのクリックを無効化する
         if(coolTimeBeforeCanTalkSet.contains(e.getPlayer())) return;
+        // オフハンドクリックを無効化
+        if(e.getHand() == EquipmentSlot.OFF_HAND) return;
         /* 例外処理終わり */
 
         // 既に会話中なら弾く
@@ -665,22 +666,17 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
 
-    // tutorial.yml/users2 といった感じのパスからRPGMessagesを取得する
+    // tutorial.yml/users2 といった感じのパスからRPGMessagesを取得する。取得できなかったらnullを返す
     private RPGMessages getRPGMessagesFromConfig(Player player, String section){
-        // パス生成
-        String[] configPath;
-        if(section.contains("/")){
-            configPath = section.split("/");
-        }else{
-            return null;
-        }
-
         // コンフィグ取得
-        CustomConfig customConfig = getMessageConfig(configPath[0]);
+        CustomConfig customConfig = getMessageConfig(section);
         if(customConfig == null){
             return null;
         }else{
+            // パス生成
             FileConfiguration config = customConfig.getConfig();
+            String[] configPaths = section.split("/");
+            String messagePath = configPaths[configPaths.length - 1];
 
             // コンフィグから音、送信速度、文字色の設定を取得。無ければデフォルト
             String sound = DEFAULT_MESSAGE_SOUND, color = DEFAULT_MESSAGE_COLOR;
@@ -694,10 +690,11 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             if(config.contains("speed")) speed = config.getInt("speed", DEFAULT_MESSAGE_SPEED);
 
             // コンフィグの中身をRPGMessagesへ変換
-            if(!config.contains(configPath[1]) || !config.isList(configPath[1])){
+            if(!config.contains(messagePath) || !config.isList(messagePath)){
+                // 存在していないまたはリストではない
                 return null;
             }
-            RPGMessages messages = new RPGMessages(config.getStringList(configPath[1]),player,this,customScore,section);
+            RPGMessages messages = new RPGMessages(config.getStringList(messagePath),player,this,customScore,section);
             messages.setSound(sound);
             messages.setPitch(pitch);
             messages.setVolume(volume);
@@ -723,20 +720,9 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     /* ファイル */
 
-    // messageディレクトリの中身を全部取得してListにして返す
-    private List<CustomConfig> getMessageFiles(){
-        // プラグインからmessagesフォルダを取得して中身を検査
-        List<CustomConfig> messageFiles = new ArrayList<>();
-        File[] files = getFileFromPlugin("messages").listFiles();
-        if(files != null) {
-            for (File file : files) {
-                if(isYaml(file)){
-                    // ファイルがyamlならmessageFilesに追加する
-                    messageFiles.add(new CustomConfig(this,file));
-                }
-            }
-        }
-        return messageFiles;
+    // プラグインからmessagesフォルダを取得して返す。無かったらnull
+    private File getMessageFile(){
+        return getFileFromPlugin("messages");
     }
 
     // プラグインのデータファイルから指定した名前のファイルを取得する
@@ -767,13 +753,23 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
 
-    // messageConfigListの中から引数の名前と一致するコンフィグファイルを返す。無ければnull
+    // messagesの中から引数のパスをたどってコンフィグファイルを返す。無ければnull
+    // パスの例 "Bob/bob.yml/talk1" これを "Bob bob.yml talk1"にして、フォルダとファイルをたどっていく
     private CustomConfig getMessageConfig(String configName){
-        for(CustomConfig config : messageConfigList){
-            if(config.getFileName().equals(configName)){
-                return config;
-            }
-        }
+        /* 例外処理 */
+        // "/"が含まれていない場合
+        if(!configName.contains("/")) return null;
+        /* 例外処理終わり */
+
+        /* パス作成 */
+        // パスを分解
+        String[] fileNames = configName.split("/");
+        // パスの最後の部分(例の"talk1"の部分)と"/"を元テキストから消す
+        String pathName = configName.substring(0,configName.length() - fileNames[fileNames.length - 1].length() - 1);
+        // 結合
+        Path path = Paths.get(messages_file.getAbsolutePath() + "\\" +  pathName.replaceAll("/", "\\"));
+        // ファイル存在したらCustomConfigにして返す
+        if(path.toFile().exists()) return new CustomConfig(this, path.toFile());
         return null;
     }
 
@@ -808,6 +804,12 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         messageListMap.remove(player);
     }
+
+    /* Freeze設定 */
+    // 指定したプレイヤーのフリーズのオンオフを設定する
+    void setFreeze(Player player,boolean enable){ if(enable) freeze.set(player); else freeze.remove(player); }
+
+    /* Freeze設定終わり */
 
 
 }

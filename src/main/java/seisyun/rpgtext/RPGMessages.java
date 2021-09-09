@@ -75,6 +75,9 @@ class RPGMessages {
             messages.set(sendTextNumber,replaceScore(messages.get(sendTextNumber)));
 
             /* /jump */
+            // "/jump 飛ぶ場所"
+            // 例：Tutorial.ymlの中のusersを実行する "/jump Tutorial.yml/users"
+            // 例：bobフォルダの中のbobTalk.ymlの中のtalk1を実行する "bob/bobTalk.yml/talk1"
             if(messages.get(sendTextNumber).startsWith("/jump ") && messages.get(sendTextNumber).length() > 5){
                 //他のメッセージのところに飛ぶ
                 jump = true;
@@ -315,17 +318,50 @@ class RPGMessages {
             }
         }
 
+        // "/removeItem アイテムの種類（またはアイテム番号） [個数] [名前]" ※[]は任意
+        // 例：リンゴを１個消す "/removeItem apple"
+        // 例：石を5個消す "/removeItem 1 5"
+        // 例：「強化ガラス」という名前のガラスを１０個消す "/removeItem 20 10 強化ガラス"
         else if(text.startsWith("/removeItem ")){
-            //アイテムを削除
-            if(args.size() > 3){
-                if(isInteger(args.get(2))){
-                    removeItem(args.get(1),Integer.parseInt(args.get(2)),args.get(3));
+            /* アイテムを削除 */
+            // 例外処理
+            if(args.size() < 2) return;
+
+            // 引数に対応して要素を増やす
+            int amount = 1;
+            String itemName = "";
+            String item = args.get(1);  // アイテムの種類は必ず必要
+
+            // 引数２：アイテムの個数
+            if(args.size() >= 3 && isInteger(args.get(2))){
+                amount = Integer.parseInt(args.get(2));
+            }
+            // 引数３：アイテムの名前
+            if(args.size() >= 4){
+                itemName = args.get(3);
+            }
+
+            removeItem(item,amount,itemName);
+        }
+
+        // "/singlesound 音" または "/singlesound 音 ボリューム ピッチ"
+        // 例 "/singlesound block.note.bass" "/singlesound block.note.bass 1 1.4"
+        else if(text.startsWith("/singlesound ")){
+            //音を鳴らす
+            if(args.size() == 2){
+                player.playSound(player.getLocation(),args.get(1),1,1);
+            }else if(args.size() == 4) {
+                if (isFloat(args.get(2)) && isFloat(args.get(3))) {
+                    player.playSound(player.getLocation(), args.get(1), Float.parseFloat(args.get(2)),Float.parseFloat(args.get(3)));
+                }else{
+                    player.playSound(player.getLocation(),args.get(1),1,1);
                 }
             }
         }
 
-        else if(text.startsWith("/singlesound ")){
-            //音を鳴らす
+        // "/freeze <true|false>" 例 "/freeze true"
+        else if(text.startsWith("/freeze ")){
+            // プレイヤーの停止を設定する
             if(args.size() == 2){
                 player.playSound(player.getLocation(),args.get(1),1,1);
             }else if(args.size() == 4) {
