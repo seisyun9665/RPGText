@@ -157,6 +157,7 @@ class RPGMessages {
         return color + messages.get(sendTextNumber - 1);
     }
 
+    // 送信し終えているか
     boolean isFinished(){
         if(messages == null || messages.isEmpty()){
             return true;
@@ -164,10 +165,12 @@ class RPGMessages {
         return sendTextNumber >= messages.size();
     }
 
+    // 別のメッセージを読み込んでいるか
     boolean isJumping(){
         return jump;
     }
 
+    /* セッターゲッター */
     public void setSound(String sound) {
         this.sound = sound;
     }
@@ -191,15 +194,21 @@ class RPGMessages {
     float getVolume() {
         return volume;
     }
+    /* セッターゲッター終わり */
 
-    // 文章中の先頭が"/"だった場合コマンドとみなす
+
+    // テキストがコマンドならtrue。先頭が"/"だった場合コマンドとみなす
     private boolean isCommand(String text){
         return text.length() > 1 && text.startsWith("/");
     }
 
+    // コマンドを判別して実行する
     private void determineCommand(String text){
         // 引数 ex: /speed 2 -> {"/speed", "2"}   size() == 2
         List<String> args = new ArrayList<>(Arrays.asList(text.split(" ")));
+
+        // "/sound 音" または "/sound 音 ボリューム ピッチ"
+        // 例 "/sound block.note.bass" "/sound block.note.bass 1 1.4"
         if(text.startsWith("/sound")){
             //音を設定
 
@@ -216,6 +225,8 @@ class RPGMessages {
             }
         }
 
+        // "/speed 数字"
+        // 例： １秒間に送る文字数を40に設定する "/speed 40"
         else if(text.startsWith("/speed ")){
             //速度を設定
             if(args.size() == 2 && isInteger(args.get(1))){
@@ -223,13 +234,17 @@ class RPGMessages {
             }
         }
 
+        // "/color カラーコード"
+        // 例： 文章を緑の太字にする "/color \a\l"
         else if(text.startsWith("/color ")){
-            //速度を設定
+            // 基本の文字色を変更する
             if(args.size() == 2){
                 this.color = args.get(1);
             }
         }
 
+        // "/? 選択肢1 選択肢2 選択肢3…"
+        // 例：1から3までで好きな数字を選ばせる "/? 1 2 3"
         else if(text.startsWith("/? ")){
             //選択肢
             if(args.size() > 1){
@@ -245,6 +260,8 @@ class RPGMessages {
             }
         }
 
+        // "/title タイトル サブタイトル fadeIn stay fadeOut"
+        // 例：タイトルだけ１秒表示"/title タイトル "" 0 20 0"
         else if(text.startsWith("/title ")){
             // /title "title" "subtitle" fadeIn stay fadeOut
             // プレイヤーにタイトルを表示
@@ -258,6 +275,8 @@ class RPGMessages {
             }
         }
 
+        // "/command コマンド"
+        // 例： プレイヤーにリンゴを一つ与える "/command give %player% apple"
         else if(text.startsWith("/command ")){
             //コマンドを実行
             if(args.size() > 1){
@@ -266,25 +285,33 @@ class RPGMessages {
             }
         }
 
+        // "/score スコア名 <値|スコア名>" "/score スコア名 <random|+|-|*|/|%> <値|スコア名>"
+        // 例： スコア「number」を10にする "/score number 10"
+        // 例： スコア「number」を「number2」と同じにする "/score number number2"
+        // 例： スコア「number」を二倍にする "/score number * 2"
+        // 例： スコア「number」を0から10のどれかにする "/score number random 11"
         else if(text.startsWith("/score ")){
             //スコアを設定
             if(args.size() > 2){
                 if(args.size() > 3){
-                    //３番目の引数でスコア取得
-                    //数字なら直接適用
+                    /* 値を取得する */
+                    // ３番目の引数を取得。スコア名ならcuntomscoreから取得してくる。数字ならそのまま適用
                     int number = 0;
-                    if(isInteger(args.get(3))){
+                    if(isInteger(args.get(3))){                     // 数字なのでそのまま適用
                         number = Integer.parseInt(args.get(3));
-                    }else{
+                    }else{                                          // customscoreから取得
                         if(customScore.contain(args.get(3))) {
                             customScore.get(args.get(3), player);
                         }
                     }
-                    //１番目の引数のスコア取っておく
+
+                    //１番目の引数のスコア
                     int score1 = 0;
                     if(customScore.contain(args.get(1))){
                         score1 = customScore.get(args.get(1),player);
                     }
+
+                    /* 比較演算子別に操作する */
                     switch (args.get(2)) {
                         case "random":
                             customScore.set(args.get(1), player, new Random().nextInt(number));
@@ -305,12 +332,17 @@ class RPGMessages {
                             customScore.set(args.get(1), player, score1 % number);
                             break;
                     }
-                }else if(isInteger(args.get(2))){
+                }
+
+                // 引数が2つしか無いパターン   例："/socre number 2"
+                else if(isInteger(args.get(2))){
                     customScore.set(args.get(1),player,Integer.parseInt(args.get(2)));
                 }
             }
         }
 
+        // "/add <スコア名>"
+        // 例： numberを+1 "/add number"
         else if(text.startsWith("/add ")){
             //スコアを１増加
             if(args.size() == 2){
