@@ -510,15 +510,25 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     /* 待機中テキスト */
 
-    // 最後まで表示し終えて待機中テキストがあるか判定し、あったらプレイヤーに表示する
+    // 最後まで表示し終えて待機中テキストがあるか判定し、あったらプレイヤーに表示する。強制進行がtureの時は次へ進ませる
     private void waitingTextJudge(){
         if(waitingTextMap != null && !waitingTextMap.isEmpty()){
-
-            // テキスト最後尾が点滅してるように見せるために文字列に変更を加える
-            toggleWaitingText();
-
-            // アクションバーに待機中文字列を表示する
             for(Player player :waitingTextMap.keySet()){
+                String waitingText = waitingTextMap.get(player);
+                /* 自動進行処理終わり */
+
+                /* 終端点滅処理 */
+                if(waitingText.length() > 5 && waitingText.charAt(0) == ' ' && waitingText.endsWith("§r§n ")){
+                    // 光ってる時に光ってるやつを消す（待機中テキストの形が" <テキスト>_"の時の処理）
+                    waitingText = waitingText.substring(1,waitingText.length() - 5);
+                }else{
+                    // 消えてる時光らせる
+                    waitingText = " " + waitingText + "§r§n ";
+                }
+                waitingTextMap.put(player,waitingText);
+                /* 終端点滅処理終わり */
+
+                // アクションバーに待機中文字列を表示する
                 actionbar(player,waitingTextMap.get(player));
             }
         }
@@ -527,9 +537,12 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     private boolean hasWaitingText(Player player){
         return waitingTextMap.containsKey(player);
     }
-    // テキストを待機状態にする。待機状態テキストのリストに新たなrpgTextSenderを追加する。
+    // テキストを待機状態にする。自動進行がtrueの時は自動進行させる
     private void setWaitingText(RPGTextSender rpgTextSender){
         waitingTextMap.put(rpgTextSender.getPlayer(),rpgTextSender.getText());
+
+        // 自動進行
+        if(rpgTextSender.isAuto()) showMessages(rpgTextSender.getPlayer());
     }
     // あるプレイヤーの待機中テキストを削除して、アクションバーをきれいにする
     private void removeWaitingText(Player player){
@@ -540,19 +553,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         showMessages(player);
     }
     //待機中のテキスト装飾を切り替える（❙が点滅する感じ）
-    private void toggleWaitingText(){
-        for(Player player : waitingTextMap.keySet()){
-            String waitingText = waitingTextMap.get(player);
-            if(waitingText.length() > 5 && waitingText.charAt(0) == ' ' && waitingText.endsWith("§r§n ")){
-                // 光ってる時に光ってるやつを消す（待機中テキストの形が" <テキスト>_"の時の処理）
-                waitingText = waitingText.substring(1,waitingText.length() - 5);
-            }else{
-                // 消えてる時光らせる
-                waitingText = " " + waitingText + "§r§n ";
-            }
-            waitingTextMap.put(player,waitingText);
-        }
-    }
     /* 待機中テキスト終わり */
 
 

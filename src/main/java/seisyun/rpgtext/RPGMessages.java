@@ -31,7 +31,8 @@ class RPGMessages {
     private final Plugin plugin;
     private String selection = " ";                                 // 直前に選んだ選択肢の名前
     private boolean jump = false;                                   // コマンドでジャンプが起こったかどうか
-    private boolean skip = true;                                    // スキップ可能かどうか
+    private boolean skip = true;                                    // trueで会話を最後まで飛ばせる
+    private boolean auto = false;                                   // trueで会話自動進行
     private CustomScore customScore;
 
     RPGMessages(List<String> messages,Player player,Plugin plugin,CustomScore customScore,String section){
@@ -58,6 +59,9 @@ class RPGMessages {
     public void setSkip(boolean skip) { this.skip = skip; }
 
     public boolean canSkip() { return skip; }
+
+    public void setAuto(boolean auto) { this.auto = auto; }
+    public boolean isAuto() { return auto; }
 
     // 次に表示するメッセージを取得する。コマンド等も実行する
     String getMessage() {
@@ -427,6 +431,23 @@ class RPGMessages {
                 setSkip(false);
             }
         }
+
+        // "/auto <true|false>" trueにすると自動で進む。デフォルトはfalse
+        else if(text.startsWith("/auto ")){
+            // 途中でスキップ可能か設定する
+            /* 例外処理 */
+            if(args.size() != 2) return;
+            /* 例外処理終わり */
+
+            // argをもとにtrue,falseを決める
+            String arg = args.get(1);
+            if(arg.equals("true")){
+                setAuto(true);
+            }else if(arg.equals("false")){
+                setAuto(false);
+            }
+        }
+
     }
 
     void showSelection(){
