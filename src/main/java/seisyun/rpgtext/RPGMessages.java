@@ -31,6 +31,7 @@ class RPGMessages {
     private final Plugin plugin;
     private String selection = " ";                                 // 直前に選んだ選択肢の名前
     private boolean jump = false;                                   // コマンドでジャンプが起こったかどうか
+    private boolean skip = true;                                    // スキップ可能かどうか
     private CustomScore customScore;
 
     RPGMessages(List<String> messages,Player player,Plugin plugin,CustomScore customScore,String section){
@@ -53,6 +54,10 @@ class RPGMessages {
     int getSpeed() {
         return speed;
     }
+
+    public void setSkip(boolean skip) { this.skip = skip; }
+
+    public boolean canSkip() { return skip; }
 
     // 次に表示するメッセージを取得する。コマンド等も実行する
     String getMessage() {
@@ -404,6 +409,22 @@ class RPGMessages {
                 RPGText.setFreeze(player, true);
             }else if(arg.equals("false")){
                 RPGText.setFreeze(player, false);
+            }
+        }
+
+        // falseにするとスキップできなくなる "/skip <true|false>" 例： "/skip false"
+        else if(text.startsWith("/skip ")){
+            // 途中でスキップ可能か設定する
+            /* 例外処理 */
+            if(args.size() != 2) return;
+            /* 例外処理終わり */
+
+            // argをもとにtrue,falseを決める
+            String arg = args.get(1);
+            if(arg.equals("true")){
+                setSkip(true);
+            }else if(arg.equals("false")){
+                setSkip(false);
             }
         }
     }

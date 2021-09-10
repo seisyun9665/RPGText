@@ -279,6 +279,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
         // テキスト表示中に最後まで飛ばす処理
         if(hasTextInProgress(player)){
+
+
             setFinishActionBar(player);
         }
         // 最後まで表示されて待機状態のテキストを消す処理
@@ -364,17 +366,20 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         dynamicActionBar(player,text,0);
     }
     private void dynamicActionBar(Player player,String text,int speed){
-        dynamicActionBar(player,text,speed,"",0,0);
+        dynamicActionBar(player,text,speed,"",0,0,true);
     }
-    private void dynamicActionBar(Player player,String text,String sound,float pitch,float volume){
-        dynamicActionBar(player,text,0,sound,pitch,volume);
-    }
-    public void dynamicActionBar(Player player, String text, int speed, String sound, float pitch, float volume){
+    public void dynamicActionBar(Player player, String text, int speed, String sound, float pitch, float volume,boolean skip){
         RPGTextSender rpgTextSender = new RPGTextSender(player,text);
         if(rpgTextSender.isFinished()) return;
         if(speed > 0) rpgTextSender.setSpeed(speed);
         if(!sound.equals("")) rpgTextSender.setSound(sound, pitch, volume);
+        rpgTextSender.setSkip(skip);
         putDynamicAction(player,rpgTextSender);
+    }
+
+    // RPGMessagesから直接値を取得
+    public void dynamicActionBarFromRPGMessages(Player player, String text, RPGMessages rpgMessages){
+        dynamicActionBar(player,text, rpgMessages.getSpeed(),rpgMessages.getSound(), rpgMessages.getPitch(), rpgMessages.getVolume(),rpgMessages.canSkip());
     }
     // 文字列を動的に表示する（任意のRPGTextSenderをrpgTextSenderListに追加して、動的に表示する機構に組み込む）
     private void putDynamicAction(Player player,RPGTextSender rpgTextSender){
@@ -475,6 +480,10 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         RPGTextSender removeRpgTextSender = null;
         for(RPGTextSender rpgTextSender : rpgTextSenderSet){
             if(rpgTextSender.getPlayer().equals(player)){
+                /* 例外処理 */
+                // スキップ不可能なら処理しない
+                if(!rpgTextSender.canSkip()) return;
+                /* 例外処理終わり */
 
                 // 最後の文字まで進ませて表示する。うるさいので音は消す
                 rpgTextSender.setFinish();
@@ -631,11 +640,9 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             return;
         }
 
-        //音が設定されていたら音を追加
+        // 表示
         if(rpgMessages.getSound().equals("")){
-            dynamicActionBar(player, message, rpgMessages.getSpeed());
-        }else{
-            dynamicActionBar(player, message, rpgMessages.getSpeed(),rpgMessages.getSound(),rpgMessages.getPitch(),rpgMessages.getVolume());
+            dynamicActionBarFromRPGMessages(player, message, rpgMessages);
         }
 
         // もしメッセージが最後まで送り終えていればメッセージを削除する

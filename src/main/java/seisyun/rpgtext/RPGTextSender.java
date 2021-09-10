@@ -17,6 +17,7 @@ class RPGTextSender {
     private float volume = RPGText.DEFAULT_MESSAGE_VOLUME;  // 音の大きさ
     private int length = 0;                                 // 表示する文章の長さ（文字列の先頭から何文字目まで表示するか。配列方式なので0スタート。
                                                             // text.lengthは1スタートなので、比較で使うときは text.length() - 1 とする）
+    private boolean skip = true;                            // 表示途中でスキップ可能か
     // 会話文左揃え用の空白。100マス。
     private static final String COMPLETION_SPACE = "                                                                                                              ";
 
@@ -201,4 +202,8 @@ class RPGTextSender {
     }
 
     /* 文字列整形（左揃え）終わり */
+
+    /* スキップ */
+    public void setSkip(boolean skip)   { this.skip = skip; }
+    public boolean canSkip()            { return skip; }
 }
