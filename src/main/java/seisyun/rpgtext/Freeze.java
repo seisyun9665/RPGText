@@ -15,10 +15,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Freeze implements Listener {
-    private List<Player> freezePlayerList = new ArrayList<>();
+    private final Set<Player> freezePlayerList = new HashSet<>();
     private static Plugin plugin;
     private boolean HORIZONTAL_FREEZE;
     private boolean VERTICAL_FREEZE;
@@ -37,9 +39,7 @@ public class Freeze implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this,plugin);
     }
     void set(Player player){
-        if (!freezePlayerList.contains(player)) {
-            freezePlayerList.add(player);
-        }
+        freezePlayerList.add(player);
     }
     void remove(Player player){
         freezePlayerList.remove(player);

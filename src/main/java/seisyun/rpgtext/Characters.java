@@ -18,16 +18,16 @@ public class Characters {
         config = customConfig.getConfig();
     }
 
-    void reload(){
+    public void reload(){
         customConfig.reloadConfig();
         config = customConfig.getConfig();
     }
 
-    boolean contain(String entityName){
+    public boolean contain(String entityName){
         return config.contains(entityName);
     }
 
-    String get(String entityName){
+    public String get(String entityName){
         return config.getString(entityName);
     }
 

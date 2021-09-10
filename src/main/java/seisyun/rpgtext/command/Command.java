@@ -61,7 +61,12 @@ public class Command implements CommandExecutor {
                 return false;
             }
             characters.set(args[1],args[2]);
-            sender.sendMessage("New character " + args[1] + " set with path \"" + args[2] + "\"");
+            if (characters.contain(args[1])) {
+                sender.sendMessage("Changed character's path from " + characters.get(args[1]) +" to " + args[2]);
+            }
+            else {
+                sender.sendMessage("New character " + args[1] + " set with path \"" + args[2] + "\"");
+            }
             return true;
         }
         if(args.length == 1 && args[0].equals("reload")){
@@ -92,7 +97,7 @@ public class Command implements CommandExecutor {
                     }
                 }else{
                     if(plugin.isFloat(args[3]) && plugin.isFloat(args[4]) && plugin.isInteger(args[5])) {
-                        plugin.dynamicActionBar(player, plugin.replaceSymbolInText(args[0],player), Integer.parseInt(args[5]), args[2], Float.parseFloat(args[4]), Float.parseFloat(args[3]),true);
+                        plugin.dynamicActionBar(player, plugin.replaceSymbolInText(args[0],player), Integer.parseInt(args[5]), args[2], Float.parseFloat(args[4]), Float.parseFloat(args[3]), true, false);
                     }else{
                         sender.sendMessage(ChatColor.RED + "/rpgtext <player> <text> <sound> <volume> <pitch> <speed>");
                         return false;

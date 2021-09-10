@@ -81,6 +81,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     private Set<Player> coolTimeBeforeCanTalkSet = new HashSet<>();
     // クールタイム
     private static final int COOL_TIME_BEFORE_CAN_TALK_TICK = 5;
+    // /waitコマンド中のプレイヤーのセット
+    private Set<Player> waitPlayerSet = new HashSet<>();
 
     // 基本メンバ
     // 読み込んだメッセージファイルのリスト
@@ -256,6 +258,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
 
     /* メッセージ進行処理 */
+    // 会話のスキップ・選択肢の決定・終了の指示出しを行う。会話スタート処理は行わない。
     private void progressMessage(Player player){
         /* 例外処理 */
         // 会話開始と同時にテキスト飛ばすのを無効化（会話開始時に右クリック判定が2重に出て最初の文章が飛ばされるバグ対策）
@@ -263,8 +266,9 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             characterClickSet.remove(player);
             return;
         }
+        // /wait中の処理を無効化
+        if(waitPlayerSet.contains(player)) return;
         /* 例外処理終わり */
-
 
         // 選択肢決定
         if(messageListMap.containsKey(player) && messageListMap.get(player).isSelecting()){
@@ -279,12 +283,12 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
         // テキスト表示中に最後まで飛ばす処理
         if(hasTextInProgress(player)){
-
-
             setFinishActionBar(player);
         }
-        // 最後まで表示されて待機状態のテキストを消す処理
+
+        // 最後まで表示されて待機状態のテキストがある時の処理
         else if(hasWaitingText(player)){
+            // 選択肢を表示する
             if(hasNextSelectionCommand(player)){
                 // 選択肢表示
                 RPGMessages message = messageListMap.get(player);
@@ -292,6 +296,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
                 message.showSelection();
             }else {
                 removeWaitingText(player);
+                // 次に表示する文字列があればプレイヤーに表示する
+                showMessages(player);
             }
         }
     }
@@ -305,17 +311,16 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     @EventHandler
     public void onCharacterClick(PlayerInteractEntityEvent e){
         /* 例外処理 */
-        // 会話終了後のクールタイムがあるプレイヤーのクリックを無効化する
-        if(coolTimeBeforeCanTalkSet.contains(e.getPlayer())) return;
         // オフハンドクリックを無効化
         if(e.getHand() == EquipmentSlot.OFF_HAND) return;
-        /* 例外処理終わり */
-
+        // 会話終了後のクールタイムがあるプレイヤーのクリックを無効化する
+        if(coolTimeBeforeCanTalkSet.contains(e.getPlayer())) return;
         // 既に会話中なら弾く
         if(isTalking(e.getPlayer())) return;
         // キャラ名が設定ファイルに登録されてないなら弾く
         Entity entity = e.getRightClicked();
         if(!characters.contain(entity.getName())) return;
+        /* 例外処理終わり */
 
         // クリックをキャンセルしてメッセージ送信
         e.setCancelled(true);
@@ -366,20 +371,21 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         dynamicActionBar(player,text,0);
     }
     private void dynamicActionBar(Player player,String text,int speed){
-        dynamicActionBar(player,text,speed,"",0,0,true);
+        dynamicActionBar(player,text,speed,"",0,0,true, false);
     }
-    public void dynamicActionBar(Player player, String text, int speed, String sound, float pitch, float volume,boolean skip){
+    public void dynamicActionBar(Player player, String text, int speed, String sound, float pitch, float volume,boolean skip, boolean auto){
         RPGTextSender rpgTextSender = new RPGTextSender(player,text);
         if(rpgTextSender.isFinished()) return;
         if(speed > 0) rpgTextSender.setSpeed(speed);
         if(!sound.equals("")) rpgTextSender.setSound(sound, pitch, volume);
         rpgTextSender.setSkip(skip);
+        rpgTextSender.setAuto(auto);
         putDynamicAction(player,rpgTextSender);
     }
 
     // RPGMessagesから直接値を取得
     public void dynamicActionBarFromRPGMessages(Player player, String text, RPGMessages rpgMessages){
-        dynamicActionBar(player,text, rpgMessages.getSpeed(),rpgMessages.getSound(), rpgMessages.getPitch(), rpgMessages.getVolume(),rpgMessages.canSkip());
+        dynamicActionBar(player,text, rpgMessages.getSpeed(),rpgMessages.getSound(), rpgMessages.getPitch(), rpgMessages.getVolume(),rpgMessages.canSkip(), rpgMessages.isAuto());
     }
     // 文字列を動的に表示する（任意のRPGTextSenderをrpgTextSenderListに追加して、動的に表示する機構に組み込む）
     private void putDynamicAction(Player player,RPGTextSender rpgTextSender){
@@ -437,8 +443,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         // 送信中テキストが無い場合は処理を行わない
         if(rpgTextSenderSet.isEmpty()) return;
 
-        // 削除する予定のテキストを保持するリスト
-        List<RPGTextSender> removeList = new ArrayList<>();
+        // 待機状態へ移行する予定のテキストを保持するリスト
+        List<RPGTextSender> beWaitingSenderList = new ArrayList<>();
         
         for (RPGTextSender rpgTextSender : rpgTextSenderSet){
             // judgeSendingBySpeed()で送信するか判定（最高速度が1tick１文字なので、このtickで送信するかしないか判定して速度管理する）
@@ -447,18 +453,17 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
                 // 1回だけ表示
                 displayInActionbar(rpgTextSender);
 
-                // 最後まで表示し終えたテキストを待機状態にする
-                if(rpgTextSender.isFinished()) { 
-                    removeList.add(rpgTextSender);
-                    setWaitingText(rpgTextSender);
+                // 最後まで表示し終えたテキストをListに追加
+                if(rpgTextSender.isFinished()) {
+                    beWaitingSenderList.add(rpgTextSender);
                 }
             }
         }
 
-        // 送信し終えたテキストをリストから削除する処理
-        if(removeList.isEmpty()) return; 
-        for(RPGTextSender rpgTextSender : removeList){
-            rpgTextSenderSet.remove(rpgTextSender);
+        // 送信し終えたテキストを待機状態にする
+        if(beWaitingSenderList.isEmpty()) return;
+        for(RPGTextSender rpgTextSender : beWaitingSenderList){
+            setWaitingText(rpgTextSender);
         }
     }
     // そのプレイヤーに送信中のテキストがあるか
@@ -477,12 +482,14 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // テキスト表示中に最後まで飛ばす
     private void setFinishActionBar(Player player){
         // 該当のプレイヤーのrpgTextSenderを探す
-        RPGTextSender removeRpgTextSender = null;
+        RPGTextSender senderBeWaiting = null;
         for(RPGTextSender rpgTextSender : rpgTextSenderSet){
             if(rpgTextSender.getPlayer().equals(player)){
                 /* 例外処理 */
                 // スキップ不可能なら処理しない
                 if(!rpgTextSender.canSkip()) return;
+                // 既に終わっていたら処理しない
+                if(rpgTextSender.isFinished()) return;
                 /* 例外処理終わり */
 
                 // 最後の文字まで進ませて表示する。うるさいので音は消す
@@ -491,17 +498,16 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
                 displayInActionbar(rpgTextSender);
 
                 // 全体のlistから削除する用にとっておく
-                removeRpgTextSender = rpgTextSender;
-
-                //テキストを待機状態にする
-                setWaitingText(rpgTextSender);
+                senderBeWaiting = rpgTextSender;
                 break;
             }
         }
-        if(removeRpgTextSender != null){
-            rpgTextSenderSet.remove(removeRpgTextSender);
+        if(senderBeWaiting != null){
+            setWaitingText(senderBeWaiting);
         }
     }
+
+
 
     // そのプレイヤーに送信中・待機中のテキストがあるか
     private boolean isTalking(Player player){
@@ -510,12 +516,11 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     /* 待機中テキスト */
 
-    // 最後まで表示し終えて待機中テキストがあるか判定し、あったらプレイヤーに表示する。強制進行がtureの時は次へ進ませる
+    // 最後まで表示し終えて待機中テキストがあるか判定し、あったらプレイヤーに表示する。
     private void waitingTextJudge(){
         if(waitingTextMap != null && !waitingTextMap.isEmpty()){
             for(Player player :waitingTextMap.keySet()){
                 String waitingText = waitingTextMap.get(player);
-                /* 自動進行処理終わり */
 
                 /* 終端点滅処理 */
                 if(waitingText.length() > 5 && waitingText.charAt(0) == ' ' && waitingText.endsWith("§r§n ")){
@@ -537,20 +542,21 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     private boolean hasWaitingText(Player player){
         return waitingTextMap.containsKey(player);
     }
-    // テキストを待機状態にする。自動進行がtrueの時は自動進行させる
-    private void setWaitingText(RPGTextSender rpgTextSender){
-        waitingTextMap.put(rpgTextSender.getPlayer(),rpgTextSender.getText());
 
+    // rpgtextを消す。テキストを待機状態にする。自動進行がtrueの時は自動進行させる
+    private void setWaitingText(RPGTextSender rpgTextSender){
+        rpgTextSenderSet.remove(rpgTextSender);
+        waitingTextMap.put(rpgTextSender.getPlayer(),rpgTextSender.getText());
         // 自動進行
-        if(rpgTextSender.isAuto()) showMessages(rpgTextSender.getPlayer());
+        if(rpgTextSender.isAuto()) {
+            progressMessage(rpgTextSender.getPlayer());
+        }
     }
+
     // あるプレイヤーの待機中テキストを削除して、アクションバーをきれいにする
     private void removeWaitingText(Player player){
         waitingTextMap.remove(player);
         actionbar(player,"");
-
-        // 次に表示する文字列があればプレイヤーに表示する
-        showMessages(player);
     }
     //待機中のテキスト装飾を切り替える（❙が点滅する感じ）
     /* 待機中テキスト終わり */
@@ -586,7 +592,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     /* メッセージとコマンド */
 
-    // プレイヤーが次のメッセージを待機させていたらそれを送る
+    // 会話表示、コマンド処理
     private void showMessages(Player player){
         // 次のメッセージが無いなら終わり
         if(!messageListMap.containsKey(player)){
@@ -628,9 +634,15 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             if(args.length < 2) showMessages(player);       // 引数がない
             if(!isInteger(args[1])) showMessages(player);   // 引数が数字じゃない
 
-            // ディレイかけてshowMessagesを実行
+            // ディレイかけてshowMessagesを実行、waitPlayerSetから削除
             int tick = Integer.parseInt(args[1]);
-            getServer().getScheduler().runTaskLater(this, () -> showMessages(player), tick);
+            getServer().getScheduler().runTaskLater(this, () -> {
+                // autoにしてるとアクションバーに表示されたままになることがあるので
+                waitPlayerSet.remove(player);
+                showMessages(player);
+            }, tick);
+            // 待機中はクリックに反応しないようにwaitPlayerSetに追加
+            waitPlayerSet.add(player);
             return;
         }
 
@@ -641,9 +653,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
 
         // 表示
-        if(rpgMessages.getSound().equals("")){
-            dynamicActionBarFromRPGMessages(player, message, rpgMessages);
-        }
+        dynamicActionBarFromRPGMessages(player, message, rpgMessages);
 
         // もしメッセージが最後まで送り終えていればメッセージを削除する
         judgeFinishMessage(player, rpgMessages);
@@ -669,7 +679,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     private void judgeFinishMessage(Player player, RPGMessages rpgMessages){
         if(rpgMessages.isFinished()){
             messageListMap.remove(player);
-            endTalk(player);
         }
     }
 
@@ -715,6 +724,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     public boolean showMessagesFromConfig(Player player, String section){
         RPGMessages rpgMessages = getRPGMessagesFromConfig(player, section);
         if(rpgMessages == null){
+            getLogger().info("Error: non-existent yml path \"" + section + "\"");
             return false;
         }
         messageListMap.put(player,rpgMessages);
@@ -814,7 +824,14 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     /* Freeze設定 */
     // 指定したプレイヤーのフリーズのオンオフを設定する
-    static public void setFreeze(Player player,boolean enable){ if(enable) freeze.set(player); else freeze.remove(player); }
+    static public void setFreeze(Player player,boolean enable){
+        if(enable) {
+            freeze.set(player);
+        }
+        else {
+            freeze.remove(player);
+        }
+    }
 
     /* Freeze設定終わり */
 
