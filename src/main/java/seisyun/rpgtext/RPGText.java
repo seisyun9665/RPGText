@@ -262,12 +262,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // 選択肢決定・スキップ・次の文章表示
     private void progressMessage(Player player){
         /* 例外処理 */
-        // 次のメッセージが無いなら終わり
-        if(!messageListMap.containsKey(player)){
-            // プレイヤーの停止状態を解除してクールタイム設定
-            endTalk(player);
-            return;
-        }
         // 会話開始と同時にテキスト飛ばすのを無効化（会話開始時に右クリック判定が2重に出て最初の文章が飛ばされるバグ対策）
         if(characterClickSet.contains(player)){
             characterClickSet.remove(player);
@@ -275,13 +269,18 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         // /wait中の処理を無効化
         if(waitPlayerSet.contains(player)) return;
-        /* 例外処理終わり */
-
         // スキップ処理。テキスト表示途中で最後まで飛ばす
         if(hasTextInProgress(player)){
             setFinishActionBar(player);
             return;
         }
+        // 次のメッセージが無いなら終わり
+        if(!messageListMap.containsKey(player)){
+            // プレイヤーの停止状態を解除してクールタイム設定
+            endTalk(player);
+            return;
+        }
+        /* 例外処理終わり */
 
         // プレイヤーに設定されているメッセージのリストを呼び出す
         RPGMessages rpgMessages = messageListMap.get(player);
