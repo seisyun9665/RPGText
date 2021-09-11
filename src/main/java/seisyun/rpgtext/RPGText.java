@@ -258,9 +258,16 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
 
     /* メッセージ進行処理 */
-    // 会話のスキップ・選択肢の決定・終了の指示出しを行う。会話スタート処理は行わない。
+    // クリックされた時に処理を振り分ける
+    // 選択肢決定・スキップ・次の文章表示
     private void progressMessage(Player player){
         /* 例外処理 */
+        // 次のメッセージが無いなら終わり
+        if(!messageListMap.containsKey(player)){
+            // プレイヤーの停止状態を解除してクールタイム設定
+            endTalk(player);
+            return;
+        }
         // 会話開始と同時にテキスト飛ばすのを無効化（会話開始時に右クリック判定が2重に出て最初の文章が飛ばされるバグ対策）
         if(characterClickSet.contains(player)){
             characterClickSet.remove(player);
@@ -270,36 +277,67 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if(waitPlayerSet.contains(player)) return;
         /* 例外処理終わり */
 
-        // 選択肢決定
-        if(messageListMap.containsKey(player) && messageListMap.get(player).isSelecting()){
-            messageListMap.get(player).decisionSelection();
-            messageListMap.get(player).finishSelection();
-            player.playSound(player.getLocation(),DEFAULT_SELECTION_SELECT_SOUND,SoundCategory.MASTER,DEFAULT_SELECTION_SELECT_VOLUME,DEFAULT_SELECTION_SELECT_PITCH);
-            if(!hasWaitingText(player)){
-                showMessages(player);
-                return;
-            }
-        }
-
-        // テキスト表示中に最後まで飛ばす処理
+        // スキップ処理。テキスト表示途中で最後まで飛ばす
         if(hasTextInProgress(player)){
             setFinishActionBar(player);
+            return;
         }
 
-        // 最後まで表示されて待機状態のテキストがある時の処理
-        else if(hasWaitingText(player)){
-            // 選択肢を表示する
-            if(hasNextSelectionCommand(player)){
-                // 選択肢表示
-                RPGMessages message = messageListMap.get(player);
-                message.increaseMessageNumber();
-                message.showSelection();
-            }else {
-                removeWaitingText(player);
-                // 次に表示する文字列があればプレイヤーに表示する
-                showMessages(player);
-            }
+        // プレイヤーに設定されているメッセージのリストを呼び出す
+        RPGMessages rpgMessages = messageListMap.get(player);
+
+        // 選択肢決定
+        if(rpgMessages.isSelecting()){
+            rpgMessages.decisionSelection();
+            rpgMessages.finishSelection();
+            player.playSound(player.getLocation(),DEFAULT_SELECTION_SELECT_SOUND,SoundCategory.MASTER,DEFAULT_SELECTION_SELECT_VOLUME,DEFAULT_SELECTION_SELECT_PITCH);
         }
+
+        /* 選択肢表示 */
+        if(hasNextSelectionCommand(player)){
+            RPGMessages message = messageListMap.get(player);
+            message.increaseMessageNumber();
+            message.showSelection();
+            return;
+        }
+
+        /* 次のテキスト表示 */
+        // 取得したメッセージが""の場合はすべてのメッセージの送信終わり
+        String message = rpgMessages.getMessage();
+        if(message.equals("")){
+            endTalk(player);
+            return;
+        }
+        // /wait の処理
+        if(message.startsWith("/wait ")){
+            // waitコマンドの引数の数字分だけディレイをかける
+
+            /* 例外処理 */
+            String[] args = message.split(" ");
+            if(args.length < 2) progressMessage(player);       // 引数がない
+            if(!isInteger(args[1])) progressMessage(player);   // 引数が数字じゃない
+
+            // ディレイかけてprogressMessageを実行、waitPlayerSetから削除
+            int tick = Integer.parseInt(args[1]);
+            getServer().getScheduler().runTaskLater(this, () -> {
+                // autoにしてるとアクションバーに表示されたままになることがあるので
+                waitPlayerSet.remove(player);
+                progressMessage(player);
+            }, tick);
+            // 待機中はクリックに反応しないようにwaitPlayerSetに追加
+            waitPlayerSet.add(player);
+            return;
+        }
+        // 他のメッセージにジャンプしていたら新たにメッセージを読み込む
+        if(rpgMessages.isJumping()){
+            getServer().dispatchCommand(getServer().getConsoleSender(),"rpgtext config " + player.getName() + " " + message);
+            return;
+        }
+        // 表示
+        dynamicActionBarFromRPGMessages(player, message, rpgMessages);
+
+        // もしメッセージが最後まで送り終えていればメッセージを削除する
+        judgeFinishMessage(player, rpgMessages);
     }
 
     // プレイヤーの次の会話文が/?（選択肢）となっているならtrue
@@ -592,73 +630,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     /* メッセージとコマンド */
 
-    // 会話表示、コマンド処理
-    private void showMessages(Player player){
-        // 次のメッセージが無いなら終わり
-        if(!messageListMap.containsKey(player)){
-            // プレイヤーの停止状態を解除してクールタイム設定
-            endTalk(player);
-            return;
-        }
-
-        // プレイヤーに設定されているメッセージのリストを呼び出す
-        RPGMessages rpgMessages = messageListMap.get(player);
-
-        // メッセージの一番最初に/?（選択肢表示のコマンド）があるとmessagesの方で処理できないためこちらで行う
-        if(rpgMessages.isFirstSelection()){
-            // 選択肢表示してメッセージを一つ次に進める
-            rpgMessages.showSelection();
-            rpgMessages.increaseMessageNumber();
-            return;
-        }
-
-        // 取得したメッセージが""の場合はすべてのメッセージの送信終わり
-        String message = rpgMessages.getMessage();
-        if(message.equals("")){
-            endTalk(player);
-            return;
-        }
-
-        // /?の処理
-        else if(message.equalsIgnoreCase("/?")){
-            // RPGMessageの方で選択肢を表示しているため何もしない
-            return;
-        }
-
-        // /wait の処理
-        else if(message.startsWith("/wait ")){
-            // waitコマンドの引数の数字分だけディレイをかける
-
-            /* 例外処理 */
-            String[] args = message.split(" ");
-            if(args.length < 2) showMessages(player);       // 引数がない
-            if(!isInteger(args[1])) showMessages(player);   // 引数が数字じゃない
-
-            // ディレイかけてshowMessagesを実行、waitPlayerSetから削除
-            int tick = Integer.parseInt(args[1]);
-            getServer().getScheduler().runTaskLater(this, () -> {
-                // autoにしてるとアクションバーに表示されたままになることがあるので
-                waitPlayerSet.remove(player);
-                showMessages(player);
-            }, tick);
-            // 待機中はクリックに反応しないようにwaitPlayerSetに追加
-            waitPlayerSet.add(player);
-            return;
-        }
-
-        // 他のメッセージにジャンプしていたら新たにメッセージを読み込む
-        if(rpgMessages.isJumping()){
-            getServer().dispatchCommand(getServer().getConsoleSender(),"rpgtext config " + player.getName() + " " + message);
-            return;
-        }
-
-        // 表示
-        dynamicActionBarFromRPGMessages(player, message, rpgMessages);
-
-        // もしメッセージが最後まで送り終えていればメッセージを削除する
-        judgeFinishMessage(player, rpgMessages);
-    }
-
     // クールタイム設定
     private void setCoolTime(Player player){
         // 次の会話可能までのクールタイム設定（会話したくないのに、間違って右クリックするとすぐに会話再開されてしまうのを防止する）
@@ -671,6 +642,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
     // 会話終了の処理（クールタイムとフリーズ解除）
     private void endTalk(Player player){
+        removeWaitingText(player);
         setCoolTime(player);
         freeze.remove(player);
     }
@@ -728,7 +700,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             return false;
         }
         messageListMap.put(player,rpgMessages);
-        showMessages(player);
+        progressMessage(player);
         return true;
     }
 
