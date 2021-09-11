@@ -808,4 +808,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     /* Freeze設定終わり */
 
 
+    // プレイヤーのスコアをリセットする
+    public void resetScore(Player player) {
+        customScore.resetPlayer(player);
+    }
 }

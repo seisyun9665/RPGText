@@ -21,6 +21,7 @@ public class Command implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+        /* /help */
         if(args.length > 0 && args[0].equals("help")){
             sender.sendMessage("--- RPGText commands ---");
             sender.sendMessage("/rpgtext reload : Reload configs.");
@@ -35,6 +36,8 @@ public class Command implements CommandExecutor {
             }
             return true;
         }
+
+        /* /freeze */
         if(args.length > 0 && args[0].equals("freeze")){
             if(args.length > 1){
                 if(args[1].equals("clear")){
@@ -55,6 +58,8 @@ public class Command implements CommandExecutor {
                 }
             }
         }
+
+        /* /character */
         if(args.length > 0 && args[0].equals("character")){
             if(args.length != 3){
                 sender.sendMessage("/rpgtext character <name> <path>");
@@ -69,17 +74,35 @@ public class Command implements CommandExecutor {
             }
             return true;
         }
+
+        /* /reload */
         if(args.length == 1 && args[0].equals("reload")){
             plugin.reloadAllConfig();
             sender.sendMessage("config reloaded!");
             return true;
         }
+
+        /* /reset */
+        if(args.length == 2 && args[0].equals("reset")){
+            Player player = plugin.getServer().getPlayer(args[1]);
+            if(player == null) {
+                sender.sendMessage("Player " + args[1] + " does not exist.");
+                return true;
+            }
+            plugin.resetScore(player);
+            sender.sendMessage("reset " + args[1] + "'s score.");
+            return true;
+        }
+
         if(!(args.length == 3 || args.length == 6)){
             sender.sendMessage(ChatColor.RED + "/rpgtext reload");
             sender.sendMessage(ChatColor.RED + "/rpgtext <text|config> <player> <text>");
             sender.sendMessage(ChatColor.RED + "/rpgtext <text> <player> <sound> <volume> <pitch> <speed>");
             return false;
-        }else{
+        }
+
+        /* /rpgtext <player> <text|config> <text> */
+        else {
             Player player = plugin.getServer().getPlayer(args[1]);
             if(player != null && player.isOnline()){
                 if(args.length == 3) {

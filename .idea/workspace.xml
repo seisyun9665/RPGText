@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="/wait を修正">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="/skip と /autoを実装。progressMessageにshowMessagesをマージ。同じ処理部分がいくつかあったので削除。showMessagesを使用していた箇所はすべてprogressMessageで統一">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomScore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomScore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/Freeze.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/Freeze.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -393,7 +398,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631286555284</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="/skip と /autoを実装。progressMessageにshowMessagesをマージ。同じ処理部分がいくつかあったので削除。showMessagesを使用していた箇所はすべてprogressMessageで統一">
+      <created>1631345716988</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1631345716988</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -453,7 +465,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix the bug that &quot;&amp;&quot; does not working when using &quot;/if&quot; statement." />
     <MESSAGE value="make CustomConfig" />
     <MESSAGE value="メンバ変数のリファクタリングをした" />
     <MESSAGE value="Default Changelist" />
@@ -478,7 +489,8 @@
     <MESSAGE value="RPGMessages のコマンド&quot;/skip &lt;true|false&gt;&quot;を追加" />
     <MESSAGE value="RPGMessages のコマンド&quot;/auto &lt;true|false&gt;&quot;を追加" />
     <MESSAGE value="/wait を修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="/wait を修正" />
+    <MESSAGE value="/skip と /autoを実装。progressMessageにshowMessagesをマージ。同じ処理部分がいくつかあったので削除。showMessagesを使用していた箇所はすべてprogressMessageで統一" />
+    <option name="LAST_COMMIT_MESSAGE" value="/skip と /autoを実装。progressMessageにshowMessagesをマージ。同じ処理部分がいくつかあったので削除。showMessagesを使用していた箇所はすべてprogressMessageで統一" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
