@@ -271,18 +271,18 @@ class RPGMessages {
 
         // "/title タイトル サブタイトル fadeIn stay fadeOut"
         // 例：タイトルだけ１秒表示"/title タイトル "" 0 20 0"
-        else if(text.startsWith("/title ")){
-            // /title "title" "subtitle" fadeIn stay fadeOut
-            // プレイヤーにタイトルを表示
-            if(args.size() == 6){
-                if(isInteger(args.get(3)) && isInteger(args.get(4)) && isInteger(args.get(5))){
-                    // 中身が""だったら空白にする
-                    String title = args.get(1).equals("\"\"") ? "" : args.get(1);
-                    String subTitle = args.get(2).equals("\"\"") ? "" : args.get(2);
-                    player.sendTitle(title, subTitle, Integer.parseInt(args.get(3)), Integer.parseInt(args.get(4)), Integer.parseInt(args.get(5)));
-                }
-            }
-        }
+//        else if(text.startsWith("/title ")){
+//            // /title "title" "subtitle" fadeIn stay fadeOut
+//            // プレイヤーにタイトルを表示
+//            if(args.size() == 6){
+//                if(isInteger(args.get(3)) && isInteger(args.get(4)) && isInteger(args.get(5))){
+//                    // 中身が""だったら空白にする
+//                    String title = args.get(1).equals("\"\"") ? "" : args.get(1);
+//                    String subTitle = args.get(2).equals("\"\"") ? "" : args.get(2);
+//                    player.sendTitle(title, subTitle, Integer.parseInt(args.get(3)), Integer.parseInt(args.get(4)), Integer.parseInt(args.get(5)));
+//                }
+//            }
+//        }
 
         // "/command コマンド"
         // 例： プレイヤーにリンゴを一つ与える "/command give %player% apple"

@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="/rpgtext reset &lt;player&gt;を実装">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="/title を削除（引数に文字列を入れることができない。スペースを区切り文字として使用しているため。）">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomScore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomScore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/Freeze.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/Freeze.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGTextSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGTextSender.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/command/Command.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/command/Command.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
     </list>
@@ -156,7 +158,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TODO_SCOPE" value="すべての場所" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1609395995469" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../RepairEnchant" />
     <property name="project.structure.last.edited" value="モジュール" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -412,7 +414,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631364498714</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="/rpgtext reset &lt;player&gt;を修正。最後の文章の挙動がおかしいバグを修正。">
+      <created>1631365868389</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1631365868389</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -472,7 +481,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="メンバ変数のリファクタリングをした" />
     <MESSAGE value="Default Changelist" />
     <MESSAGE value="コマンド処理部分のコードをクラス分割した" />
     <MESSAGE value="config.ymlに説明を追加。Freeze.javaのメンバ変数Jump削除、config.ymlからも削除。click-typeのコードを修正、right,leftに加えてallを追加。クリック検知処理を追加修正、リファクタリング。" />
@@ -497,7 +505,8 @@
     <MESSAGE value="/wait を修正" />
     <MESSAGE value="/skip と /autoを実装。progressMessageにshowMessagesをマージ。同じ処理部分がいくつかあったので削除。showMessagesを使用していた箇所はすべてprogressMessageで統一" />
     <MESSAGE value="/rpgtext reset &lt;player&gt;を実装" />
-    <option name="LAST_COMMIT_MESSAGE" value="/rpgtext reset &lt;player&gt;を実装" />
+    <MESSAGE value="/rpgtext reset &lt;player&gt;を修正。最後の文章の挙動がおかしいバグを修正。" />
+    <option name="LAST_COMMIT_MESSAGE" value="/rpgtext reset &lt;player&gt;を修正。最後の文章の挙動がおかしいバグを修正。" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

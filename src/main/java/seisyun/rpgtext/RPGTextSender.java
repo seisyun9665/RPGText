@@ -19,7 +19,6 @@ class RPGTextSender {
                                                             // text.lengthは1スタートなので、比較で使うときは text.length() - 1 とする）
     private boolean skip = true;                            // 表示途中でスキップ可能か
     private boolean auto = true;                            // 会話が自動進行するか
-
     // 会話文左揃え用の空白。100マス。
     private static final String COMPLETION_SPACE = "                                                                                                              ";
 

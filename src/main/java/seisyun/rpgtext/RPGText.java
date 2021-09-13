@@ -78,9 +78,10 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // キャラをクリックしたプレイヤーを入れるリスト（２重クリックで１行目の文章を飛ばしてしまうのを防止する）
     private Set<Player> characterClickSet = new HashSet<>();
     // 会話終了後に次に会話できるようになるまでのクールタイムをプレイヤーごとに管理するためのセット（クールタイムがあるプレイヤーをセットに入れる）
+    // TODO:クールタイムがうまく動作していない問題を解決する
     private Set<Player> coolTimeBeforeCanTalkSet = new HashSet<>();
     // クールタイム
-    private static final int COOL_TIME_BEFORE_CAN_TALK_TICK = 5;
+    private static final int COOL_TIME_BEFORE_CAN_TALK_TICK = 20;
     // /waitコマンド中のプレイヤーのセット
     private Set<Player> waitPlayerSet = new HashSet<>();
 
@@ -262,6 +263,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // 選択肢決定・スキップ・次の文章表示
     private void progressMessage(Player player){
         /* 例外処理 */
+        // 話してない時
+        if(!isTalking(player) && !messageListMap.containsKey(player)) return;
         // 会話開始と同時にテキスト飛ばすのを無効化（会話開始時に右クリック判定が2重に出て最初の文章が飛ばされるバグ対策）
         if(characterClickSet.contains(player)){
             characterClickSet.remove(player);
@@ -441,9 +444,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             waitingTextMap.remove(player);
         }
         rpgTextSenderSet.add(rpgTextSender);
-
-        // プレイヤーを動けなくする
-        freeze.set(player);
     }
 
     /* 動的テキスト表示終わり */
@@ -699,6 +699,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             return false;
         }
         messageListMap.put(player,rpgMessages);
+        // プレイヤーを動けなくする
+        freeze.set(player);
         progressMessage(player);
         return true;
     }
@@ -798,6 +800,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     static public void setFreeze(Player player,boolean enable){
         if(enable) {
             freeze.set(player);
+
         }
         else {
             freeze.remove(player);
@@ -810,5 +813,9 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // プレイヤーのスコアをリセットする
     public void resetScore(Player player) {
         customScore.resetPlayer(player);
+    }
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e){
+        e.getPlayer().sendTitle("", "",0,1,0);
     }
 }
