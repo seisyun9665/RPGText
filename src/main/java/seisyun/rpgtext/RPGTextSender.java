@@ -19,6 +19,7 @@ class RPGTextSender {
                                                             // text.lengthは1スタートなので、比較で使うときは text.length() - 1 とする）
     private boolean skip = true;                            // 表示途中でスキップ可能か
     private boolean auto = true;                            // 会話が自動進行するか
+    private String color = "";                              // 基本の色
     // 会話文左揃え用の空白。100マス。
     private static final String COMPLETION_SPACE = "                                                                                                              ";
 
@@ -29,7 +30,7 @@ class RPGTextSender {
         skipColorCodeAndSpace();
     }
 
-
+    public void setColor(String color) { this.color = color; }
 
     /* 速度 */
 
@@ -199,7 +200,8 @@ class RPGTextSender {
         String mainText = text.substring(0,length + 1);
         String rightText = text.substring(length + 1);
 
-        return COMPLETION_SPACE + mainText + COMPLETION_SPACE + rightText;
+        // 文字色＋文字の太さ変更で幅が変わるため、メインテキスト後に§rを入れる
+        return color + COMPLETION_SPACE + mainText + "§r" + COMPLETION_SPACE + rightText;
     }
 
     /* 文字列整形（左揃え）終わり */
