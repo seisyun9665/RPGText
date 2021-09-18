@@ -18,10 +18,12 @@ public class CustomConfig {
     private final String file;
     private final Plugin plugin;
 
+    // config.ymlを操作
     CustomConfig(Plugin plugin){
         this(plugin, "config.yml");
     }
 
+    // ディレクトリとファイル名から取得
     CustomConfig(Plugin plugin, String fileName,File directory){
         this.plugin = plugin;
         this.file = fileName;
@@ -29,6 +31,7 @@ public class CustomConfig {
         makeDirectory(directory);
         makeFile(configFile);
     }
+    // pluginディレクトリに含まれるファイルから取得
     CustomConfig(Plugin plugin,String fileName){
         this.plugin = plugin;
         this.file = fileName;
@@ -36,6 +39,7 @@ public class CustomConfig {
         makeFile(configFile);
     }
 
+    // コンフィグファイルを首都k樹
     CustomConfig(Plugin plugin,File configFile){
         this.plugin = plugin;
         this.file = configFile.getName();
@@ -43,11 +47,16 @@ public class CustomConfig {
         makeFile(configFile);
     }
 
+    // このプラグインのresourceディレクトリ内のファイルをもとにして新たなファイルを作成
     CustomConfig(Plugin plugin,String fileName,File directory,String resource){
         this.plugin = plugin;
         this.file = fileName;
         makeDirectory(directory);
         configFile = new File(directory, this.file);
+        // ファイルが既に存在している場合は作成しない
+        if(configFile.exists()){
+            return;
+        }
         try{
             Files.copy(plugin.getResource(resource),configFile.toPath());
             plugin.getLogger().info("Created a \"" +  fileName + "\" file.");

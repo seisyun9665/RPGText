@@ -3,7 +3,7 @@ package seisyun.rpgtext;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-class Characters {
+public class Characters {
     private CustomConfig customConfig;
     private FileConfiguration config;
     Characters(Plugin plugin){
@@ -11,23 +11,23 @@ class Characters {
         config = customConfig.getConfig();
     }
 
-    void set(String entityName,String path){
+    public void set(String entityName, String path){
         config.set(entityName,path);
         customConfig.saveConfig();
         customConfig.reloadConfig();
         config = customConfig.getConfig();
     }
 
-    void reload(){
+    public void reload(){
         customConfig.reloadConfig();
         config = customConfig.getConfig();
     }
 
-    boolean contain(String entityName){
+    public boolean contain(String entityName){
         return config.contains(entityName);
     }
 
-    String get(String entityName){
+    public String get(String entityName){
         return config.getString(entityName);
     }
 

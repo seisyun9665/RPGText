@@ -9,49 +9,49 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Freeze implements Listener {
-    private List<Player> freezePlayerList = new ArrayList<>();
-    private Plugin plugin;
+    private final Set<Player> freezePlayerList = new HashSet<>();
+    private static Plugin plugin;
     private boolean HORIZONTAL_FREEZE;
     private boolean VERTICAL_FREEZE;
-    private boolean JUMP_FREEZE;
     private boolean FREEZE_PLAYER_INVINCIBLE;
     private boolean CANCEL_LEFT_CLICK;
     private boolean CANCEL_RIGHT_CLICK;
-    private CustomConfig customConfig;
-    private FileConfiguration config;
+    private static CustomConfig customConfig;
+    private static FileConfiguration config;
     private static final double STILL = -0.0784000015258789; //停止状態
 
     Freeze(Plugin plugin,CustomConfig customConfig){
-        this.plugin = plugin;
-        this.customConfig = customConfig;
-        this.config = customConfig.getConfig();
+        Freeze.plugin = plugin;
+        Freeze.customConfig = customConfig;
+        Freeze.config = customConfig.getConfig();
         reload();
         plugin.getServer().getPluginManager().registerEvents(this,plugin);
     }
     void set(Player player){
-        if (!freezePlayerList.contains(player)) {
-            freezePlayerList.add(player);
-        }
+        freezePlayerList.add(player);
     }
     void remove(Player player){
         freezePlayerList.remove(player);
     }
-    void toggle(Player player){
+    public void toggle(Player player){
         if(freezePlayerList.contains(player)){
             freezePlayerList.remove(player);
         }else{
             freezePlayerList.add(player);
         }
     }
-    void clear(){
+    public void clear(){
         freezePlayerList.clear();
     }
     @EventHandler
@@ -111,12 +111,17 @@ public class Freeze implements Listener {
 
     void reload(){
         customConfig.reloadConfig();
-        HORIZONTAL_FREEZE = config.getBoolean("default.freeze.horizontal",true);
-        VERTICAL_FREEZE = config.getBoolean("default.freeze.vertical",false);
-        JUMP_FREEZE = config.getBoolean("default.freeze.jump",true);
-        FREEZE_PLAYER_INVINCIBLE= config.getBoolean("default.freeze.invincible",true);
+        HORIZONTAL_FREEZE = config.getBoolean("default.freeze.horizontal-freeze",true);
+        VERTICAL_FREEZE = config.getBoolean("default.freeze.vertical-freeze",false);
+        FREEZE_PLAYER_INVINCIBLE= config.getBoolean("default.freeze.freeze-player-invincible",true);
         CANCEL_RIGHT_CLICK = config.getBoolean("default.freeze.leftclick-cancel",true);
         CANCEL_LEFT_CLICK= config.getBoolean("default.freeze.rightclick-cancel",true);
+    }
+
+    // プレイヤーが入ってきたら停止状態になっていた場合は解除する
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e){
+        this.remove(e.getPlayer());
     }
 
 }
