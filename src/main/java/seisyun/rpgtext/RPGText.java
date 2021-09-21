@@ -674,6 +674,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             if(config.contains("volume")) volume = (float)config.getDouble("volume", DEFAULT_MESSAGE_VOLUME);
             if(sound.contains(" ")){
                 String[] args = sound.split(" ");
+                sound = args[0];
                 if(args.length == 3){
                     if(isFloat(args[1])) volume = Float.parseFloat(args[1]);
                     if(isFloat(args[2])) pitch = Float.parseFloat(args[2]);
