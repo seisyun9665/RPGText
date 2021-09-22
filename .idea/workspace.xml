@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="sound: でボリュームとピッチを同時に設定できるように修正">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="sound: でボリュームとピッチを同時に設定できるように再度修正">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -434,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632225249583</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="sound: でボリュームとピッチを同時に設定できるように再度修正">
+      <created>1632225376260</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1632225376260</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -494,7 +503,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="config.ymlに説明を追加。Freeze.javaのメンバ変数Jump削除、config.ymlからも削除。click-typeのコードを修正、right,leftに加えてallを追加。クリック検知処理を追加修正、リファクタリング。" />
     <MESSAGE value="デバッグ修正。Freezeを定義する前にreloadしていたところを修正。会話進行について、エンティティクリックと、アドベンチャーモード時のブロッククリックに対応、クリックイベントをリファクタリング、その他修正" />
     <MESSAGE value="RPGTextSenderをリファクタリング。RPGTextの数字判定までリファクタリング。" />
     <MESSAGE value="RPGMessage関連のコードをリファクタリング。" />
@@ -519,7 +527,8 @@
     <MESSAGE value="/rpgtext reset &lt;player&gt;を修正。最後の文章の挙動がおかしいバグを修正。" />
     <MESSAGE value="yml読み込み時のパス生成のバグを修正" />
     <MESSAGE value="sound: でボリュームとピッチを同時に設定できるように修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="sound: でボリュームとピッチを同時に設定できるように修正" />
+    <MESSAGE value="sound: でボリュームとピッチを同時に設定できるように再度修正" />
+    <option name="LAST_COMMIT_MESSAGE" value="sound: でボリュームとピッチを同時に設定できるように再度修正" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

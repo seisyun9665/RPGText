@@ -27,6 +27,10 @@ class RPGMessages {
     private Selections selections = null;                           // 現在表示されている選択肢
     static final String REPLACED_SYMBOL_COLOR_CODE = "\\";          // カラーコードに変換される特殊シンボル
     static final String REPLACED_SYMBOL_PLAYER_NAME = "%player%";   // プレイヤー名に変換される特殊シンボル
+    static final String REPLACED_SYMBOL_LEVEL = "%level%";          // プレイヤーのレベルに変換される特殊シンボル
+    static final String REPLACED_SYMBOL_HP = "%hp%";                // 体力に変換される特殊シンボル
+    static final String REPLACED_SYMBOL_FOOD = "%food%";            // スタミナレベルに変換される特殊シンボル
+    static final String REPLACED_SYMBOL_GAMEMODE = "%gamemode%";    // ゲームモード（数字）に変換される特殊シンボル
     static final String REPLACED_SYMBOL_SCORE = "§§";               // スコアの数字に変換される特殊シンボル
     private final Plugin plugin;
     private String selection = " ";                                 // 直前に選んだ選択肢の名前
@@ -541,12 +545,12 @@ class RPGMessages {
     private List<String> replaceSymbol(List<String> list){
         List<String> newList = new ArrayList<>();
         for(String string : list){
-            if(string.contains(REPLACED_SYMBOL_COLOR_CODE)){
-                string = string.replace(REPLACED_SYMBOL_COLOR_CODE,"§");
-            }
-            if(string.contains(REPLACED_SYMBOL_PLAYER_NAME)){
-                string = string.replace(REPLACED_SYMBOL_PLAYER_NAME,player.getName());
-            }
+            if(string.contains(RPGMessages.REPLACED_SYMBOL_COLOR_CODE))                 string = string.replace(RPGMessages.REPLACED_SYMBOL_COLOR_CODE, "§");
+            if(string.contains(RPGMessages.REPLACED_SYMBOL_PLAYER_NAME))                string = string.replace(RPGMessages.REPLACED_SYMBOL_PLAYER_NAME, player.getName());
+            if(string.contains(RPGMessages.REPLACED_SYMBOL_LEVEL))          string = string.replace(RPGMessages.REPLACED_SYMBOL_LEVEL, player.getLevel() + "");
+            if(string.contains(RPGMessages.REPLACED_SYMBOL_FOOD))           string = string.replace(RPGMessages.REPLACED_SYMBOL_FOOD, player.getFoodLevel() + "");
+            if(string.contains(RPGMessages.REPLACED_SYMBOL_HP))             string = string.replace(RPGMessages.REPLACED_SYMBOL_HP, (int)player.getHealth() + "");
+            if(string.contains(RPGMessages.REPLACED_SYMBOL_GAMEMODE))       string = string.replace(RPGMessages.REPLACED_SYMBOL_GAMEMODE, player.getGameMode().getValue() + "");
             newList.add(string);
         }
         return newList;

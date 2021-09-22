@@ -774,14 +774,14 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     /* ファイル終わり */
 
 
-    // 一つの文章内の特殊シンボルを置き換える "\\" -> "§"m "%player%"
+    // 一つの文章内の特殊シンボルを置き換える "\\" -> "§" "%player%" -> player.getName()
     public String replaceSymbolInText(String text, Player player){
-        if(text.contains(RPGMessages.REPLACED_SYMBOL_COLOR_CODE)){
-            text = text.replace(RPGMessages.REPLACED_SYMBOL_COLOR_CODE,"§");
-        }
-        if(text.contains(RPGMessages.REPLACED_SYMBOL_PLAYER_NAME)){
-            text = text.replace(RPGMessages.REPLACED_SYMBOL_PLAYER_NAME,player.getName());
-        }
+        if(text.contains(RPGMessages.REPLACED_SYMBOL_COLOR_CODE))   text = text.replace(RPGMessages.REPLACED_SYMBOL_COLOR_CODE, "§");
+        if(text.contains(RPGMessages.REPLACED_SYMBOL_PLAYER_NAME))  text = text.replace(RPGMessages.REPLACED_SYMBOL_PLAYER_NAME, player.getName());
+        if(text.contains(RPGMessages.REPLACED_SYMBOL_LEVEL))        text = text.replace(RPGMessages.REPLACED_SYMBOL_LEVEL, player.getLevel() + "");
+        if(text.contains(RPGMessages.REPLACED_SYMBOL_FOOD))         text = text.replace(RPGMessages.REPLACED_SYMBOL_FOOD, player.getFoodLevel() + "");
+        if(text.contains(RPGMessages.REPLACED_SYMBOL_HP))           text = text.replace(RPGMessages.REPLACED_SYMBOL_HP, (int)player.getHealth() + "");
+        if(text.contains(RPGMessages.REPLACED_SYMBOL_GAMEMODE))     text = text.replace(RPGMessages.REPLACED_SYMBOL_GAMEMODE, player.getGameMode().getValue() + "");
         return text;
     }
 
