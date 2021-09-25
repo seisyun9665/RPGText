@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="/rpgtext character のコマンド実行後のログが不正だったものを修正">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="会話中にクリックで村人の画面開けてしまうのを修正">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -470,7 +474,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632568026876</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="会話中にクリックで村人の画面開けてしまうのを修正">
+      <created>1632568380296</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1632568380296</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -530,7 +541,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="RPGMessage関連のコードをリファクタリング。" />
     <MESSAGE value="RPGTextの最後までリファクタリング" />
     <MESSAGE value="RPGTextSenderの速度設定を改良" />
     <MESSAGE value="会話後のクールタイムを追加" />
@@ -555,7 +565,8 @@
     <MESSAGE value="sound: でボリュームとピッチを同時に設定できるように再度修正" />
     <MESSAGE value="%player%の他に%level% %hp% %food% %gamemode%を追加" />
     <MESSAGE value="/rpgtext character のコマンド実行後のログが不正だったものを修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="/rpgtext character のコマンド実行後のログが不正だったものを修正" />
+    <MESSAGE value="会話中にクリックで村人の画面開けてしまうのを修正" />
+    <option name="LAST_COMMIT_MESSAGE" value="会話中にクリックで村人の画面開けてしまうのを修正" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

@@ -351,11 +351,18 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     @EventHandler
     public void onCharacterClick(PlayerInteractEntityEvent e){
         /* 例外処理 */
+        // オフハンドクリックを無効化
+        if(e.getHand() == EquipmentSlot.OFF_HAND) {
+            return;
+        }
         // キャラ名が設定ファイルに登録されてないなら弾く
         Entity entity = e.getRightClicked();
         if(!characters.contain(entity.getName())) return;
         // 既に会話中ならクリックを無効化して弾く
         if(isTalking(e.getPlayer())) {
+            // 村人の場合普通の右クリックを完全無効化されるのでこちらで会話を進める
+            progressMessage(e.getPlayer());
+
             // クリックをキャンセル
             e.setCancelled(true);
             return;
@@ -364,10 +371,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if(coolTimeBeforeCanTalkSet.contains(e.getPlayer())){
             // クリックをキャンセル
             e.setCancelled(true);
-            return;
-        }
-        // オフハンドクリックを無効化
-        if(e.getHand() == EquipmentSlot.OFF_HAND) {
             return;
         }
         /* 例外処理終わり */
