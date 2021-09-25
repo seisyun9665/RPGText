@@ -351,15 +351,25 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     @EventHandler
     public void onCharacterClick(PlayerInteractEntityEvent e){
         /* 例外処理 */
-        // オフハンドクリックを無効化
-        if(e.getHand() == EquipmentSlot.OFF_HAND) return;
-        // 会話終了後のクールタイムがあるプレイヤーのクリックを無効化する
-        if(coolTimeBeforeCanTalkSet.contains(e.getPlayer())) return;
-        // 既に会話中なら弾く
-        if(isTalking(e.getPlayer())) return;
         // キャラ名が設定ファイルに登録されてないなら弾く
         Entity entity = e.getRightClicked();
         if(!characters.contain(entity.getName())) return;
+        // 既に会話中ならクリックを無効化して弾く
+        if(isTalking(e.getPlayer())) {
+            // クリックをキャンセル
+            e.setCancelled(true);
+            return;
+        }
+        // 会話終了後のクールタイムがあるプレイヤーのクリックを無効化する
+        if(coolTimeBeforeCanTalkSet.contains(e.getPlayer())){
+            // クリックをキャンセル
+            e.setCancelled(true);
+            return;
+        }
+        // オフハンドクリックを無効化
+        if(e.getHand() == EquipmentSlot.OFF_HAND) {
+            return;
+        }
         /* 例外処理終わり */
 
         // クリックをキャンセルしてメッセージ送信
