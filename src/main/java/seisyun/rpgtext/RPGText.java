@@ -78,7 +78,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // キャラをクリックしたプレイヤーを入れるリスト（２重クリックで１行目の文章を飛ばしてしまうのを防止する）
     private Set<Player> characterClickSet = new HashSet<>();
     // 会話終了後に次に会話できるようになるまでのクールタイムをプレイヤーごとに管理するためのセット（クールタイムがあるプレイヤーをセットに入れる）
-    // TODO:クールタイムがうまく動作していない問題を解決する
     private Set<Player> coolTimeBeforeCanTalkSet = new HashSet<>();
     // クールタイム
     private static final int COOL_TIME_BEFORE_CAN_TALK_TICK = 20;
@@ -644,6 +643,10 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // クールタイム設定
     private void setCoolTime(Player player){
         // 次の会話可能までのクールタイム設定（会話したくないのに、間違って右クリックするとすぐに会話再開されてしまうのを防止する）
+
+        // すでにクールタイム設定がされていたら処理しない
+        if(coolTimeBeforeCanTalkSet.contains(player)) return;
+
         coolTimeBeforeCanTalkSet.add(player);
         getServer().getScheduler().runTaskLater(this, () -> {
             // クールタイム経過後にcoolTimeBeforeCanTalkからplayerを削除
