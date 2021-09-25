@@ -362,7 +362,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if(isTalking(e.getPlayer())) {
             // 村人の場合普通の右クリックを完全無効化されるのでこちらで会話を進める
             progressMessage(e.getPlayer());
-
             // クリックをキャンセル
             e.setCancelled(true);
             return;
