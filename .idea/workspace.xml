@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="/score score1 - score2 のscore2の読み込みができないバグを修正">
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" afterDir="false" />
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="クールタイムがうまく動作していないバグを修正">
+      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -484,7 +486,21 @@
       <option name="project" value="LOCAL" />
       <updated>1632570281565</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="/score score1 - score2 のscore2の読み込みができないバグを修正">
+      <created>1632571195015</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1632571195015</updated>
+    </task>
+    <task id="LOCAL-00042" summary="クールタイムがうまく動作していないバグを修正">
+      <created>1632571323755</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1632571323755</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -544,7 +560,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="RPGTextSenderの速度設定を改良" />
     <MESSAGE value="会話後のクールタイムを追加" />
     <MESSAGE value="RPGTextSenderの送信速度の処理で、sendCount++を書き忘れていたバグを修正" />
     <MESSAGE value="会話終了後のCoolTimeがうまく適用されていなかったバグを修正" />
@@ -569,7 +584,8 @@
     <MESSAGE value="/rpgtext character のコマンド実行後のログが不正だったものを修正" />
     <MESSAGE value="会話中にクリックで村人の画面開けてしまうのを修正" />
     <MESSAGE value="/score score1 - score2 のscore2の読み込みができないバグを修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="/score score1 - score2 のscore2の読み込みができないバグを修正" />
+    <MESSAGE value="クールタイムがうまく動作していないバグを修正" />
+    <option name="LAST_COMMIT_MESSAGE" value="クールタイムがうまく動作していないバグを修正" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
