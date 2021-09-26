@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="Tutorial.ymlを加筆修正。">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="太字でズレルのを修正。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGTextSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGTextSender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tutorial.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tutorial.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -512,7 +513,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632653224920</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="太字でズレルのを修正。">
+      <created>1632653543309</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1632653543309</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -572,7 +580,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="RPGTextSenderの送信速度の処理で、sendCount++を書き忘れていたバグを修正" />
     <MESSAGE value="会話終了後のCoolTimeがうまく適用されていなかったバグを修正" />
     <MESSAGE value="左揃えにする処理を修正" />
     <MESSAGE value="コマンドで終了した場合でも次の会話までのクールタイムがきちんと適用されるように修正" />
@@ -597,7 +604,8 @@
     <MESSAGE value="/score score1 - score2 のscore2の読み込みができないバグを修正" />
     <MESSAGE value="クールタイムがうまく動作していないバグを修正" />
     <MESSAGE value="Tutorial.ymlを加筆修正。" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tutorial.ymlを加筆修正。" />
+    <MESSAGE value="太字でズレルのを修正。" />
+    <option name="LAST_COMMIT_MESSAGE" value="太字でズレルのを修正。" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

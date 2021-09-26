@@ -20,8 +20,8 @@ class RPGTextSender {
     private boolean skip = true;                            // 表示途中でスキップ可能か
     private boolean auto = true;                            // 会話が自動進行するか
     private String color = "";                              // 基本の色
-    // 会話文左揃え用の空白。100マス。
-    private static final String COMPLETION_SPACE = "                                                                                                              ";
+    // 会話文左揃え用の空白。200マス。
+    private static final String COMPLETION_SPACE = "                                                                                                                                                                                                                            ";
 
     // 送信するプレイヤーPlayer、送信したい文章sendText
     RPGTextSender(Player p,String sendText){

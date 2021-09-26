@@ -63,7 +63,7 @@ users2:
   - /singlesound minecraft:block.note.bell
   # Branch
   - 6:Branch
-  - The next command (or sentence) can be executed according to the last choice the player made..
+  - The next command (or sentence) can be executed according to the last choice the player made.
   - \r/?<option name> <next command(except "/?","/if","/has")>
   - \r/?1 you selected 1, aren't you?
   - \r/?2 you selected 2, aren't you?
@@ -105,7 +105,7 @@ users2:
   - /score test2 random 3
   - test2 = \\test2\\
   - \r/score test2 + test
-  - /score test + test
+  - /score test2 + test
   - test2 = \\test2\\
   - \r/score test2 * 3
   - /score test2 * 3
@@ -114,7 +114,7 @@ users2:
   - /score test2 % 4
   - test2 = \\test2\\
   - Scores are independent for each player.
-  - If Player A's score of 1 is doubled, Player B's score of 1 will not change.
+  - If score1 of player A is doubled, score1 of player B will not change.
   - So, for example, the progress of the story can be saved for each player.
   - If you run "/score x 10" in A.yml, the value of x will be 10 in B.yml as well.
   - The score will be shared across all files.
@@ -123,8 +123,8 @@ users2:
   - 9:Condition
   - Execute the next command (or sentence) when the condition matches the variable.
   - \r/if <score name | value> <symbol> <score name | value> <next command(except "/?","/if","/has")>
-  - \r/score test = 2
-  - /score test = 2
+  - \r/score test 2
+  - /score test 2
   - test = \\test\\
   - \r/if test = 2 test = 2 !
   - /if test = 2 test = 2 !
@@ -148,11 +148,11 @@ users2:
   - /if test = 1 you have a diamond.
   - /if test = 0 you not have a diamond.
   - Removes a specific item from the player's inventory.
-  - \r/remove <item type> <amount> <item name(No name:"none")>
+  - \r/removeItem <item type> <amount> <item name(No name:"none")>
   - \r/command give %player% minecraft:emerald
   - /command give %player% minecraft:emerald
-  - \r/remove EMERALD 1 none
-  - /remove EMERALD 1 none
+  - \r/removeItem EMERALD 1 none
+  - /removeItem EMERALD 1 none
   - /singlesound minecraft:block.note.bell
   # Single Sound
   - 11:Single sound
@@ -161,10 +161,13 @@ users2:
   - \r/singlesound minecraft:entity.player.levelup
   - /singlesound minecraft:entity.player.levelup
   - /wait 20
+  - /singlesound minecraft:block.note.bell
+  - # Wait
   - 12:Wait
   - Delays the process for a specified amount of time.
   - \r/wait 60(stop 60 ticks = 3 seconds)
   - /wait 60
+  - /singlesound minecraft:block.note.bell
   # Skip Setting
   - 12:Skip Setting
   - Sets whether or not the player can skip strings.
@@ -175,6 +178,7 @@ users2:
   - \r/skip true
   - /skip true
   - You can skip sentence now.
+  - /singlesound minecraft:block.note.bell
   # Auto Setting
   - 13:Auto Setting
   - Set whether or not to automatically proceed to the next step when a sentence has been sent to the end.
@@ -185,6 +189,7 @@ users2:
   - the next sentence will be displayed automatically.
   - \r/auto false
   - /auto false
+  - /singlesound minecraft:block.note.bell
   # Freeze Setting
   - 14:Freeze Setting
   - Sets whether or not the player can move during a conversation.
@@ -196,6 +201,7 @@ users2:
   - /wait 60
   - /freeze true
   - \r/freeze true
+  - /singlesound minecraft:block.note.bell
   # Other Symbol
   - 15:Other symbol
   - Color code:\ab\ba\cc\dk\es\1l\2a\3s\4h
@@ -205,6 +211,7 @@ users2:
   - Player food level:%food%(%food\r%)
   - Player gamemode:%gamemode%(%gamemode\r%)
   - Score value:score "test" is \\test\\
+  - /singlesound minecraft:block.note.bell
   # Attention
   - 16:Attention
   - The following codes don't work.
@@ -213,15 +220,18 @@ users2:
   - \r/has DIAMOND 1 none /has EMERALD 1 none something texts.
   - Multiple conditional expressions will not work.
   - \lUse "/jump"\r to implement multiple conditional expressions.
+  - Or use & in "/if".
+  - /singlesound minecraft:block.note.bell
   # Other
   - 17:Other
   - You can use the minecraft command "/rpgtext character <entity name> path" to send messages when you right-click on a mob.
   - The format of the path is the same as that of the "/jump" command.
   - For example, if you want a villager named "bob" to speak the contents of talk1 in bob.yml,
   - execute the command "/rpgtext character bob bob.yml/talk1".
-  - Then, when you right-click on the mob named "bob", a messages will be sent automatically!
+  - Then, when you right-click on the mob named "bob", messages will be sent automatically!
   - You can check and change the registered characters in characters.yml.
   - Also use the command "/rpgtext <text|config> <player> <path>" to send a message directly to the player.
+  - /singlesound minecraft:block.note.bell
   # Example
   - 18:Examle
   - We have prepared several examples of use.
@@ -252,7 +262,7 @@ slot:
   - /score slot3 0
   - /score slotCount 0
   - /command title %player% subtitle {"text":""}
-  - /command title %player% times 0 1 1
+  - /command title %player% times 0 20 20
   - /jump slotCountdown
 slotCountdown:
   - /singlesound minecraft:block.note.xylophone 1 1
@@ -279,7 +289,7 @@ slotRotation:
   - /if slotCount > 9 /jump slotDecision
   - /add slotCount
   - /singlesound minecraft:block.note.xylophone 1 1
-  - /wait 1
+  - /wait 2
   - /jump slotRotation
 slotDecision:
   - /singlesound minecraft:block.note.xylophone 1 2
