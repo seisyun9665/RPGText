@@ -200,8 +200,24 @@ class RPGTextSender {
         String mainText = text.substring(0,length + 1);
         String rightText = text.substring(length + 1);
 
-        // 文字色＋文字の太さ変更で幅が変わるため、メインテキスト後に§rを入れる
-        return color + COMPLETION_SPACE + mainText + "§r" + COMPLETION_SPACE + rightText;
+
+        // 文字色＋文字の太さ変更でスペース幅が変わるため、メインテキスト後に§rを入れる
+        // 後ろの文字に太字を適用するため、前の文字列が太字表示で終わっているかを確認する
+        mainText = color + mainText;
+        if(mainText.contains("§l")){ // 太字カラーコードが含まれているか。
+            String[] split_text = mainText.split("§");
+            // 太字カラーコードで終わっているか
+            boolean isBoldEnd = false;
+            for(int i = 1; i < split_text.length; i++){
+                if(split_text[i].startsWith("l")){
+                    isBoldEnd = true;
+                }else if(split_text[i].startsWith("r")){
+                    isBoldEnd = false;
+                }
+            }
+            if(isBoldEnd) rightText = "§l" + rightText;
+        }
+        return COMPLETION_SPACE + mainText + "§r" + COMPLETION_SPACE + rightText;
     }
 
     /* 文字列整形（左揃え）終わり */
