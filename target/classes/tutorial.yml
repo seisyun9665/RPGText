@@ -101,7 +101,7 @@ users2:
   - /add test
   - test = \\test\\
   - \r/score <score name> <random | + | - | * | / | % > <value | score name>
-  - \r/score test2 random 3 (set 0 ~ 3)
+  - \r/score test2 random 3 (set 0 ~ 2)
   - /score test2 random 3
   - test2 = \\test2\\
   - \r/score test2 + test
@@ -162,7 +162,7 @@ users2:
   - /singlesound minecraft:entity.player.levelup
   - /wait 20
   - /singlesound minecraft:block.note.bell
-  - # Wait
+  # Wait
   - 12:Wait
   - Delays the process for a specified amount of time.
   - \r/wait 60(stop 60 ticks = 3 seconds)
@@ -279,23 +279,25 @@ slotCountdown:
   - /wait 10
   - /jump slotRotation
 slotRotation:
-  - /score slot1 random 2
-  - /score slot2 random 2
-  - /score slot3 random 2
+  - /score slot1 random 3
+  - /score slot2 random 3
+  - /score slot3 random 3
   - /add slot1
   - /add slot2
   - /add slot3
-  - /command title %player% {"text":"\r\l\\slot1\\ \\slot2\\ \\slot3\\"}
-  - /if slotCount > 9 /jump slotDecision
+  - /command title %player% title {"text":"\r\l\\slot1\\ \\slot2\\ \\slot3\\"}
+  - /if slotCount > 19 /jump slotDecision
   - /add slotCount
   - /singlesound minecraft:block.note.xylophone 1 1
-  - /wait 2
+  - /wait 3
   - /jump slotRotation
 slotDecision:
   - /singlesound minecraft:block.note.xylophone 1 2
   - /wait 10
-  - /if slot1 = slot2 & slot2 & slot3 /jump jackpot
-  - end.
+  - /if slot1 = slot2 & slot2 = slot3 /jump jackpot
+  - /? continue end
+  - /?continue /jump slot
+  - end the slot.
 jackpot:
   - /singlesound minecraft:entity.player.levelup 1 1
   - /command give %player% diamond

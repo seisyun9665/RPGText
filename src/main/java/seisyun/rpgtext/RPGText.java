@@ -308,7 +308,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if(message.equals("")){
             endTalk(player);
             return;
-        }else if(message.equals("/?")){
+        }else if(message.startsWith("/?")){
             // 選択肢表示中なら何もしない
             return;
         }
