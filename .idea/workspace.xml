@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="太字でズレルのを修正。">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="tutorial.ymlを修正。会話文左揃え用の空白を200マスに増加。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGTextSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGTextSender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/tutorial.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tutorial.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGTextSender.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGTextSender.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/tutorial.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tutorial.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -520,7 +525,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632653543309</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="tutorial.ymlを修正。会話文左揃え用の空白を200マスに増加。">
+      <created>1632655437100</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1632655437100</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -580,7 +592,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="会話終了後のCoolTimeがうまく適用されていなかったバグを修正" />
     <MESSAGE value="左揃えにする処理を修正" />
     <MESSAGE value="コマンドで終了した場合でも次の会話までのクールタイムがきちんと適用されるように修正" />
     <MESSAGE value="新しいコマンド/color を追加。引数の文字列を文章の先頭に付ける。&#10;またsound: 、color: 、speed: の項目を使用することで、ファイル内でのデフォルトの値を指定することができるように改善" />
@@ -605,7 +616,8 @@
     <MESSAGE value="クールタイムがうまく動作していないバグを修正" />
     <MESSAGE value="Tutorial.ymlを加筆修正。" />
     <MESSAGE value="太字でズレルのを修正。" />
-    <option name="LAST_COMMIT_MESSAGE" value="太字でズレルのを修正。" />
+    <MESSAGE value="tutorial.ymlを修正。会話文左揃え用の空白を200マスに増加。" />
+    <option name="LAST_COMMIT_MESSAGE" value="tutorial.ymlを修正。会話文左揃え用の空白を200マスに増加。" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
