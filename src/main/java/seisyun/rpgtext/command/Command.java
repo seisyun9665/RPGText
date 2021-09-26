@@ -25,7 +25,7 @@ public class Command implements CommandExecutor {
         if(args.length > 0 && args[0].equals("help")){
             sender.sendMessage("--- RPGText commands ---");
             sender.sendMessage("/rpgtext reload : Reload configs.");
-            sender.sendMessage("/rpgtext <text|config> <player> <text> : Send messages in the style an RPG game.");
+            sender.sendMessage("/rpgtext <text|config> <player> <path> : Send messages in the style an RPG game.");
             sender.sendMessage("/rpgtext <text> <player> <sound> <volume> <pitch> <speed> :  Send messages with custom sound.");
             sender.sendMessage("/rpgtext character <name> <path> : Set the name of the entity that will send a message to the clicked player and set config path used to send messages.");
             sender.sendMessage("example: /rpgtext character Bob Tutorial.yml/users");
