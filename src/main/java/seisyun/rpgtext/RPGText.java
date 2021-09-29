@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -362,8 +363,10 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if(!characters.contain(entity.getName())) return;
         // 既に会話中ならクリックを無効化して弾く
         if(isTalking(e.getPlayer())) {
-            // 村人の場合普通の右クリックを完全無効化されるのでこちらで会話を進める
-            progressMessage(e.getPlayer());
+            if (entity instanceof Villager) {
+                // 村人の場合普通の右クリックを完全無効化されるのでこちらで会話を進める
+                progressMessage(e.getPlayer());
+            }
             // クリックをキャンセル
             e.setCancelled(true);
             return;
