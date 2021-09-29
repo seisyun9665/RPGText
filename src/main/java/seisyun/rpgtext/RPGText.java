@@ -325,7 +325,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             // ディレイかけてprogressMessageを実行、waitPlayerSetから削除
             int tick = Integer.parseInt(args[1]);
             getServer().getScheduler().runTaskLater(this, () -> {
-                // autoにしてるとアクションバーに表示されたままになることがあるので
+                // autoにしてるとアクションバーに表示されたままになることがあるので消す
                 waitPlayerSet.remove(player);
                 progressMessage(player);
             }, tick);
@@ -335,6 +335,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         // 他のメッセージにジャンプしていたら新たにメッセージを読み込む
         if(rpgMessages.isJumping()){
+            endTalk(player);
             getServer().dispatchCommand(getServer().getConsoleSender(),"rpgtext config " + player.getName() + " " + message);
             return;
         }
@@ -671,6 +672,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     private void judgeFinishMessage(Player player, RPGMessages rpgMessages){
         if(rpgMessages.isFinished()){
             messageListMap.remove(player);
+            endTalk(player);
         }
     }
 

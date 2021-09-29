@@ -70,6 +70,8 @@ users2:
   - \r/?3 you selected 3, aren't you?
   - ...
   - \r/?10 you selected 10, aren't you?
+  - Select number.
+  - /? 1 2 3 4 5 6 7 8 9 10
   - /?1 you selected 1, aren't you?
   - /?2 you selected 2, aren't you?
   - /?3 you selected 3, aren't you?
@@ -132,7 +134,7 @@ users2:
   - /if test < 4 test < 4 !
   - type of comparison symbol:"=",">","<"
   - You can also use "&" to specify multiple conditional expressions.
-  - \r/if <score1> <symbol> <score2> & <score1> <symbol> <score2> & ... & <score1> <symbol> <score2> <next command(except "/?","/if","/has")>
+  - \r/if <score1> <symbol> <score2> & <score1> <symbol> <score2> & ... <next command(except "/?","/if","/has")>
   - /if test = 2 & test < 4 test is equal to 2 and smaller than 4
   - /singlesound minecraft:block.note.bell
   # Item
