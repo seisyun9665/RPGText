@@ -31,6 +31,9 @@ public class Command implements CommandExecutor {
             sender.sendMessage("example: /rpgtext character Bob Tutorial.yml/users");
             sender.sendMessage("/rpgtext freeze clear : Allows all frozen players to move.");
             sender.sendMessage("/rpgtext freeze toggle <player> : Switch the player's frozen state.");
+            sender.sendMessage("/rpgtext reset <player> : Set the player's all score to 0.");
+            sender.sendMessage("/rpgtext set <player> <score name> <score> : Set the player's score.");
+
             if(sender instanceof Player){
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(),"rpgtext config " + sender.getName() + " Tutorial.yml/users");
             }
@@ -83,7 +86,7 @@ public class Command implements CommandExecutor {
         }
 
         /* /reset */
-        if(args.length == 2 && args[0].equals("reset")){
+        if(args.length == 2&& args[0].equals("reset")){
             Player player = plugin.getServer().getPlayer(args[1]);
             if(player == null) {
                 sender.sendMessage("Player " + args[1] + " does not exist.");
@@ -93,11 +96,32 @@ public class Command implements CommandExecutor {
             sender.sendMessage("reset " + args[1] + "'s score.");
             return true;
         }
+        /* /set */
+        if(args.length == 4 && args[0].equals("set")){
+            Player player = plugin.getServer().getPlayer(args[1]);
+            if(player == null) {
+                sender.sendMessage("Player " + args[1] + " does not exist.");
+                return true;
+            }
+            if(!plugin.isInteger(args[3])){
+                sender.sendMessage(args[3] + " is not a score.");
+            }
+
+            plugin.setScore(player, args[2], Integer.parseInt(args[3]));
+            sender.sendMessage("set " + args[1] + "7s score \"" + args[2] + "\" to " + args[3] + ".");
+            return true;
+        }
 
         if(!(args.length == 3 || args.length == 6)){
-            sender.sendMessage(ChatColor.RED + "/rpgtext reload");
-            sender.sendMessage(ChatColor.RED + "/rpgtext <text|config> <player> <text>");
-            sender.sendMessage(ChatColor.RED + "/rpgtext <text> <player> <sound> <volume> <pitch> <speed>");
+            sender.sendMessage(ChatColor.RED + "/rpgtext reload : Reload configs.");
+            sender.sendMessage(ChatColor.RED + "/rpgtext <text|config> <player> <path> : Send messages in the style an RPG game.");
+            sender.sendMessage(ChatColor.RED + "/rpgtext <text> <player> <sound> <volume> <pitch> <speed> :  Send messages with custom sound.");
+            sender.sendMessage(ChatColor.RED + "/rpgtext character <name> <path> : Set the name of the entity that will send a message to the clicked player and set config path used to send messages.");
+            sender.sendMessage(ChatColor.RED + "example: /rpgtext character Bob Tutorial.yml/users");
+            sender.sendMessage(ChatColor.RED + "/rpgtext freeze clear : Allows all frozen players to move.");
+            sender.sendMessage(ChatColor.RED + "/rpgtext freeze toggle <player> : Switch the player's frozen state.");
+            sender.sendMessage(ChatColor.RED + "/rpgtext reset <player> : Set the player's all score to 0.");
+            sender.sendMessage(ChatColor.RED + "/rpgtext set <player> <score name> <score> : Set the player's score.");
             return false;
         }
 

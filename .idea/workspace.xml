@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="キャラクタークリック時に会話がスキップされてしまうバグを修正">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="ジャンプしてコマンドだけで終了するとフリーズから抜け出せないバグを修正">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tutorial.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tutorial.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,13 +204,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592820027163</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Add New feature.&#10;Expanded functionality of the command &quot;/if &quot;&#10;Multiple comparisons by using the &amp; operator">
-      <created>1609404823438</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1609404823438</updated>
     </task>
     <task id="LOCAL-00004" summary="Fix the bug that &quot;&amp;&quot; does not working when using &quot;/if&quot; statement.">
       <created>1609412524494</created>
@@ -552,7 +541,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632905584058</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="ジャンプしてコマンドだけで終了するとフリーズから抜け出せないバグを修正">
+      <created>1632912791481</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1632912791482</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -612,7 +608,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="/wait を実装" />
     <MESSAGE value="/title タイトル サブタイトル fadeIn stay fadeOut を実装" />
     <MESSAGE value="/jump でmessagesの中のディレクトリを参照できるように改善" />
     <MESSAGE value="コマンド&quot;/freeze &lt;true|false&gt;&quot;を実装" />
@@ -637,7 +632,8 @@
     <MESSAGE value="Tutorial.ymlを修正。コマンド後に選択肢表示した時に/?が表示されるバグを修正" />
     <MESSAGE value="Tutorial.ymlを修正。" />
     <MESSAGE value="キャラクタークリック時に会話がスキップされてしまうバグを修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="キャラクタークリック時に会話がスキップされてしまうバグを修正" />
+    <MESSAGE value="ジャンプしてコマンドだけで終了するとフリーズから抜け出せないバグを修正" />
+    <option name="LAST_COMMIT_MESSAGE" value="ジャンプしてコマンドだけで終了するとフリーズから抜け出せないバグを修正" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

@@ -845,6 +845,12 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     public void resetScore(Player player) {
         customScore.resetPlayer(player);
     }
+    // プレイヤーのスコアを任意に設定する
+    public void setScore(Player player, String scoreName, int score){
+        customScore.set(scoreName, player, score);
+    }
+
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         e.getPlayer().sendTitle("", "",0,1,0);
