@@ -25,7 +25,7 @@ public class Command implements CommandExecutor {
         if(args.length > 0 && args[0].equals("help")){
             sender.sendMessage("--- RPGText commands ---");
             sender.sendMessage("/rpgtext reload : Reload configs.");
-            sender.sendMessage("/rpgtext <text|config> <player> <text> : Send messages in the style an RPG game.");
+            sender.sendMessage("/rpgtext <text|config> <player> <path> : Send messages in the style an RPG game.");
             sender.sendMessage("/rpgtext <text> <player> <sound> <volume> <pitch> <speed> :  Send messages with custom sound.");
             sender.sendMessage("/rpgtext character <name> <path> : Set the name of the entity that will send a message to the clicked player and set config path used to send messages.");
             sender.sendMessage("example: /rpgtext character Bob Tutorial.yml/users");
@@ -65,13 +65,13 @@ public class Command implements CommandExecutor {
                 sender.sendMessage("/rpgtext character <name> <path>");
                 return false;
             }
-            characters.set(args[1],args[2]);
             if (characters.contain(args[1])) {
                 sender.sendMessage("Changed character's path from " + characters.get(args[1]) +" to " + args[2]);
             }
             else {
                 sender.sendMessage("New character " + args[1] + " set with path \"" + args[2] + "\"");
             }
+            characters.set(args[1],args[2]);
             return true;
         }
 

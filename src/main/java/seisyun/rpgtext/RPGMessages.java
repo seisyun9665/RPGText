@@ -314,7 +314,7 @@ class RPGMessages {
                         number = Integer.parseInt(args.get(3));
                     }else{                                          // customscoreから取得
                         if(customScore.contain(args.get(3))) {
-                            customScore.get(args.get(3), player);
+                           number = customScore.get(args.get(3), player);
                         }
                     }
 

@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="sound: でボリュームとピッチを同時に設定できるように再度修正">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="キャラクタークリック時に会話がスキップされてしまうバグを修正">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/tutorial.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tutorial.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,20 +208,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592820027163</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Create RPGText repository. And fix bug that score-replacement symbol does not working when using &quot;/jump&quot; command.">
-      <created>1609394814220</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1609394814220</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Update version in pom.xml.">
-      <created>1609395924008</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1609395924008</updated>
     </task>
     <task id="LOCAL-00003" summary="Add New feature.&#10;Expanded functionality of the command &quot;/if &quot;&#10;Multiple comparisons by using the &amp; operator">
       <created>1609404823438</created>
@@ -443,7 +433,126 @@
       <option name="project" value="LOCAL" />
       <updated>1632225376260</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="%player%の他に%level% %hp% %food% %gamemode%を追加">
+      <created>1632286724384</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1632286724384</updated>
+    </task>
+    <task id="LOCAL-00036" summary="%player%の他に%level% %hp% %food% %gamemode%を追加">
+      <created>1632286745240</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1632286745240</updated>
+    </task>
+    <task id="LOCAL-00037" summary="/rpgtext character のコマンド実行後のログが不正だったものを修正">
+      <created>1632568013806</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1632568013806</updated>
+    </task>
+    <task id="LOCAL-00038" summary="/rpgtext character のコマンド実行後のログが不正だったものを修正">
+      <created>1632568026876</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1632568026876</updated>
+    </task>
+    <task id="LOCAL-00039" summary="会話中にクリックで村人の画面開けてしまうのを修正">
+      <created>1632568380296</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1632568380296</updated>
+    </task>
+    <task id="LOCAL-00040" summary="/score score1 - score2 のscore2の読み込みができないバグを修正">
+      <created>1632570281565</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1632570281565</updated>
+    </task>
+    <task id="LOCAL-00041" summary="/score score1 - score2 のscore2の読み込みができないバグを修正">
+      <created>1632571195015</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1632571195015</updated>
+    </task>
+    <task id="LOCAL-00042" summary="クールタイムがうまく動作していないバグを修正">
+      <created>1632571323755</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1632571323755</updated>
+    </task>
+    <task id="LOCAL-00043" summary="クールタイムがうまく動作していないバグを修正">
+      <created>1632572404552</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1632572404552</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Tutorial.ymlを加筆修正。">
+      <created>1632653224920</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1632653224920</updated>
+    </task>
+    <task id="LOCAL-00045" summary="太字でズレルのを修正。">
+      <created>1632653543309</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1632653543309</updated>
+    </task>
+    <task id="LOCAL-00046" summary="tutorial.ymlを修正。会話文左揃え用の空白を200マスに増加。">
+      <created>1632655437100</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1632655437100</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Tutorial.ymlを修正。コマンド後に選択肢表示した時に/?が表示されるバグを修正">
+      <created>1632656249502</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1632656249502</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Tutorial.ymlを修正。コマンド後に選択肢表示した時に/?が表示されるバグを修正">
+      <created>1632656402337</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1632656402337</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Tutorial.ymlを修正。コマンド後に選択肢表示した時に/?が表示されるバグを修正">
+      <created>1632656711131</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1632656711131</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Tutorial.ymlを修正。">
+      <created>1632657565687</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1632657565688</updated>
+    </task>
+    <task id="LOCAL-00051" summary="キャラクタークリック時に会話がスキップされてしまうバグを修正">
+      <created>1632905584057</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1632905584058</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -503,17 +612,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="デバッグ修正。Freezeを定義する前にreloadしていたところを修正。会話進行について、エンティティクリックと、アドベンチャーモード時のブロッククリックに対応、クリックイベントをリファクタリング、その他修正" />
-    <MESSAGE value="RPGTextSenderをリファクタリング。RPGTextの数字判定までリファクタリング。" />
-    <MESSAGE value="RPGMessage関連のコードをリファクタリング。" />
-    <MESSAGE value="RPGTextの最後までリファクタリング" />
-    <MESSAGE value="RPGTextSenderの速度設定を改良" />
-    <MESSAGE value="会話後のクールタイムを追加" />
-    <MESSAGE value="RPGTextSenderの送信速度の処理で、sendCount++を書き忘れていたバグを修正" />
-    <MESSAGE value="会話終了後のCoolTimeがうまく適用されていなかったバグを修正" />
-    <MESSAGE value="左揃えにする処理を修正" />
-    <MESSAGE value="コマンドで終了した場合でも次の会話までのクールタイムがきちんと適用されるように修正" />
-    <MESSAGE value="新しいコマンド/color を追加。引数の文字列を文章の先頭に付ける。&#10;またsound: 、color: 、speed: の項目を使用することで、ファイル内でのデフォルトの値を指定することができるように改善" />
     <MESSAGE value="/wait を実装" />
     <MESSAGE value="/title タイトル サブタイトル fadeIn stay fadeOut を実装" />
     <MESSAGE value="/jump でmessagesの中のディレクトリを参照できるように改善" />
@@ -528,7 +626,18 @@
     <MESSAGE value="yml読み込み時のパス生成のバグを修正" />
     <MESSAGE value="sound: でボリュームとピッチを同時に設定できるように修正" />
     <MESSAGE value="sound: でボリュームとピッチを同時に設定できるように再度修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="sound: でボリュームとピッチを同時に設定できるように再度修正" />
+    <MESSAGE value="%player%の他に%level% %hp% %food% %gamemode%を追加" />
+    <MESSAGE value="/rpgtext character のコマンド実行後のログが不正だったものを修正" />
+    <MESSAGE value="会話中にクリックで村人の画面開けてしまうのを修正" />
+    <MESSAGE value="/score score1 - score2 のscore2の読み込みができないバグを修正" />
+    <MESSAGE value="クールタイムがうまく動作していないバグを修正" />
+    <MESSAGE value="Tutorial.ymlを加筆修正。" />
+    <MESSAGE value="太字でズレルのを修正。" />
+    <MESSAGE value="tutorial.ymlを修正。会話文左揃え用の空白を200マスに増加。" />
+    <MESSAGE value="Tutorial.ymlを修正。コマンド後に選択肢表示した時に/?が表示されるバグを修正" />
+    <MESSAGE value="Tutorial.ymlを修正。" />
+    <MESSAGE value="キャラクタークリック時に会話がスキップされてしまうバグを修正" />
+    <option name="LAST_COMMIT_MESSAGE" value="キャラクタークリック時に会話がスキップされてしまうバグを修正" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

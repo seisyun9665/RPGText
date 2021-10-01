@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -78,7 +79,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // キャラをクリックしたプレイヤーを入れるリスト（２重クリックで１行目の文章を飛ばしてしまうのを防止する）
     private Set<Player> characterClickSet = new HashSet<>();
     // 会話終了後に次に会話できるようになるまでのクールタイムをプレイヤーごとに管理するためのセット（クールタイムがあるプレイヤーをセットに入れる）
-    // TODO:クールタイムがうまく動作していない問題を解決する
     private Set<Player> coolTimeBeforeCanTalkSet = new HashSet<>();
     // クールタイム
     private static final int COOL_TIME_BEFORE_CAN_TALK_TICK = 20;
@@ -309,6 +309,9 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if(message.equals("")){
             endTalk(player);
             return;
+        }else if(message.startsWith("/?")){
+            // 選択肢表示中なら何もしない
+            return;
         }
         // /wait の処理
         if(message.startsWith("/wait ")){
@@ -322,7 +325,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             // ディレイかけてprogressMessageを実行、waitPlayerSetから削除
             int tick = Integer.parseInt(args[1]);
             getServer().getScheduler().runTaskLater(this, () -> {
-                // autoにしてるとアクションバーに表示されたままになることがあるので
+                // autoにしてるとアクションバーに表示されたままになることがあるので消す
                 waitPlayerSet.remove(player);
                 progressMessage(player);
             }, tick);
@@ -332,6 +335,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         }
         // 他のメッセージにジャンプしていたら新たにメッセージを読み込む
         if(rpgMessages.isJumping()){
+            endTalk(player);
             getServer().dispatchCommand(getServer().getConsoleSender(),"rpgtext config " + player.getName() + " " + message);
             return;
         }
@@ -352,14 +356,28 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     public void onCharacterClick(PlayerInteractEntityEvent e){
         /* 例外処理 */
         // オフハンドクリックを無効化
-        if(e.getHand() == EquipmentSlot.OFF_HAND) return;
-        // 会話終了後のクールタイムがあるプレイヤーのクリックを無効化する
-        if(coolTimeBeforeCanTalkSet.contains(e.getPlayer())) return;
-        // 既に会話中なら弾く
-        if(isTalking(e.getPlayer())) return;
+        if(e.getHand() == EquipmentSlot.OFF_HAND) {
+            return;
+        }
         // キャラ名が設定ファイルに登録されてないなら弾く
         Entity entity = e.getRightClicked();
         if(!characters.contain(entity.getName())) return;
+        // 既に会話中ならクリックを無効化して弾く
+        if(isTalking(e.getPlayer())) {
+            if (entity instanceof Villager) {
+                // 村人の場合普通の右クリックを完全無効化されるのでこちらで会話を進める
+                progressMessage(e.getPlayer());
+            }
+            // クリックをキャンセル
+            e.setCancelled(true);
+            return;
+        }
+        // 会話終了後のクールタイムがあるプレイヤーのクリックを無効化する
+        if(coolTimeBeforeCanTalkSet.contains(e.getPlayer())){
+            // クリックをキャンセル
+            e.setCancelled(true);
+            return;
+        }
         /* 例外処理終わり */
 
         // クリックをキャンセルしてメッセージ送信
@@ -632,6 +650,10 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // クールタイム設定
     private void setCoolTime(Player player){
         // 次の会話可能までのクールタイム設定（会話したくないのに、間違って右クリックするとすぐに会話再開されてしまうのを防止する）
+
+        // すでにクールタイム設定がされていたら処理しない
+        if(coolTimeBeforeCanTalkSet.contains(player)) return;
+
         coolTimeBeforeCanTalkSet.add(player);
         getServer().getScheduler().runTaskLater(this, () -> {
             // クールタイム経過後にcoolTimeBeforeCanTalkからplayerを削除
@@ -650,6 +672,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     private void judgeFinishMessage(Player player, RPGMessages rpgMessages){
         if(rpgMessages.isFinished()){
             messageListMap.remove(player);
+            endTalk(player);
         }
     }
 
