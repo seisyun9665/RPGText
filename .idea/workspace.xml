@@ -4,10 +4,21 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="ジャンプしてコマンドだけで終了するとフリーズから抜け出せないバグを修正">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="コマンドでスコアを設定できるように変更">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/2021_09_24_14_29_____Default_Changelist_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/2021_09_24_14_29_の_更新_前の未コミットの変更_[Default_Changelist]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/2021_10_01_10_31_____Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/command/Command.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/command/Command.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,13 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592820027163</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Fix the bug that &quot;&amp;&quot; does not working when using &quot;/if&quot; statement.">
-      <created>1609412524494</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1609412524494</updated>
     </task>
     <task id="LOCAL-00005" summary="make CustomConfig">
       <created>1629955252841</created>
@@ -548,7 +552,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632912791482</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="コマンドでスコアを設定できるように変更">
+      <created>1632990205834</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1632990205835</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -608,7 +619,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="/title タイトル サブタイトル fadeIn stay fadeOut を実装" />
     <MESSAGE value="/jump でmessagesの中のディレクトリを参照できるように改善" />
     <MESSAGE value="コマンド&quot;/freeze &lt;true|false&gt;&quot;を実装" />
     <MESSAGE value="RPGMessages のコマンド部分をリファクタリング" />
@@ -633,7 +643,8 @@
     <MESSAGE value="Tutorial.ymlを修正。" />
     <MESSAGE value="キャラクタークリック時に会話がスキップされてしまうバグを修正" />
     <MESSAGE value="ジャンプしてコマンドだけで終了するとフリーズから抜け出せないバグを修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="ジャンプしてコマンドだけで終了するとフリーズから抜け出せないバグを修正" />
+    <MESSAGE value="コマンドでスコアを設定できるように変更" />
+    <option name="LAST_COMMIT_MESSAGE" value="コマンドでスコアを設定できるように変更" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

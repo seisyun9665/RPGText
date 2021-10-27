@@ -788,7 +788,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         // パスの最後の部分(例の"talk1"の部分)と"/"を元テキストから消す
         String pathName = configName.substring(0,configName.length() - fileNames[fileNames.length - 1].length() - 1);
         // 結合
-        Path path = Paths.get(messages_file.getAbsolutePath() + "\\" +  pathName.replace("/", "\\"));
+        Path path = Paths.get(messages_file.getAbsolutePath() + File.separator +  pathName.replace("/", File.separator));
         // ファイル存在したらCustomConfigにして返す
         if(path.toFile().exists()) return new CustomConfig(this, path.toFile());
         return null;
