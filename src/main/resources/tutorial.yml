@@ -1,5 +1,5 @@
 users:
-  - (click to advance)
+  - (left click to advance)
   - /singlesound minecraft:entity.player.levelup 1 0.98
   - \a\l--- RPGtext Tutorial ---
   - In this section, we will explain the basic usage of RPGText.

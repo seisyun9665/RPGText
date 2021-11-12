@@ -9,8 +9,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -62,8 +62,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     static int DEFAULT_MESSAGE_SPEED;
     // 文字色
     public static String DEFAULT_MESSAGE_COLOR;
-    // 何クリックでメッセージ進むか。（right | left | all）
-    private static String DEFAULT_CLICK_TYPE;
 
     /* 情報保存関係 */
 
@@ -156,11 +154,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         DEFAULT_SELECTION_SELECT_SOUND =            config.getString("default.selection.select.sound",  "");
         DEFAULT_SELECTION_SELECT_VOLUME =   (float) config.getDouble("default.selection.select.volume", 1);
         DEFAULT_SELECTION_SELECT_PITCH =    (float) config.getDouble("default.selection.select.pitch",  1);
-        DEFAULT_CLICK_TYPE =                        config.getString("default.click-type",              "all");
-        // rightとleftとall以外ならallにする
-        if (!(DEFAULT_CLICK_TYPE.equals("right") || DEFAULT_CLICK_TYPE.equals("left") || DEFAULT_CLICK_TYPE.equals("all"))){
-            DEFAULT_CLICK_TYPE = "all";
-        }
     }
 
 
@@ -175,26 +168,14 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 /* -----クリック検知処理----- */
 
     /* ブロッククリック検知 */
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGH)
     public void onClick(PlayerInteractEvent e){
         Action action = e.getAction();
         // クリック以外の処理を除外
-        if(!(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)){
+        if(!(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK)){
             return;
         }
-
-        // クリックタイプと一致していないなら除外
-        if(DEFAULT_CLICK_TYPE.equals("left")){
-            if(!(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK)){
-                return;
-            }
-        }
-        // クリックタイプと一致していないなら除外
-        if(DEFAULT_CLICK_TYPE.equals("right")){
-            if(!(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)){
-                return;
-            }
-        }
+        if(e.getHand() != EquipmentSlot.HAND) return;
 
         // メインハンドの時のみ処理
         if(e.getHand() == EquipmentSlot.OFF_HAND){
@@ -203,9 +184,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
 
         // アドベンチャーモードの時は左クリック判定を onPlayerLeftClickInAdventure に任せるので無効化する
         if(e.getPlayer().getGameMode() == GameMode.ADVENTURE){
-            if(action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK){
-                return;
-            }
+            return;
         }
 
         // メッセージ進行処理
@@ -234,10 +213,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     // エンティティに対して左クリックしたのを検知する
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent e){
-        // 右クリック検知は除外
-        if(DEFAULT_CLICK_TYPE.equals("right")){
-            return;
-        }
         // プレイヤー以外は除外
         if(!(e.getDamager() instanceof Player)){
             return;
@@ -364,10 +339,6 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         if(!characters.contain(entity.getName())) return;
         // 既に会話中ならクリックを無効化して弾く
         if(isTalking(e.getPlayer())) {
-            if (entity instanceof Villager) {
-                // 村人の場合普通の右クリックを完全無効化されるのでこちらで会話を進める
-                progressMessage(e.getPlayer());
-            }
             // クリックをキャンセル
             e.setCancelled(true);
             return;

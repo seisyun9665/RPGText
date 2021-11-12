@@ -4,6 +4,14 @@ main: seisyun.rpgtext.RPGText
 
 commands:
   rpgtext:
-    permission: rpgtext
+    permission: rpgtext.rpgtext
     discription: send text messages with a slight delay and sound using the player's actionbar
     using: /rpgtext <player> <text|config> <text>
+
+permissions:
+  rpgtext.rpgtext:
+    default: op
+  rpgtext.*:
+    default: op
+    children:
+      rpgtext.rpgtext: true
