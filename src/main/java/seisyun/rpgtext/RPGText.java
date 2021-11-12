@@ -224,6 +224,9 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
             return;
         }
 
+        // アドベンチャーモードは除外
+        if(player.getGameMode() == GameMode.ADVENTURE) return;
+
         // メッセージ進行処理
         progressMessage(player);
     }

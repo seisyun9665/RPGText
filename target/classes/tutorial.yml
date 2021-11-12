@@ -1,5 +1,5 @@
 users:
-  - (click to advance)
+  - (left click to advance)
   - /singlesound minecraft:entity.player.levelup 1 0.98
   - \a\l--- RPGtext Tutorial ---
   - In this section, we will explain the basic usage of RPGText.
@@ -234,14 +234,33 @@ users2:
   - You can check and change the registered characters in characters.yml.
   - Also use the command "/rpgtext <text|config> <player> <path>" to send a message directly to the player.
   - /singlesound minecraft:block.note.bell
+  # In-file common setting
+  - The three values we have discussed so far (sound, speed, and color) can be set for each file.
+  - Once set up, you can create a story without the hassle of setting up each section.
+  - Please refer to the Example of In-file common settings.
   # Example
-  - 18:Examle
+  - 19:Examle
   - We have prepared several examples of use.
   - It can be used by executing the following command.
   - \r/rpgtext config <player name> Tutorial.yml/examle1
   - \r/rpgtext config <player name> Tutorial.yml/slot
   - Use this as a reference for story production.
   - Thank you for reading!
+
+# Example of In-file common setting
+# This common setting means that these values will be set at the beginning of the section in the file.
+# like this
+# section:
+#   /sound block.note.bass 1 2
+#   /speed 20
+#   /color "\r"
+# sound: <sound name> <volume> <pitch>
+sound: block.note.bass 1 2
+# speed: <amount>
+speed: 20
+# color: <color> (\r = §r : normal color)
+color: "\r"
+
 
 # Here is an example of a simple conversational sentence.
 examle1:
@@ -254,7 +273,7 @@ examle1:
   - /?bad Well, are you okay? Don't take it too hard.
   - Have a nice day.
 
-# This is a simple slot.
+# This is a slot.
 # It displays three numbers from one to three, and if the numbers line up, you are awarded a diamond.
 # It is a little complicated, but anyone can easily implement it if they are familiar with it.
 slot:

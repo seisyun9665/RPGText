@@ -26,7 +26,3 @@ default:
     freeze-player-invincible: true
     leftclick-cancel: true
     rightclick-cancel: true
-
-# The type of click used to progress through the message. Choose from the following three types.
-# right, left, all
-  click-type: "all"
