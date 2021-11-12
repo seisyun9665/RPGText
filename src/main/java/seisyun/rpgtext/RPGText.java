@@ -144,7 +144,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         // デフォルト設定の読み込み（操作音やクリックの種類等）
         FileConfiguration config = messageConfig.getConfig();
         DEFAULT_MESSAGE_SOUND =                     config.getString("default.message.sound",           "");
-        DEFAULT_MESSAGE_VOLUME =            (float) config.getDouble("default.message.sound",           1);
+        DEFAULT_MESSAGE_VOLUME =            (float) config.getDouble("default.message.volume",          1);
         DEFAULT_MESSAGE_PITCH =             (float) config.getDouble("default.message.pitch",           1);
         DEFAULT_MESSAGE_SPEED =                     config.getInt   ("default.message.speed",           20);
         DEFAULT_MESSAGE_COLOR =                     config.getString("default.message.color",           "");
