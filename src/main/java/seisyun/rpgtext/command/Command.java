@@ -108,7 +108,7 @@ public class Command implements CommandExecutor {
             }
 
             plugin.setScore(player, args[2], Integer.parseInt(args[3]));
-            sender.sendMessage("set " + args[1] + "7s score \"" + args[2] + "\" to " + args[3] + ".");
+            sender.sendMessage("set " + args[1] + "'s score \"" + args[2] + "\" to " + args[3] + ".");
             return true;
         }
 
