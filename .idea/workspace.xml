@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="スコア設定を修正">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomScore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomScore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/command/Command.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/command/Command.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="CustomScoreのスコア保存形式を変更">
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,13 +202,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592820027163</updated>
-    </task>
-    <task id="LOCAL-00010" summary="デバッグ修正。Freezeを定義する前にreloadしていたところを修正。会話進行について、エンティティクリックと、アドベンチャーモード時のブロッククリックに対応、クリックイベントをリファクタリング、その他修正">
-      <created>1630932718854</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1630932718854</updated>
     </task>
     <task id="LOCAL-00011" summary="RPGTextSenderをリファクタリング。RPGTextの数字判定までリファクタリング。">
       <created>1631005622560</created>
@@ -549,7 +539,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636771119001</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="CustomScoreのスコア保存形式を変更">
+      <created>1637320213219</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1637320213219</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -609,7 +606,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="/wait を修正" />
     <MESSAGE value="/skip と /autoを実装。progressMessageにshowMessagesをマージ。同じ処理部分がいくつかあったので削除。showMessagesを使用していた箇所はすべてprogressMessageで統一" />
     <MESSAGE value="/rpgtext reset &lt;player&gt;を実装" />
     <MESSAGE value="/rpgtext reset &lt;player&gt;を修正。最後の文章の挙動がおかしいバグを修正。" />
@@ -634,7 +630,8 @@
     <MESSAGE value="ログ進行を左クリックのみに変更" />
     <MESSAGE value="ログ進行のバグを修正" />
     <MESSAGE value="スコア設定を修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="スコア設定を修正" />
+    <MESSAGE value="CustomScoreのスコア保存形式を変更" />
+    <option name="LAST_COMMIT_MESSAGE" value="CustomScoreのスコア保存形式を変更" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

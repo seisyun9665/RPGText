@@ -35,11 +35,7 @@ public class CustomScore {
 
     // 特定プレイヤーの全てのスコアを0にする
     public void resetPlayer(Player player) {
-        for (String key : config.getConfigurationSection(DEFAULT_SECTION_NAME).getKeys(false)) {
-            config.set(DEFAULT_SECTION_NAME+"."+player.getUniqueId(), null);
-        }
-        customConfig.saveConfig();
-        reload();
+        config.set(DEFAULT_SECTION_NAME + "." + player.getUniqueId(), null);
     }
 
     // スコアを読み込みなおす（手動で変更した場合など用）
