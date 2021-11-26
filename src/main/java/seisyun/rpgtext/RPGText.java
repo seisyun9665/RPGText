@@ -678,7 +678,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
                 }
             }
 
-            if(config.contains("color")) color = config.getString("color", DEFAULT_MESSAGE_COLOR);
+            if(config.contains("color")) color = config.getString("color", DEFAULT_MESSAGE_COLOR); getLogger().info("color="+color);
             if(config.contains("speed")) speed = config.getInt("speed", DEFAULT_MESSAGE_SPEED);
 
             // コンフィグの中身をRPGMessagesへ変換

@@ -195,7 +195,7 @@ class RPGMessages {
         this.volume = volume;
     }
     public void setColor(String color){
-        this.color = color;
+        this.color = color.replace(REPLACED_SYMBOL_COLOR_CODE,"§");
     }
 
     String getSound() {
