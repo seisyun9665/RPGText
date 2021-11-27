@@ -121,8 +121,6 @@ public class CustomConfig {
                     //失敗
                     plugin.getLogger().info("Could not create \"" + file.getName() + "\" file");
                 }
-            }else{
-                plugin.getLogger().info("There is already a \"" + file.getName() + "\" file");
             }
         }catch (IOException e){
             plugin.getLogger().info("directory path does not found");
