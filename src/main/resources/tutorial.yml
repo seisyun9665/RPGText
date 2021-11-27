@@ -1,5 +1,5 @@
 users:
-  - (left click to advance)
+  - (click to advance)
   - /singlesound minecraft:entity.player.levelup 1 0.98
   - \a\l--- RPGtext Tutorial ---
   - In this section, we will explain the basic usage of RPGText.
@@ -259,7 +259,7 @@ sound: block.note.bass 1 2
 # speed: <amount>
 speed: 20
 # color: <color> (\r = §r : normal color)
-color: "\r"
+color: \r
 
 
 # Here is an example of a simple conversational sentence.

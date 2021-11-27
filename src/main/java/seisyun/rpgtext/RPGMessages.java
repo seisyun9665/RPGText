@@ -313,14 +313,14 @@ class RPGMessages {
                     if(isInteger(args.get(3))){                     // 数字なのでそのまま適用
                         number = Integer.parseInt(args.get(3));
                     }else{                                          // customscoreから取得
-                        if(customScore.contain(args.get(3))) {
+                        if(customScore.contain(args.get(3),player)) {
                            number = customScore.get(args.get(3), player);
                         }
                     }
 
                     //１番目の引数のスコア
                     int score1 = 0;
-                    if(customScore.contain(args.get(1))){
+                    if(customScore.contain(args.get(1), player)){
                         score1 = customScore.get(args.get(1),player);
                     }
 
@@ -571,14 +571,14 @@ class RPGMessages {
             int var2;
             if(isInteger(arg1)) {
                 var1 = Integer.parseInt(arg1);
-            }else if(customScore.contain(arg1)){
+            }else if(customScore.contain(arg1, player)){
                 var1 = customScore.get(arg1, player);
             }else{
                 return "";
             }
             if(isInteger(arg2)) {
                 var2 = Integer.parseInt(arg2);
-            }else if(customScore.contain(arg2)){
+            }else if(customScore.contain(arg2, player)){
                 var2 = customScore.get(arg2, player);
             }else{
                 return "";
@@ -759,7 +759,7 @@ class RPGMessages {
                         output.append(args[i]);
                     }else{
                         //even
-                        if(customScore.contain(args[i])){
+                        if(customScore.contain(args[i], player)){
                             output.append(customScore.get(args[i],player));
                         }else{
                             output.append(0);

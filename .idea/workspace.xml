@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="セクション共通カラーのバックスラッシュ補完機能を追加" />
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="デバッグ用ログを削除">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomScore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomScore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tutorial.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tutorial.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -200,13 +209,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592820027163</updated>
-    </task>
-    <task id="LOCAL-00013" summary="RPGTextの最後までリファクタリング">
-      <created>1631014549745</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1631014549745</updated>
     </task>
     <task id="LOCAL-00014" summary="RPGTextSenderの速度設定を改良">
       <created>1631028619046</created>
@@ -544,7 +546,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637938273052</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="デバッグ用ログを削除">
+      <created>1637938386618</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1637938386618</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -604,7 +613,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="/rpgtext reset &lt;player&gt;を修正。最後の文章の挙動がおかしいバグを修正。" />
     <MESSAGE value="yml読み込み時のパス生成のバグを修正" />
     <MESSAGE value="sound: でボリュームとピッチを同時に設定できるように修正" />
     <MESSAGE value="sound: でボリュームとピッチを同時に設定できるように再度修正" />
@@ -629,7 +637,8 @@
     <MESSAGE value="CustomScoreのスコア保存形式を変更" />
     <MESSAGE value="CustomScoreのスコアリセットの処理を修正" />
     <MESSAGE value="セクション共通カラーのバックスラッシュ補完機能を追加" />
-    <option name="LAST_COMMIT_MESSAGE" value="セクション共通カラーのバックスラッシュ補完機能を追加" />
+    <MESSAGE value="デバッグ用ログを削除" />
+    <option name="LAST_COMMIT_MESSAGE" value="デバッグ用ログを削除" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
