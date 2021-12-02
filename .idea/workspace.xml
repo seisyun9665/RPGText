@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="CustomScore のcontainが常にFalseを返していた問題を修正">
-      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,13 +204,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592820027163</updated>
-    </task>
-    <task id="LOCAL-00016" summary="RPGTextSenderの送信速度の処理で、sendCount++を書き忘れていたバグを修正">
-      <created>1631078948480</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1631078948480</updated>
     </task>
     <task id="LOCAL-00017" summary="会話終了後のCoolTimeがうまく適用されていなかったバグを修正">
       <created>1631079509001</created>
@@ -547,7 +541,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638005659048</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="CustomScore のcontainが常にFalseを返していた問題を修正">
+      <created>1638005736635</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1638005736635</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -630,9 +631,9 @@
     <MESSAGE value="CustomScoreのスコアリセットの処理を修正" />
     <MESSAGE value="セクション共通カラーのバックスラッシュ補完機能を追加" />
     <MESSAGE value="デバッグ用ログを削除" />
-    <MESSAGE value="CustomScore のcontainが常にFalseを返していた問題を修正" />
     <MESSAGE value="CustomConfigをアップデート。ファイル作成時メッセージを削除" />
-    <option name="LAST_COMMIT_MESSAGE" value="CustomConfigをアップデート。ファイル作成時メッセージを削除" />
+    <MESSAGE value="CustomScore のcontainが常にFalseを返していた問題を修正" />
+    <option name="LAST_COMMIT_MESSAGE" value="CustomScore のcontainが常にFalseを返していた問題を修正" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

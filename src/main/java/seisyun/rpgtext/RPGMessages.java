@@ -273,21 +273,6 @@ class RPGMessages {
             }
         }
 
-        // "/title タイトル サブタイトル fadeIn stay fadeOut"
-        // 例：タイトルだけ１秒表示"/title タイトル "" 0 20 0"
-//        else if(text.startsWith("/title ")){
-//            // /title "title" "subtitle" fadeIn stay fadeOut
-//            // プレイヤーにタイトルを表示
-//            if(args.size() == 6){
-//                if(isInteger(args.get(3)) && isInteger(args.get(4)) && isInteger(args.get(5))){
-//                    // 中身が""だったら空白にする
-//                    String title = args.get(1).equals("\"\"") ? "" : args.get(1);
-//                    String subTitle = args.get(2).equals("\"\"") ? "" : args.get(2);
-//                    player.sendTitle(title, subTitle, Integer.parseInt(args.get(3)), Integer.parseInt(args.get(4)), Integer.parseInt(args.get(5)));
-//                }
-//            }
-//        }
-
         // "/command コマンド"
         // 例： プレイヤーにリンゴを一つ与える "/command give %player% apple"
         else if(text.startsWith("/command ")){
@@ -315,6 +300,60 @@ class RPGMessages {
                     }else{                                          // customscoreから取得
                         if(customScore.contain(args.get(3),player)) {
                            number = customScore.get(args.get(3), player);
+                        }
+                    }
+
+                    //１番目の引数のスコア
+                    int score1 = 0;
+                    if(customScore.contain(args.get(1), player)){
+                        score1 = customScore.get(args.get(1),player);
+                    }
+
+                    /* 比較演算子別に操作する */
+                    switch (args.get(2)) {
+                        case "random":
+                            customScore.set(args.get(1), player, new Random().nextInt(number));
+                            break;
+                        case "+":
+                            customScore.set(args.get(1), player, score1 + number);
+                            break;
+                        case "-":
+                            customScore.set(args.get(1), player, score1 - number);
+                            break;
+                        case "*":
+                            customScore.set(args.get(1), player, score1 * number);
+                            break;
+                        case "/":
+                            customScore.set(args.get(1), player, score1 / number);
+                            break;
+                        case "%":
+                            customScore.set(args.get(1), player, score1 % number);
+                            break;
+                    }
+                }
+
+                // 引数が2つしか無いパターン   例："/socre number 2"
+                else if(isInteger(args.get(2))){
+                    customScore.set(args.get(1),player,Integer.parseInt(args.get(2)));
+                }
+            }
+        }
+
+        // "/list リスト名 <set | add | clear> 要素" リスト名.size : 要素数  リスト名[要素番号] : 要素
+        // 例： /list list1 set a,b,c
+        // /list list1 clear
+        else if(text.startsWith("/list ")){
+            //スコアを設定
+            if(args.size() > 2){
+                if(args.size() > 3){
+                    /* 値を取得する */
+                    // ３番目の引数を取得。スコア名ならcuntomscoreから取得してくる。数字ならそのまま適用
+                    int number = 0;
+                    if(isInteger(args.get(3))){                     // 数字なのでそのまま適用
+                        number = Integer.parseInt(args.get(3));
+                    }else{                                          // customscoreから取得
+                        if(customScore.contain(args.get(3),player)) {
+                            number = customScore.get(args.get(3), player);
                         }
                     }
 
