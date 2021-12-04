@@ -3,7 +3,6 @@ package seisyun.rpgtext;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +16,7 @@ import java.util.regex.Pattern;
 public class RPGMessages {
 
     private List<String> messages;                                  // 読み込んだ文章のリスト
-    private int sendTextNumber;                                     // messagesのうち今送信する文章の添字
+    private int nowTextIndex;                                     // messagesのうち今送信する文章の添字
     private String sound = RPGText.DEFAULT_MESSAGE_SOUND;           // 送信時に鳴らす音（RPGTextSenderに設定する）
     private float volume = RPGText.DEFAULT_MESSAGE_VOLUME;
     private float pitch = RPGText.DEFAULT_MESSAGE_PITCH;
@@ -47,8 +46,8 @@ public class RPGMessages {
         this(messages,player, 0, plugin,customScore,section);
     }
 
-    RPGMessages(List<String> messages,Player player, int sendTextNumber,RPGText plugin,CustomScore customScore,String section){
-        this.sendTextNumber = sendTextNumber;
+    RPGMessages(List<String> messages, Player player, int nowTextIndex, RPGText plugin, CustomScore customScore, String section){
+        this.nowTextIndex = nowTextIndex;
         this.player = player;
         RPGMessages.plugin = plugin;
         RPGMessages.customScore = customScore;
@@ -79,7 +78,7 @@ public class RPGMessages {
         }
         // すべてのメッセージが送信済みだったら終わり
         else {
-            if(sendTextNumber >= messages.size()){
+            if(nowTextIndex >= messages.size()){
                 return "";
             }
         }
@@ -87,19 +86,19 @@ public class RPGMessages {
 
         /* コマンド処理 */
 
-        while (isCommand(messages.get(sendTextNumber))){
+        while (isCommand(messages.get(nowTextIndex))){
             // \\スコア名\\となっているスコアを数字に置き換える
-            messages.set(sendTextNumber,replaceScore(messages.get(sendTextNumber)));
+            messages.set(nowTextIndex,replaceScore(messages.get(nowTextIndex)));
 
             /* /jump */
             // "/jump 飛ぶ場所"
             // 例：Tutorial.ymlの中のusersを実行する "/jump Tutorial.yml/users"
             // 例：bobフォルダの中のbobTalk.ymlの中のtalk1を実行する "bob/bobTalk.yml/talk1"
-            if(messages.get(sendTextNumber).startsWith("/jump ") && messages.get(sendTextNumber).length() > 5){
+            if(messages.get(nowTextIndex).startsWith("/jump ") && messages.get(nowTextIndex).length() > 5){
                 //他のメッセージのところに飛ぶ
                 jump = true;
                 // /jump を消去
-                String section = messages.get(sendTextNumber).replace("/jump ","");
+                String section = messages.get(nowTextIndex).replace("/jump ","");
 
                 // ジャンプのファイル名を省略していた場合に先頭に追加する
                 // 仮に今読み込んでるファイルが Tutorial.yml だったとして /jump users2 と書かれていたら Tutorial.yml/users2 にする
@@ -111,54 +110,54 @@ public class RPGMessages {
             /* /jump終わり */
 
             /* /? */
-            else if(messages.get(sendTextNumber).startsWith("/?" + selection + " ")){
-                messages.set(sendTextNumber,messages.get(sendTextNumber).substring(selection.length() + 3));
+            else if(messages.get(nowTextIndex).startsWith("/?" + selection + " ")){
+                messages.set(nowTextIndex,messages.get(nowTextIndex).substring(selection.length() + 3));
                 continue;
             }
             /* /? 終わり */
 
             // 条件
-            else if(messages.get(sendTextNumber).startsWith("/if ")){
-                String ret = branch(messages.get(sendTextNumber));
+            else if(messages.get(nowTextIndex).startsWith("/if ")){
+                String ret = branch(messages.get(nowTextIndex));
                 // & 記号で条件文繋いでる場合の処理
                 while(ret.startsWith("&")){
                     ret = branch(ret);
                 }
                 if(ret.equals("")){
-                    sendTextNumber++;
-                    if(sendTextNumber >= messages.size()){
+                    nowTextIndex++;
+                    if(nowTextIndex >= messages.size()){
                         return "";
                     }
                 }else{
-                    messages.set(sendTextNumber,ret);
+                    messages.set(nowTextIndex,ret);
                 }
                 continue;
             }
             // アイテム所持
-            else if(messages.get(sendTextNumber).startsWith("/has ")){
-                String nextCommand = judgeHasItem(messages.get(sendTextNumber));
+            else if(messages.get(nowTextIndex).startsWith("/has ")){
+                String nextCommand = judgeHasItem(messages.get(nowTextIndex));
                 if(!nextCommand.equals("")) {
-                    messages.set(sendTextNumber, nextCommand);
+                    messages.set(nowTextIndex, nextCommand);
                 }else{
-                    sendTextNumber++;
-                    if(sendTextNumber >= messages.size()){
+                    nowTextIndex++;
+                    if(nowTextIndex >= messages.size()){
                         return "";
                     }
                 }
                 continue;
             }
             // ディレイ
-            else if(messages.get(sendTextNumber).startsWith("/wait ")){
-                String message = messages.get(sendTextNumber);
-                sendTextNumber++;
+            else if(messages.get(nowTextIndex).startsWith("/wait ")){
+                String message = messages.get(nowTextIndex);
+                nowTextIndex++;
                 return message;
             }
 
             // その他のコマンド（sound,speed等）
-            determineCommand(messages.get(sendTextNumber));
+            determineCommand(messages.get(nowTextIndex));
 
 
-            sendTextNumber++;
+            nowTextIndex++;
             if(isSelecting()){
                 return "/?";
             }
@@ -169,9 +168,9 @@ public class RPGMessages {
             /* コマンド処理終わり */
 
         }
-        messages.set(sendTextNumber,replaceScore(messages.get(sendTextNumber)));
-        sendTextNumber++;
-        return color + messages.get(sendTextNumber - 1);
+        messages.set(nowTextIndex,replaceScore(messages.get(nowTextIndex)));
+        nowTextIndex++;
+        return color + messages.get(nowTextIndex - 1);
     }
 
     // 送信し終えているか
@@ -179,7 +178,7 @@ public class RPGMessages {
         if(messages == null || messages.isEmpty()){
             return true;
         }
-        return sendTextNumber >= messages.size();
+        return nowTextIndex >= messages.size();
     }
 
     // 別のメッセージを読み込んでいるか
@@ -222,7 +221,7 @@ public class RPGMessages {
     // コマンドを判別して実行する
     private void determineCommand(String text){
         // 引数 ex: /speed 2 -> {"/speed", "2"}   size() == 2
-        List<String> args = new ArrayList<>(Arrays.asList(text.split(" ")));
+        List<String> args = new ArrayList<>(Arrays.asList(replaceScore(text).split(" ")));
 
         // "/sound 音" または "/sound 音 ボリューム ピッチ"
         // 例 "/sound block.note.bass" "/sound block.note.bass 1 1.4"
@@ -563,23 +562,23 @@ public class RPGMessages {
 
     void showSelection(){
         reloadSelection();
-        selections.showSelections();
+        if(selections != null) {
+            selections.showSelections();
+        }
     }
 
     private void reloadSelection(){
         if(selections == null){
-            if(sendTextNumber == 0){
-                determineCommand(messages.get(sendTextNumber));
+            if(nowTextIndex == 0){
+                determineCommand(messages.get(nowTextIndex));
             }else {
-                determineCommand(messages.get(sendTextNumber - 1));
+                determineCommand(messages.get(nowTextIndex - 1));
             }
         }
     }
 
-    void increaseMessageNumber(){
-        if(sendTextNumber < messages.size() - 1){
-            sendTextNumber++;
-        }
+    void increaseMessageIndex(){
+        nowTextIndex++;
     }
 
     void finishSelection(){
@@ -610,10 +609,10 @@ public class RPGMessages {
 
     boolean isSelecting(){
         if(messages.size() > 0) {
-            if(sendTextNumber > 0) {
-                return messages.get(sendTextNumber - 1).startsWith("/? ");
+            if(nowTextIndex > 0) {
+                return messages.get(nowTextIndex - 1).startsWith("/? ");
             }else{
-                return messages.get(sendTextNumber).startsWith("/? ");
+                return messages.get(nowTextIndex).startsWith("/? ");
             }
         }
         return false;
@@ -621,12 +620,12 @@ public class RPGMessages {
 
     // 一文目に選択コマンドした時の例外処理
     boolean isFirstSelection(){
-        return sendTextNumber == 0 && messages.get(sendTextNumber).startsWith("/? ");
+        return nowTextIndex == 0 && messages.get(nowTextIndex).startsWith("/? ");
     }
 
     boolean isNextSelection(){
-        if(sendTextNumber < messages.size()) {
-            return messages.get(sendTextNumber).startsWith("/? ");
+        if(nowTextIndex < messages.size()) {
+            return messages.get(nowTextIndex).startsWith("/? ");
         }
         return false;
     }

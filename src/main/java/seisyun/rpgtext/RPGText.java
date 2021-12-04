@@ -281,7 +281,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         /* 選択肢表示 */
         if(hasNextSelectionCommand(player)){
             RPGMessages message = messageListMap.get(player);
-            message.increaseMessageNumber();
+            message.increaseMessageIndex();
             message.showSelection();
             return;
         }
