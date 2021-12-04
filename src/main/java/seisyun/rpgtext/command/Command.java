@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import seisyun.rpgtext.Characters;
 import seisyun.rpgtext.Freeze;
+import seisyun.rpgtext.RPGMessages;
 import seisyun.rpgtext.RPGText;
 
 public class Command implements CommandExecutor {
@@ -33,6 +34,7 @@ public class Command implements CommandExecutor {
             sender.sendMessage("/rpgtext freeze toggle <player> : Switch the player's frozen state.");
             sender.sendMessage("/rpgtext reset <player> : Set the player's all score to 0.");
             sender.sendMessage("/rpgtext set <player> <score name> <score> : Set the player's score.");
+            sender.sendMessage("/rpgtext list reset <player> : reset the player's list data.");
 
             if(sender instanceof Player){
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(),"rpgtext config " + sender.getName() + " Tutorial.yml/users");
@@ -111,7 +113,19 @@ public class Command implements CommandExecutor {
             sender.sendMessage("set " + args[1] + "'s score \"" + args[2] + "\" to " + args[3] + ".");
             return true;
         }
+        /* list reset */
+        if(args.length == 3 && args[0].equals("list")){
+            if(!args[1].equals("reset")) return false;
+            Player player = plugin.getServer().getPlayer(args[2]);
+            if(player == null) {
+                sender.sendMessage("Player " + args[2] + " does not exist.");
+                return true;
+            }
 
+            RPGMessages.resetList(player);
+            sender.sendMessage("reset the " + args[2] + "'s list data.");
+            return true;
+        }
         if(!(args.length == 3 || args.length == 6)){
             sender.sendMessage(ChatColor.RED + "/rpgtext reload : Reload configs.");
             sender.sendMessage(ChatColor.RED + "/rpgtext <text|config> <player> <path> : Send messages in the style an RPG game.");
@@ -122,7 +136,8 @@ public class Command implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "/rpgtext freeze toggle <player> : Switch the player's frozen state.");
             sender.sendMessage(ChatColor.RED + "/rpgtext reset <player> : Set the player's all score to 0.");
             sender.sendMessage(ChatColor.RED + "/rpgtext set <player> <score name> <score> : Set the player's score.");
-            return false;
+            sender.sendMessage(ChatColor.RED + "/rpgtext list reset <player> : reset the player's list data.");
+            return true;
         }
 
         /* /rpgtext <player> <text|config> <text> */

@@ -6,12 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="listを実装">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/command/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RPGText-1.1.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
     </list>
@@ -211,13 +209,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592820027163</updated>
-    </task>
-    <task id="LOCAL-00019" summary="コマンドで終了した場合でも次の会話までのクールタイムがきちんと適用されるように修正">
-      <created>1631086742855</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1631086742855</updated>
     </task>
     <task id="LOCAL-00020" summary="新しいコマンド/color を追加。引数の文字列を文章の先頭に付ける。&#10;またsound: 、color: 、speed: の項目を使用することで、ファイル内でのデフォルトの値を指定することができるように改善">
       <created>1631094471307</created>
@@ -555,7 +546,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638583078697</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="CustomConfigをアップデート">
+      <created>1638586870092</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1638586870092</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -615,7 +613,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="/rpgtext character のコマンド実行後のログが不正だったものを修正" />
     <MESSAGE value="会話中にクリックで村人の画面開けてしまうのを修正" />
     <MESSAGE value="/score score1 - score2 のscore2の読み込みができないバグを修正" />
     <MESSAGE value="クールタイムがうまく動作していないバグを修正" />
@@ -640,7 +637,8 @@
     <MESSAGE value="CustomScore のcontainが常にFalseを返していた問題を修正" />
     <MESSAGE value="listを途中まで実装" />
     <MESSAGE value="listを実装" />
-    <option name="LAST_COMMIT_MESSAGE" value="listを実装" />
+    <MESSAGE value="CustomConfigをアップデート" />
+    <option name="LAST_COMMIT_MESSAGE" value="CustomConfigをアップデート" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

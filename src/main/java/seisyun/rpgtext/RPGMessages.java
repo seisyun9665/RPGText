@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /* Configから読み込んだ複数のメッセージを管理するクラス
 * それぞれのメッセージに対して、特殊シンボルの変換、コマンド実行、次メッセージの呼び出し等を行う */
 
-class RPGMessages {
+public class RPGMessages {
 
     private List<String> messages;                                  // 読み込んだ文章のリスト
     private int sendTextNumber;                                     // messagesのうち今送信する文章の添字
@@ -33,6 +33,7 @@ class RPGMessages {
     static final String REPLACED_SYMBOL_FOOD = "%food%";            // スタミナレベルに変換される特殊シンボル
     static final String REPLACED_SYMBOL_GAMEMODE = "%gamemode%";    // ゲームモード（数字）に変換される特殊シンボル
     static final String REPLACED_SYMBOL_SCORE = "§§";               // スコアの数字に変換される特殊シンボル
+    static final String REPLACED_SYMBOL_SELECTION = "?";            // 直前に選んだ選択肢の内容に変換される特殊シンボル
     private static RPGText plugin;
     private String selection = " ";                                 // 直前に選んだ選択肢の名前
     private boolean jump = false;                                   // コマンドでジャンプが起こったかどうか
@@ -867,8 +868,13 @@ class RPGMessages {
                         // even
                         // 各種スコア置き換え処理
 
+                        // 選択肢直前の選択肢
+                        if(args[i].equals("?")){
+                            output.append(selection);
+                        }
+
                         // list
-                        if(isList(args[i])){
+                        else if(isList(args[i])){
                             String listName = args[i];
                             List<String> list = getList(getListName(listName),player);
                             // サイズ指定
@@ -892,7 +898,7 @@ class RPGMessages {
                                     // 全要素出力
                                     list.forEach(element -> output.append(element).append(splitIndex));
                                     // 最後のはみ出した部分を削除
-                                    output.delete(output.length() - splitIndex.length() - 1,output.length()-1);
+                                    output.delete(output.length() - splitIndex.length(),output.length());
                                 }
                                 else {
                                     // インデックスが正しい場合
@@ -936,13 +942,13 @@ class RPGMessages {
     }
     // 取得
     private static List<String> getList(String list, Player player){
-        return RPGText.listConfig.getConfig().getStringList(LIST_CONFIG_ROOT + "." + list);
+        return RPGText.listConfig.getConfig().getStringList(LIST_CONFIG_ROOT + "." + player.getUniqueId() + "." + list);
     }
     private static void setList(String list, List<String> stringList, Player player){
-        RPGText.listConfig.set(LIST_CONFIG_ROOT + "." + list, stringList);
+        RPGText.listConfig.set(LIST_CONFIG_ROOT + "." + player.getUniqueId() + "." +  list, stringList);
     }
     private static void setList(String list, String[] stringList, Player player){
-        RPGText.listConfig.set(LIST_CONFIG_ROOT + "." + list, Arrays.asList(stringList));
+        RPGText.listConfig.set(LIST_CONFIG_ROOT + "." +  player.getUniqueId() + "." + list, Arrays.asList(stringList));
     }
     // not int = -1
     private static int getIndex(String list){
@@ -966,5 +972,9 @@ class RPGMessages {
     // リスト指定判定
     private static boolean isList(String list){
         return isAssigning(list) || list.endsWith(".size()") || (list.contains(".contain(") && list.endsWith(")") && list.split(Pattern.quote(".contain(")).length==2);
+    }
+    // リストをリセットする
+    public static void resetList(Player player){
+        RPGText.listConfig.set(LIST_CONFIG_ROOT + "." + player.getUniqueId(), null);
     }
 }
