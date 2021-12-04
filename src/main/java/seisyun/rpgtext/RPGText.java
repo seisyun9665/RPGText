@@ -94,6 +94,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
     private Characters characters;
     // 会話中のプレイヤーを動けなくするためのクラス
     private static Freeze freeze;
+    // リスト保存用のconfig
+    static CustomConfig listConfig;
 
     /* ----- デフォルト設定変数終わり ----- */
 
@@ -106,6 +108,7 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         // config.yml と scoreboard.yml と characters.yml と tutorial.yml を作成
         saveDefaultConfig();
         customScore = new CustomScore(this);
+        listConfig = new CustomConfig(this,"listConfig.yml");
         characters = new Characters(this);
         messageConfig = new CustomConfig(this);
         new CustomConfig(this,"Tutorial.yml",new File(getDataFolder(),"messages"),"tutorial.yml");
@@ -137,6 +140,8 @@ public class RPGText extends JavaPlugin implements CommandExecutor, Listener {
         messageConfig.reloadConfig();
         customScore.reload();
         characters.reload();
+        listConfig.reloadConfig();
+        listConfig.saveConfig();
         // プレイヤー停止システム読み込み
         freeze = new Freeze(this,messageConfig);
         freeze.reload();

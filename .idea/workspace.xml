@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="CustomScore のcontainが常にFalseを返していた問題を修正">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="listを途中まで実装">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,6 +159,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TODO_SCOPE" value="すべての場所" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1609395995469" />
+    <property name="last.edited.regexp" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="モジュール" />
     <property name="project.structure.proportion" value="0.15" />
@@ -204,13 +205,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592820027163</updated>
-    </task>
-    <task id="LOCAL-00017" summary="会話終了後のCoolTimeがうまく適用されていなかったバグを修正">
-      <created>1631079509001</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1631079509001</updated>
     </task>
     <task id="LOCAL-00018" summary="左揃えにする処理を修正">
       <created>1631085623546</created>
@@ -548,7 +542,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638005736635</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="listを途中まで実装">
+      <created>1638411060706</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1638411060706</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -608,7 +609,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="sound: でボリュームとピッチを同時に設定できるように再度修正" />
     <MESSAGE value="%player%の他に%level% %hp% %food% %gamemode%を追加" />
     <MESSAGE value="/rpgtext character のコマンド実行後のログが不正だったものを修正" />
     <MESSAGE value="会話中にクリックで村人の画面開けてしまうのを修正" />
@@ -633,7 +633,8 @@
     <MESSAGE value="デバッグ用ログを削除" />
     <MESSAGE value="CustomConfigをアップデート。ファイル作成時メッセージを削除" />
     <MESSAGE value="CustomScore のcontainが常にFalseを返していた問題を修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="CustomScore のcontainが常にFalseを返していた問題を修正" />
+    <MESSAGE value="listを途中まで実装" />
+    <option name="LAST_COMMIT_MESSAGE" value="listを途中まで実装" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">

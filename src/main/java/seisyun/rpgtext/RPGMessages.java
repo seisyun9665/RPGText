@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 /* Configから読み込んだ複数のメッセージを管理するクラス
 * それぞれのメッセージに対して、特殊シンボルの変換、コマンド実行、次メッセージの呼び出し等を行う */
@@ -32,22 +33,24 @@ class RPGMessages {
     static final String REPLACED_SYMBOL_FOOD = "%food%";            // スタミナレベルに変換される特殊シンボル
     static final String REPLACED_SYMBOL_GAMEMODE = "%gamemode%";    // ゲームモード（数字）に変換される特殊シンボル
     static final String REPLACED_SYMBOL_SCORE = "§§";               // スコアの数字に変換される特殊シンボル
-    private final Plugin plugin;
+    private static RPGText plugin;
     private String selection = " ";                                 // 直前に選んだ選択肢の名前
     private boolean jump = false;                                   // コマンドでジャンプが起こったかどうか
     private boolean skip = true;                                    // trueで会話を最後まで飛ばせる
     private boolean auto = false;                                   // trueで会話自動進行
-    private CustomScore customScore;
+    private static CustomScore customScore;
 
-    RPGMessages(List<String> messages,Player player,Plugin plugin,CustomScore customScore,String section){
+    private static final String LIST_CONFIG_ROOT = "lists";
+
+    RPGMessages(List<String> messages,Player player,RPGText plugin,CustomScore customScore,String section){
         this(messages,player, 0, plugin,customScore,section);
     }
 
-    RPGMessages(List<String> messages,Player player, int sendTextNumber,Plugin plugin,CustomScore customScore,String section){
+    RPGMessages(List<String> messages,Player player, int sendTextNumber,RPGText plugin,CustomScore customScore,String section){
         this.sendTextNumber = sendTextNumber;
         this.player = player;
-        this.plugin  = plugin;
-        this.customScore = customScore;
+        RPGMessages.plugin = plugin;
+        RPGMessages.customScore = customScore;
         this.messages = replaceSymbol(messages);
         this.section = section;
     }
@@ -339,56 +342,120 @@ class RPGMessages {
             }
         }
 
-        // "/list リスト名 <set | add | clear> 要素" リスト名.size : 要素数  リスト名[要素番号] : 要素
-        // 例： /list list1 set a,b,c
+        // "/list リスト名 <set | add | remove | replace | clear> [要素] [要素（replace)]"
+        // \\リスト名[文字列]\\                :    全要素出力（区切り文字が括弧内文字列になる）
+        // \\リスト名[要素番号]\\              :    要素(ない場合は空白)　
+        // \\リスト名.size()\\                :  要素数
+        // \\リスト名.contain(要素)           :   yes->1 no->0
+        // /list list1 set a,b,c            :   \\list[,]\\ -> a,b,c
+        // /list list1[0] set b             :   \\list[,]\\ -> b,b,c
+        // /list list1[0] set a             :   \\list[,]\\ -> a,b,c
+        // /list list1 add d                :   \\list[,]\\ -> a,b,c,d
+        // /list list1[1] add e             :   \\list[,]\\ -> a,e,b,c,d
+        // /list list1 remove               :   \\list[,]\\ -> a,e,b,c
+        // /list list1[1] remove            :   \\list[,]\\ -> a,b,c
+        // /list list1 remove a             :   \\list[,]\\ -> b,c
+        // /list list1 add ad               :   \\list[,]\\ -> b,c,ad
+        // /list list1[2] remove a          :   \\list[,]\\ -> b,c,d
+        // /list list1 replace c d          :   \\list[,]\\ -> b,d,d
+        // /list list1 replace d ab         :   \\list[,]\\ -> b,ab,ab
+        // /list list1[1] replace a d       :   \\list[,]\\ -> b,db,ab
         // /list list1 clear
         else if(text.startsWith("/list ")){
-            //スコアを設定
+            // リストを操作
             if(args.size() > 2){
-                if(args.size() > 3){
-                    /* 値を取得する */
-                    // ３番目の引数を取得。スコア名ならcuntomscoreから取得してくる。数字ならそのまま適用
-                    int number = 0;
-                    if(isInteger(args.get(3))){                     // 数字なのでそのまま適用
-                        number = Integer.parseInt(args.get(3));
-                    }else{                                          // customscoreから取得
-                        if(customScore.contain(args.get(3),player)) {
-                            number = customScore.get(args.get(3), player);
-                        }
-                    }
+                boolean assigned = isAssigning(args.get(1));
+                String listName = getListName(args.get(1));
+                List<String> list = getList(listName, player);
 
-                    //１番目の引数のスコア
-                    int score1 = 0;
-                    if(customScore.contain(args.get(1), player)){
-                        score1 = customScore.get(args.get(1),player);
-                    }
+                String command = args.get(2);
 
-                    /* 比較演算子別に操作する */
-                    switch (args.get(2)) {
-                        case "random":
-                            customScore.set(args.get(1), player, new Random().nextInt(number));
-                            break;
-                        case "+":
-                            customScore.set(args.get(1), player, score1 + number);
-                            break;
-                        case "-":
-                            customScore.set(args.get(1), player, score1 - number);
-                            break;
-                        case "*":
-                            customScore.set(args.get(1), player, score1 * number);
-                            break;
-                        case "/":
-                            customScore.set(args.get(1), player, score1 / number);
-                            break;
-                        case "%":
-                            customScore.set(args.get(1), player, score1 % number);
-                            break;
+                // 添字取得
+                int index = -1;
+                if(assigned) {
+                    index = getIndex(args.get(1));
+                    // 添字がリストより大きい OR　0未満でも-1にする
+                    if(index >= list.size() || index < -1){
+                        index = -1;
                     }
                 }
 
-                // 引数が2つしか無いパターン   例："/socre number 2"
-                else if(isInteger(args.get(2))){
-                    customScore.set(args.get(1),player,Integer.parseInt(args.get(2)));
+                // 添字なし　OR　添字正しい
+                if(!assigned || index != -1) {
+                    String element = "", element2 = "";
+                    if(args.size() > 3) element = args.get(3);
+                    if(args.size() > 4) element2 = args.get(4);
+                    switch (args.size()) {
+                        case 3:
+                            switch (command) {
+                                case "clear":
+                                    list.clear();
+                                    setList(listName, list, player);
+                                    break;
+                                case "remove":
+                                    if (list.size() > 0) {
+                                        if(assigned){
+                                            list.remove(index);
+                                        }
+                                        else {
+                                            list.remove(list.size() - 1);
+                                        }
+                                        setList(listName, list, player);
+                                    }
+                                    break;
+                            }
+                            break;
+                        case 4:
+                            switch (command) {
+                                case "set":
+                                    if (assigned) {
+                                        list.set(index,element);
+                                        setList(listName,list, player);
+                                    }
+                                    else {
+                                        if(element.contains(",")){
+                                            setList(listName,element.split(","), player);
+                                        }
+                                    }
+                                    break;
+                                case "add":
+                                    if(assigned){
+                                        list.add(index,element);
+                                    }
+                                    else {
+                                        list.add(element);
+                                    }
+                                    setList(listName, list, player);
+                                    break;
+                                case "remove":
+                                    if(assigned) {
+                                        String tmp = list.get(index).replace(element,"");
+                                        if(tmp.equals("")){
+                                            list.remove(index);
+                                        }else{
+                                            list.set(index, tmp);
+                                        }
+                                    }
+                                    else {
+                                        list.remove(element);
+                                    }
+                                    setList(listName, list, player);
+                            }
+                            break;
+                        case 5:
+                            if ("replace".equals(command)) {
+                                if (assigned) {
+                                    list.set(index, list.get(index).replace(element, element2));
+                                } else {
+                                    String finalElement = element;
+                                    String finalElement1 = element2;
+                                    list.replaceAll(str -> str.replace(finalElement, finalElement1));
+                                }
+                                list.remove("");
+                                setList(listName, list, player);
+                            }
+                            break;
+                    }
                 }
             }
         }
@@ -788,17 +855,54 @@ class RPGMessages {
             String[] args = string.split(REPLACED_SYMBOL_SCORE);
             //split with §§
             if(args.length > 2 && args.length % 2 == 1){    //§§で分割した時に、ちゃんと「§§スコア名§§」と入力されていれば分割数は奇数になる（普通は§§を二つ使ってスコアを挟むため２つで１組になる）。§§の個数が奇数の場合分割数が偶数になる。
-                //odd = 偶数
-                //even = 奇数
-                //args size = odd
+                // odd = 偶数
+                // even = 奇数
+                // args size = odd
                 StringBuilder output = new StringBuilder();
                 for(int i = 0;i < args.length;i++){
                     if(i % 2 == 0){
-                        //odd
+                        // odd
                         output.append(args[i]);
                     }else{
-                        //even
-                        if(customScore.contain(args[i], player)){
+                        // even
+                        // 各種スコア置き換え処理
+
+                        // list
+                        if(isList(args[i])){
+                            String listName = args[i];
+                            List<String> list = getList(getListName(listName),player);
+                            // サイズ指定
+                            if(listName.endsWith(".size()")){
+                                output.append(list.size());
+                            }
+                            // contain
+                            else if(listName.contains(".contain(") && listName.endsWith(")") && listName.split(Pattern.quote(".contain(")).length==2) {
+                                // contain() のかっこ内に含まれている文字列がリストに存在
+                                // -> 1  存在しない -> 0
+                                String tmp = listName.split(Pattern.quote(".contain("))[1];
+                                output.append(list.contains(tmp.substring(0,tmp.length() - 1)) ? 1 : 0);
+                            }
+                            // インデックス指定
+                            else if(isAssigning(listName)){
+                                int index = getIndex(listName);
+
+                                if(index < 0 || index >= list.size()){
+                                    // インデックスが不正の場合
+                                    String splitIndex = getIndexString(listName);
+                                    // 全要素出力
+                                    list.forEach(element -> output.append(element).append(splitIndex));
+                                    // 最後のはみ出した部分を削除
+                                    output.delete(output.length() - splitIndex.length() - 1,output.length()-1);
+                                }
+                                else {
+                                    // インデックスが正しい場合
+                                    output.append(list.get(index));
+                                }
+                            }
+                        }
+
+                        // CustomScore
+                        else if(customScore.contain(args[i], player)){
                             output.append(customScore.get(args[i],player));
                         }else{
                             output.append(0);
@@ -813,5 +917,54 @@ class RPGMessages {
             }
         }
         return string;
+    }
+
+    // 文字列がリストの要素を指定しているか判定
+    private static boolean isAssigning(String list){
+        return list.contains("[") && list.endsWith("]") && !list.startsWith("[");
+    }
+    // リスト名取得
+    private String getListName(String list){
+        // リストが要素指定してる場合
+        if(isAssigning(list)){
+            // [ 以降を空白で置き換え
+            String[] args = list.split(Pattern.quote("["));
+            return list.replace("[" + args[args.length - 1], "");
+        }
+        // そうでない場合はそのまま
+        return list;
+    }
+    // 取得
+    private static List<String> getList(String list, Player player){
+        return RPGText.listConfig.getConfig().getStringList(LIST_CONFIG_ROOT + "." + list);
+    }
+    private static void setList(String list, List<String> stringList, Player player){
+        RPGText.listConfig.set(LIST_CONFIG_ROOT + "." + list, stringList);
+    }
+    private static void setList(String list, String[] stringList, Player player){
+        RPGText.listConfig.set(LIST_CONFIG_ROOT + "." + list, Arrays.asList(stringList));
+    }
+    // not int = -1
+    private static int getIndex(String list){
+        if(!isAssigning(list)) return -1;
+
+        String[] stringList = list.split(Pattern.quote("["));
+        String num = stringList[stringList.length - 1];
+        num = num.substring(0,num.length() - 1);
+
+        return plugin.isInteger(num) ? Integer.parseInt(num) : -1;
+    }
+    private static String getIndexString(String list){
+        if(!isAssigning(list)) return "";
+
+        String[] stringList = list.split(Pattern.quote("["));
+        String str = stringList[stringList.length - 1];
+        str = str.substring(0,str.length() - 1);
+
+        return str;
+    }
+    // リスト指定判定
+    private static boolean isList(String list){
+        return isAssigning(list) || list.endsWith(".size()") || (list.contains(".contain(") && list.endsWith(")") && list.split(Pattern.quote(".contain(")).length==2);
     }
 }
