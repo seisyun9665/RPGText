@@ -4,10 +4,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="listを途中まで実装">
+    <list default="true" id="b1352358-c325-41b2-ad87-b6e699313569" name="Default Changelist" comment="listを実装">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGMessages.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/RPGText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/seisyun/rpgtext/CustomConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/RPGText-1.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/CustomScore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGMessages.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/seisyun/rpgtext/RPGText.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-RPGText-1.1.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,13 +211,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592820027163</updated>
-    </task>
-    <task id="LOCAL-00018" summary="左揃えにする処理を修正">
-      <created>1631085623546</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1631085623546</updated>
     </task>
     <task id="LOCAL-00019" summary="コマンドで終了した場合でも次の会話までのクールタイムがきちんと適用されるように修正">
       <created>1631086742855</created>
@@ -549,7 +548,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638411060706</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="listを実装">
+      <created>1638583078697</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1638583078697</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -609,7 +615,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="%player%の他に%level% %hp% %food% %gamemode%を追加" />
     <MESSAGE value="/rpgtext character のコマンド実行後のログが不正だったものを修正" />
     <MESSAGE value="会話中にクリックで村人の画面開けてしまうのを修正" />
     <MESSAGE value="/score score1 - score2 のscore2の読み込みができないバグを修正" />
@@ -634,7 +639,8 @@
     <MESSAGE value="CustomConfigをアップデート。ファイル作成時メッセージを削除" />
     <MESSAGE value="CustomScore のcontainが常にFalseを返していた問題を修正" />
     <MESSAGE value="listを途中まで実装" />
-    <option name="LAST_COMMIT_MESSAGE" value="listを途中まで実装" />
+    <MESSAGE value="listを実装" />
+    <option name="LAST_COMMIT_MESSAGE" value="listを実装" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
