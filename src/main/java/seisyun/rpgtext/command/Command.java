@@ -153,7 +153,7 @@ public class Command implements CommandExecutor {
                     if (args[0].equals("config") ){
                         if(!plugin.showMessagesFromConfig(player,args[2])) {
                             // コンフィグに任意の項目が存在しなかった場合の処理
-                            sender.sendMessage("[RPGSystem]: Message jump error. That item does not exist");
+                            sender.sendMessage("[RPGText]: Message jump error. That item does not exist");
                             return false;
                         }
                     }else if(args[0].equals("text")){
