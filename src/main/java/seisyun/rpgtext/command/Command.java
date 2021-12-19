@@ -52,9 +52,14 @@ public class Command implements CommandExecutor {
                 }else if(args.length > 2 && args[1].equals("toggle")){
                     Player player = plugin.getServer().getPlayer(args[2]);
                     if(player != null){
-                        freeze.toggle(player);
-                        player.sendMessage("§7[Server]: You ware frozen by the Admin commands.");
-                        sender.sendMessage("Freezing the " + player.getName() + " was successful.");
+                        boolean isFrozen = freeze.toggle(player);
+                        if(isFrozen){
+                            player.sendMessage("§7[Server]: You ware frozen by the Admin commands.");
+                            sender.sendMessage("Freezing the " + player.getName() + " was successful.");
+                        }else {
+                            player.sendMessage("§7[Server]: You ware unfrozen by the Admin commands.");
+                            sender.sendMessage("Unfreezing the " + player.getName() + " was successful.");
+                        }
                         return true;
                     }else{
                         sender.sendMessage("Not found the player \"" + args[2] + "\"");

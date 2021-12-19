@@ -867,8 +867,8 @@ public class RPGMessages {
                         // even
                         // 各種スコア置き換え処理
 
-                        // 選択肢直前の選択肢
-                        if(args[i].equals("?")){
+                        // 直前の選択肢
+                        if(args[i].equals(REPLACED_SYMBOL_SELECTION)){
                             output.append(selection);
                         }
 
