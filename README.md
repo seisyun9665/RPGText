@@ -22,7 +22,7 @@ With full use of these features, you could create highly creative systems, such 
 
 ### Tutorial
 
-[![tutorial]("https://github.com/seisyun9665/RPGText/assets/58073880/0c676eb8-e9cb-42f1-a9b3-22185c73e133")](https://www.youtube.com/watch?v=QR5Xao9Subg&t=3s)
+[![tutorial](https://github.com/seisyun9665/RPGText/assets/58073880/0c676eb8-e9cb-42f1-a9b3-22185c73e133)](https://www.youtube.com/watch?v=QR5Xao9Subg&t=3s)
 
 ### Commands:
 
@@ -99,9 +99,7 @@ With full use of these features, you could create highly creative systems, such 
 
 ### チュートリアル:
 
-### チュートリアル
-
-[![tutorial]("https://github.com/seisyun9665/RPGText/assets/58073880/0c676eb8-e9cb-42f1-a9b3-22185c73e133")](https://www.youtube.com/watch?v=QR5Xao9Subg&t=3s)
+[![tutorial](https://github.com/seisyun9665/RPGText/assets/58073880/0c676eb8-e9cb-42f1-a9b3-22185c73e133)](https://www.youtube.com/watch?v=QR5Xao9Subg&t=3s)
 
 ### コマンド:
 
