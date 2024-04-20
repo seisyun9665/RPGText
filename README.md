@@ -22,10 +22,24 @@
 
 ### チュートリアル:
 
+RPGTextの基本的な使い方は、以下のチュートリアル動画で解説しています（英語のみ）。
+RPGTextの会話（プレイヤーに文字列を順番に表示させるアクション）のやり方を簡単に説明します。まず文章としてプレイヤーに表示したい内容を事前にテキストファイル（ymlファイル）に書き込んでおきます。そして、ゲーム内で専用のコマンドを実行します。これだけで、テキストファイルの文章が上から順番にプレイヤーに表示されます。
+
+これに加えて、テキストファイル内で別のファイル（同一ファイルも可能）の文章にジャンプすることも可能です。この機能を用いることで、より多くの文章を、複数のファイルに分けて管理して表示することができます。
+
+具体的には、次の３ステップでプレイヤーに文章を表示します。
+
+- プラグインフォルダ内でymlファイルを作成
+- 作成したymlファイル内で文章を執筆
+- コマンドを用いて文章をプレイヤーに表示
+
+２ステップ目の「作成したymlファイル内で文章を執筆」では、RPGText独自の文法を用いることで、さまざまなコマンドを実行することができます。しかし、どれもシンプルで、プログラミングの知識がなくても使えるものばかりです。
+便利な機能をチェックした上で、自分だけの物語を作ってみてください。
+
 [![tutorial](https://github.com/seisyun9665/RPGText/assets/58073880/eb99409e-e0e6-43ca-aea3-85b6c70c1fc6)](https://www.youtube.com/watch?v=QR5Xao9Subg)
 
 
-### コマンド:
+### コマンド（Minecraft）:
 
 - /rpgtext help - このプラグインのすべてのコマンドをリスト表示し、チュートリアルを開始。
 - /rpgtext reload - 設定を再読込。
@@ -98,9 +112,21 @@ With full use of these features, you could create highly creative systems, such 
 
 ### Tutorial
 
+The basic usage of RPGText is explained in the following tutorial video (in English only). Here's a brief explanation on how to manage dialogue in RPGText, where actions are displayed to the player in sequence. First, write the content you want to display to the player in a text file (YML file) in advance. Then, execute a specific command in the game. Just by doing this, the text from the file will be displayed to the player in sequence.
+
+Additionally, within the text file, you can also jump to passages from other files (including the same file). This feature allows you to manage and display more text across multiple files.
+
+Specifically, you can display text to the player in three steps:
+
+- Create a YML file in the plugin folder.
+- Write the text within the created YML file.
+- Use a command to display the text to the player.
+
+In the second step, "writing the text within the created YML file," you can execute various commands using RPGText's unique syntax. However, all are simple and can be used without any programming knowledge. Check out these useful features and create your own unique story.
+
 [![tutorial](https://github.com/seisyun9665/RPGText/assets/58073880/eb99409e-e0e6-43ca-aea3-85b6c70c1fc6)](https://www.youtube.com/watch?v=QR5Xao9Subg)
 
-### Commands:
+### Commands(Minecraft):
 
 - /rpgtext help - Lists all the commands of this plugin and start the tutorial.
 - /rpgtext reload - Reload configs.
