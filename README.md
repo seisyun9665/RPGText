@@ -22,6 +22,9 @@
 
 ### チュートリアル:
 
+[![tutorial](https://github.com/seisyun9665/RPGText/assets/58073880/eb99409e-e0e6-43ca-aea3-85b6c70c1fc6)](https://www.youtube.com/watch?v=QR5Xao9Subg)
+
+
 ### コマンド:
 
 - /rpgtext help - このプラグインのすべてのコマンドをリスト表示し、チュートリアルを開始。
@@ -94,6 +97,8 @@ With full use of these features, you could create highly creative systems, such 
 - Develop and manage stories with specialized commands.
 
 ### Tutorial
+
+[![tutorial](https://github.com/seisyun9665/RPGText/assets/58073880/eb99409e-e0e6-43ca-aea3-85b6c70c1fc6)](https://www.youtube.com/watch?v=QR5Xao9Subg)
 
 ### Commands:
 
