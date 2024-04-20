@@ -10,6 +10,9 @@
 
 これらの機能をフルに用いることができれば「**１００レベル以上のプレイヤーだけが通れる道**」「**ある村人に３回話しかけると鍵がもらえるシステム**」「**１日１回だけ回せるスロットゲーム**」など、創造性にあふれたシステムを思い通りに作り込むことができるようになるでしょう！
 
+### 配布サイト（Bukkit）
+以下のサイトでプラグインの配布を行なっています。
+https://dev.bukkit.org/projects/rpgtext
 
 ### 特徴:
 - RPGのスタイルで物語をシームレスに作成。
@@ -100,6 +103,10 @@ Specifically, this includes **displaying selectable options for players, setting
 
 With full use of these features, you could create highly creative systems, such as "**a path only accessible to players over level 100**," "**a system where talking to a certain villager three times earns you a key**," or "**a slot game that can only be played once a day**."
 
+
+### Distribution Site (Bukkit)
+We distribute plugins at the following site:
+https://dev.bukkit.org/projects/rpgtext
 
 ### Features:
 - Seamlessly craft stories in the style of RPGs.
